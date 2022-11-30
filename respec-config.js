@@ -2,6 +2,7 @@ var respecConfig = {
   specStatus: "unofficial",
   // if there a publicly available Editor's Draft, this is the link
   // edDraftURI: "https://w3c.github.io/webrtc-icecontroller/",
+  latestVersion: "https://sam-vi.github.io/webrtc-icecontroller/",
   shortName: "webrtc-icecontroller",
   editors: [
     { name: "Sameer Vijaykar", company: "Google", w3cid: "00000" },
@@ -9,6 +10,7 @@ var respecConfig = {
   ],
   authors: [
   ],
+  isPreview: true,
   group: "webrtc",
   wgPublicList: "public-webrtc",
   github: "https://github.com/sam-vi/webrtc-icecontroller",
