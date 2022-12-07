@@ -1,8 +1,8 @@
 ## WebRTC-IceController
 
 This document defines a set of ECMAScript APIs in WebIDL to allow creation of
-an RTCIceController interface to manage the ICE connection used by an
-RTCIceTransport.
+an RTCIceController object to manage the ICE connection used by an
+RTCPeerConnection.
 
 ### Published Versions
 

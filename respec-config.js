@@ -6,7 +6,7 @@ var respecConfig = {
   shortName: "webrtc-icecontroller",
   editors: [
     { name: "Sameer Vijaykar", company: "Google", w3cid: "00000" },
-    { name: "Harald Alvestrand", company: "Google", w3cid: "00000" } 
+    { name: "Harald Alvestrand", company: "Google", w3cid: "00000" }
   ],
   authors: [
   ],
@@ -30,7 +30,7 @@ var respecConfig = {
       ]
     }
   ],
-  xref: ["webrtc", "html", "webidl"],
+  xref: ["webrtc", "webrtc-stats", "html", "webidl", "dom", "hr-time"],
   localBiblio: {
-  }
+  },
 }
