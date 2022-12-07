@@ -3,6 +3,34 @@
 <meta name="generator" content="ReSpec 32.4.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <style>
+pre.idl{padding:1em;position:relative}
+pre.idl>code{color:#000}
+@media print{
+pre.idl{white-space:pre-wrap}
+}
+.idlHeader{display:block;width:150px;background:#8ccbf2;color:#fff;font-family:sans-serif;font-weight:700;margin:-1em 0 1em -1em;height:28px;line-height:28px}
+.idlHeader a.self-link{margin-left:.3cm;text-decoration:none;border-bottom:none}
+.idlID{font-weight:700;color:#005a9c}
+.idlType{color:#005a9c}
+.idlName{color:#ff4500}
+.idlName a{color:#ff4500;border-bottom:1px dotted #ff4500;text-decoration:none}
+a.idlEnumItem{color:#000;border-bottom:1px dotted #ccc;text-decoration:none}
+.idlSuperclass{font-style:italic;color:#005a9c}
+.idlDefaultValue,.idlParamName{font-style:italic}
+.extAttr{color:#666}
+.idlSectionComment{color:gray}
+.idlIncludes a{font-weight:700}
+.respec-button-copy-paste:focus{text-decoration:none;border-color:#51a7e8;outline:0;box-shadow:0 0 5px rgba(81,167,232,.5)}
+.respec-button-copy-paste:is(:focus:hover,.selected:focus){border-color:#51a7e8}
+.respec-button-copy-paste:is(:hover,:active,.zeroclipboard-is-hover,.zeroclipboard-is-active){text-decoration:none;background-color:#ddd;background-image:linear-gradient(#eee,#ddd);border-color:#ccc}
+.respec-button-copy-paste:is(:active,.selected,.zeroclipboard-is-active){background-color:#dcdcdc;background-image:none;border-color:#b5b5b5;box-shadow:inset 0 2px 4px rgba(0,0,0,.15)}
+.respec-button-copy-paste.selected:hover{background-color:#cfcfcf}
+.respec-button-copy-paste:is(:disabled,:disabled:hover,.disabled,.disabled:hover){color:rgba(102,102,102,.5);cursor:default;background-color:rgba(229,229,229,.5);background-image:none;border-color:rgba(197,197,197,.5);box-shadow:none}
+@media print{
+.respec-button-copy-paste{visibility:hidden}
+}
+</style>
+<style>
 dfn{cursor:pointer}
 .dfn-panel{position:absolute;z-index:35;min-width:300px;max-width:500px;padding:.5em .75em;margin-top:.6em;font-family:"Helvetica Neue",sans-serif;font-size:small;background:#fff;color:#000;box-shadow:0 1em 3em -.4em rgba(0,0,0,.3),0 0 1px 1px rgba(0,0,0,.05);border-radius:2px}
 .dfn-panel:not(.docked)>.caret{position:absolute;top:-9px}
@@ -88,8 +116,8 @@ dd{margin-left:0}
 </style>
   
 
-<meta name="description" content="This document defines a set of ECMAScript APIs in WebIDL to allow creation of an RTCIceController interface to
-      manage the ICE connection used by an RTCIceTransport.">
+<meta name="description" content="This document defines a set of ECMAScript APIs in WebIDL to allow creation of an RTCIceController object to
+      manage the ICE connection used by an RTCPeerConnection.">
 <style>
 var{position:relative;cursor:pointer}
 var[data-type]::after,var[data-type]::before{position:absolute;left:50%;top:-6px;opacity:0;transition:opacity .4s;pointer-events:none}
@@ -135,24 +163,27 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
   ],
   "xref": [
     "webrtc",
+    "webrtc-stats",
     "html",
-    "webidl"
+    "webidl",
+    "dom",
+    "hr-time"
   ],
   "localBiblio": {},
-  "publishISODate": "2022-11-30T00:00:00.000Z",
-  "generatedSubtitle": "Unofficial Draft 30 November 2022"
+  "publishISODate": "2022-12-07T00:00:00.000Z",
+  "generatedSubtitle": "Unofficial Draft 07 December 2022"
 }</script>
 <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD"></head>
 
-<body class="h-entry informative" data-cite="webrtc html webidl"><div class="head">
+<body class="h-entry" data-cite="WEBIDL webrtc webrtc-stats html webidl dom hr-time"><div class="head">
     
     <h1 id="title" class="title">IceController Extensions for WebRTC</h1> 
-    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2022-11-30">30 November 2022</time></p>
+    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2022-12-07">07 December 2022</time></p>
     <details open="">
       <summary>More details about this document</summary>
       <dl>
         <dt>This version:</dt><dd>
-                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20221130/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20221130/</a>
+                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20221207/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20221207/</a>
               </dd>
         <dt>Latest published version:</dt><dd>
                 <a href="https://sam-vi.github.io/webrtc-icecontroller/">https://sam-vi.github.io/webrtc-icecontroller/</a>
@@ -198,15 +229,1425 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
     </p>
     <hr title="Separator for header">
   </div>
+
   <section id="abstract" class="introductory"><h2>Abstract</h2>
-    <p>This document defines a set of ECMAScript APIs in WebIDL to allow creation of an RTCIceController interface to
-      manage the ICE connection used by an RTCIceTransport.</p>
-  </section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li></ol></nav>
+    <p>This document defines a set of ECMAScript APIs in WebIDL to allow creation of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-1"><code>RTCIceController</code></a> object to
+      manage the ICE connection used by an <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>.</p>
+  </section>
+
+  <section id="sotd" class="introductory"><h2>Status of This Document</h2><details class="annoying-warning" open="">
+    <summary>
+      This is a
+      preview
+    </summary>
+    <p>
+      Do not attempt to implement this version of the specification. Do not
+      reference this version as authoritative in any way.
+      
+            Instead, see
+            <a href="https://sam-vi.github.io/webrtc-icecontroller/">https://sam-vi.github.io/webrtc-icecontroller/</a> for the Editor's draft.
+          
+    </p>
+  </details><p>
+      This document is a draft of a potential specification. It has no official
+      standing of any kind and does not represent the support or consensus of
+      any standards organization.
+    </p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#sotd">Status of This Document</a></li><li class="tocline"><a class="tocxref" href="#intro"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">2. </bdi>Conformance</a></li><li class="tocline"><a class="tocxref" href="#rtcicecontroller"><bdi class="secno">3. </bdi><span class="export" data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceController" data-dfn-for=""><code>RTCIceController</code></span> Interface</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecontroller-interface-definition"><bdi class="secno">3.1 </bdi>Interface Definition</a></li><li class="tocline"><a class="tocxref" href="#constructor"><bdi class="secno">3.2 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#attributes"><bdi class="secno">3.3 </bdi>Attributes</a></li></ol></li><li class="tocline"><a class="tocxref" href="#informational-events"><bdi class="secno">4. </bdi>Informational events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairevent"><bdi class="secno">4.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairEvent" data-dfn-for=""><code>RTCIceCandidatePairEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairupdateevent"><bdi class="secno">4.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairUpdateEvent" data-dfn-for=""><code>RTCIceCandidatePairUpdateEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairreport"><bdi class="secno">4.2.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairReport" data-dfn-for=""><code>RTCIceCandidatePairReport</code></span> Interface</a></li><li class="tocline"><a class="tocxref" href="#rtcroundtriptimesample"><bdi class="secno">4.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCRoundTripTimeSample" data-dfn-for=""><code>RTCRoundTripTimeSample</code></span> Dictionary</a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairwritestate"><bdi class="secno">4.2.3 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceCandidatePairWriteState" data-dfn-for=""><code>RTCIceCandidatePairWriteState</code></span> Enum</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#event-summary"><bdi class="secno">5. </bdi>Event summary</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">A. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">A.1 </bdi>Normative references</a></li></ol></li></ol></nav>
+
+  <section class="informative" id="intro"><div class="header-wrapper"><h2 id="x1-introduction"><bdi class="secno">1. </bdi>Introduction</h2><a class="self-link" href="#intro" aria-label="Permalink for Section 1."></a></div><p><em>This section is non-normative.</em></p>
+    
+    <p>This specification extends the WebRTC specification [<cite><a class="bibref" data-link-type="biblio" href="#bib-webrtc" title="WebRTC 1.0: Real-Time Communication Between Browsers">WEBRTC</a></cite>] to allow construction of an
+      <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-2"><code>RTCIceController</code></a> object to manage the ICE connection used by an <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>.
+    </p>
+  </section>
+
+  <section id="conformance"><div class="header-wrapper"><h2 id="x2-conformance"><bdi class="secno">2. </bdi>Conformance</h2><a class="self-link" href="#conformance" aria-label="Permalink for Section 2."></a></div><p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.</p><p>
+        The key word <em class="rfc2119">MUST</em> in this document
+        is to be interpreted as described in
+        <a href="https://datatracker.ietf.org/doc/html/bcp14">BCP 14</a>
+        [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">RFC2119</a></cite>] [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8174" title="Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words">RFC8174</a></cite>]
+        when, and only when, they appear in all capitals, as shown here.
+      </p>
+    <p>This specification defines conformance criteria that apply to a single
+      product: the <dfn id="dfn-user-agent" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">user agent</dfn> that implements the interfaces that it contains.</p>
+    <p>Conformance requirements phrased as algorithms or specific steps may be
+      implemented in any manner, so long as the end result is equivalent. (In
+      particular, the algorithms defined in this specification are intended to be
+      easy to follow, and not intended to be performant.)</p>
+    <p>Implementations that use ECMAScript to implement the APIs defined in
+      this specification <em class="rfc2119">MUST</em> implement them in a manner consistent with the
+      ECMAScript Bindings defined in the Web IDL specification [<cite><a class="bibref" data-link-type="biblio" href="#bib-webidl" title="Web IDL Standard">WEBIDL</a></cite>], as
+      this specification uses that specification and terminology.</p>
+  </section>
 
 
-<p role="navigation" id="back-to-top">
+  <section id="rtcicecontroller"><div class="header-wrapper"><h2 id="x3-rtcicecontroller-interface"><bdi class="secno">3. </bdi><dfn class="export" data-export="" data-dfn-type="interface" id="dom-rtcicecontroller" data-idl="interface" data-title="RTCIceController" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceController</code></dfn> Interface</h2><a class="self-link" href="#rtcicecontroller" aria-label="Permalink for Section 3."></a></div>
+    
+    <p>The <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-3"><code>RTCIceController</code></a> interface allows an application to observe and affect certain actions that an <dfn id="dfn-ice-agent" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">ICE
+        agent</dfn> [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc5245" title="Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal for Offer/Answer Protocols">RFC5245</a></cite>] undertakes, such as performing connectivity checks, nominating a candidate pair, and
+      pruning candidate pairs when unviable or no longer necessary. It also allows the application to request the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-1">ICE agent</a> to perform these actions for candidate pairs selected by the application.</p>
+    <section id="rtcicecontroller-interface-definition"><div class="header-wrapper"><h3 id="x3-1-interface-definition"><bdi class="secno">3.1 </bdi>Interface Definition</h3><a class="self-link" href="#rtcicecontroller-interface-definition" aria-label="Permalink for Section 3.1"></a></div>
+      
+      <div>
+        <pre class="idl def" id="webidl-1924882287"><span class="idlHeader"><a class="self-link" href="#webidl-1924882287">WebIDL</a></span><code><span data-idl="" class="idlInterface" id="idl-def-rtcicecontroller" data-title="RTCIceController">[<span class="extAttr"><a data-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed">Exposed</a>=Window</span>]
+interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtcicecontroller" id="ref-for-dom-rtcicecontroller-4"><code>RTCIceController</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="interface" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtcicecontroller-constructor" data-title="constructor" data-dfn-for="RTCIceController">
+  <a class="internalDFN" data-link-type="constructor" href="#dom-rtcicecontroller-constructor" id="ref-for-dom-rtcicecontroller-constructor-1"><code>constructor</code></a>();</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecontroller-role" data-title="role" data-dfn-for="RTCIceController">
+
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="enum" href="https://www.w3.org/TR/webrtc/#dom-rtcicerole">RTCIceRole</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecontroller-role" id="ref-for-dom-rtcicecontroller-role-1"><code>role</code></a>;</span><span data-idl="" class="idlMethod" id="idl-def-rtcicecontroller-getselectedcandidatepair" data-title="getSelectedCandidatePair" data-dfn-for="RTCIceController"><span class="idlType">
+  <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a>?</span> <dfn data-export="" data-dfn-type="method" id="dom-rtcicecontroller-getselectedcandidatepair" data-idl="operation" data-title="getSelectedCandidatePair" data-dfn-for="RTCIceController" data-type="RTCIceCandidatePair" data-lt="getSelectedCandidatePair()" data-local-lt="RTCIceController.getSelectedCandidatePair|RTCIceController.getSelectedCandidatePair()|getSelectedCandidatePair" class="idlName" tabindex="0" aria-haspopup="dialog"><code>getSelectedCandidatePair</code></dfn>();</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecontroller-oncandidatepairadded" data-title="oncandidatepairadded" data-dfn-for="RTCIceController">
+
+  attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">EventHandler</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecontroller-oncandidatepairadded" id="ref-for-dom-rtcicecontroller-oncandidatepairadded-1"><code>oncandidatepairadded</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecontroller-oncandidatepairupdated" data-title="oncandidatepairupdated" data-dfn-for="RTCIceController">
+  attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">EventHandler</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecontroller-oncandidatepairupdated" id="ref-for-dom-rtcicecontroller-oncandidatepairupdated-1"><code>oncandidatepairupdated</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecontroller-oncandidatepairswitched" data-title="oncandidatepairswitched" data-dfn-for="RTCIceController">
+  attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">EventHandler</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecontroller-oncandidatepairswitched" id="ref-for-dom-rtcicecontroller-oncandidatepairswitched-1"><code>oncandidatepairswitched</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecontroller-oncandidatepairdestroyed" data-title="oncandidatepairdestroyed" data-dfn-for="RTCIceController">
+  attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">EventHandler</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecontroller-oncandidatepairdestroyed" id="ref-for-dom-rtcicecontroller-oncandidatepairdestroyed-1"><code>oncandidatepairdestroyed</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecontroller-onicepingproposed" data-title="onicepingproposed" data-dfn-for="RTCIceController">
+
+  attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">EventHandler</a></span> <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-onicepingproposed" data-idl="attribute" data-title="onicepingproposed" data-dfn-for="RTCIceController" data-type="EventHandler" data-lt="onicepingproposed" data-local-lt="RTCIceController.onicepingproposed" class="idlName" tabindex="0" aria-haspopup="dialog"><code>onicepingproposed</code></dfn>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecontroller-oniceswitchproposed" data-title="oniceswitchproposed" data-dfn-for="RTCIceController">
+  attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">EventHandler</a></span> <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-oniceswitchproposed" data-idl="attribute" data-title="oniceswitchproposed" data-dfn-for="RTCIceController" data-type="EventHandler" data-lt="oniceswitchproposed" data-local-lt="RTCIceController.oniceswitchproposed" class="idlName" tabindex="0" aria-haspopup="dialog"><code>oniceswitchproposed</code></dfn>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecontroller-onicepruneproposed" data-title="onicepruneproposed" data-dfn-for="RTCIceController">
+  attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">EventHandler</a></span> <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-onicepruneproposed" data-idl="attribute" data-title="onicepruneproposed" data-dfn-for="RTCIceController" data-type="EventHandler" data-lt="onicepruneproposed" data-local-lt="RTCIceController.onicepruneproposed" class="idlName" tabindex="0" aria-haspopup="dialog"><code>onicepruneproposed</code></dfn>;</span><span data-idl="" class="idlMethod" id="idl-def-rtcicecontroller-sendiceping-candidatepair" data-title="sendIcePing" data-dfn-for="RTCIceController"><span class="idlType">
+
+  <a data-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise">Promise</a>&lt;<a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined">undefined</a>&gt;</span> <dfn data-export="" data-dfn-type="method" id="dom-rtcicecontroller-sendiceping" data-idl="operation" data-title="sendIcePing" data-dfn-for="RTCIceController" data-type="Promise" data-lt="sendIcePing()|sendIcePing(candidatePair)" data-local-lt="RTCIceController.sendIcePing|RTCIceController.sendIcePing()|sendIcePing" class="idlName" tabindex="0" aria-haspopup="dialog"><code>sendIcePing</code></dfn>(<span class="idlType"><a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <span class="idlParamName">candidatePair</span>);</span><span data-idl="" class="idlMethod" id="idl-def-rtcicecontroller-switchtocandidatepair-candidatepair" data-title="switchToCandidatePair" data-dfn-for="RTCIceController"><span class="idlType">
+  <a data-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise">Promise</a>&lt;<a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined">undefined</a>&gt;</span> <dfn data-export="" data-dfn-type="method" id="dom-rtcicecontroller-switchtocandidatepair" data-idl="operation" data-title="switchToCandidatePair" data-dfn-for="RTCIceController" data-type="Promise" data-lt="switchToCandidatePair()|switchToCandidatePair(candidatePair)" data-local-lt="RTCIceController.switchToCandidatePair|RTCIceController.switchToCandidatePair()|switchToCandidatePair" class="idlName" tabindex="0" aria-haspopup="dialog"><code>switchToCandidatePair</code></dfn>(<span class="idlType"><a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <span class="idlParamName">candidatePair</span>);</span><span data-idl="" class="idlMethod" id="idl-def-rtcicecontroller-prunecandidatepairs-candidatepairs" data-title="pruneCandidatePairs" data-dfn-for="RTCIceController"><span class="idlType">
+  <a data-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise">Promise</a>&lt;<a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined">undefined</a>&gt;</span> <dfn data-export="" data-dfn-type="method" id="dom-rtcicecontroller-prunecandidatepairs" data-idl="operation" data-title="pruneCandidatePairs" data-dfn-for="RTCIceController" data-type="Promise" data-lt="pruneCandidatePairs()|pruneCandidatePairs(candidatePairs)" data-local-lt="RTCIceController.pruneCandidatePairs|RTCIceController.pruneCandidatePairs()|pruneCandidatePairs" class="idlName" tabindex="0" aria-haspopup="dialog"><code>pruneCandidatePairs</code></dfn>(<span class="idlType"><a data-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence">sequence</a>&lt;<a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a>&gt;</span> <span class="idlParamName">candidatePairs</span>);</span>
+};</span></code></pre>
+      </div>
+    </section>
+    <section id="constructor"><div class="header-wrapper"><h3 id="x3-2-constructor"><bdi class="secno">3.2 </bdi>Constructor</h3><a class="self-link" href="#constructor" aria-label="Permalink for Section 3.2"></a></div>
+      
+      <dl data-link-for="RTCIceController" data-dfn-for="RTCIceController" class="constructors">
+        <dt><dfn data-export="" data-dfn-type="constructor" id="dom-rtcicecontroller-constructor" data-idl="constructor" data-title="constructor()" data-dfn-for="RTCIceController" data-lt="constructor()" data-local-lt="RTCIceController.constructor|RTCIceController.constructor()|constructor" tabindex="0" aria-haspopup="dialog"><code>constructor()</code></dfn></dt>
+        <dd>
+          <p>
+            When the constructor is invoked, the <a href="#dfn-user-agent" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-user-agent-1">user agent</a> <em class="rfc2119">MUST</em> run the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>
+              Let <var>controller</var> be a newly created <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-5"><code>RTCIceController</code></a> object.
+            </li>
+            <li>
+              Let <var>connection</var> have an <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-icerole" tabindex="0" aria-haspopup="dialog">[[IceRole]]</dfn> internal slot,
+              initialized to "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicerole-unknown"><code>unknown</code></a>".
+            </li>
+            <li>
+              Let <var>connection</var> have a <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-selectedcandidatepair" tabindex="0" aria-haspopup="dialog" class="respec-offending-element" title="Found definition for &quot;[[SelectedCandidatePair]]&quot;, but nothing links to it. This is usually a spec bug!">[[SelectedCandidatePair]]</dfn>
+              internal slot,
+              initialized to <code>null</code>.
+            </li>
+            <li>
+              Return <var>controller</var>.
+            </li>
+          </ol>
+          <div>
+            <em>No parameters.</em>
+          </div>
+        </dd>
+      </dl>
+    </section>
+    <section id="attributes"><div class="header-wrapper"><h3 id="x3-3-attributes"><bdi class="secno">3.3 </bdi>Attributes</h3><a class="self-link" href="#attributes" aria-label="Permalink for Section 3.3"></a></div>
+      
+      <dl data-link-for="RTCIceController" data-dfn-for="RTCIceController" class="attributes">
+        <dt>
+          <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-role" data-idl="attribute" data-title="role" data-dfn-for="RTCIceController" data-type="RTCIceRole" data-lt="role" data-local-lt="RTCIceController.role" tabindex="0" aria-haspopup="dialog"><code>role</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="RTCIceRole" data-type="enum" href="https://www.w3.org/TR/webrtc/#dom-rtcicerole"><code>RTCIceRole</code></a></span>, readonly
+        </dt>
+        <dd>
+          <p>The <a data-link-type="idl" data-lt="role" href="#dom-rtcicecontroller-role" class="internalDFN" id="ref-for-dom-rtcicecontroller-role-2"><code>role</code></a> attribute <em class="rfc2119">MUST</em>, on getting, return the value of the <a data-link-type="attribute" data-lt="[[IceRole]]" href="#dfn-icerole" class="internalDFN" id="ref-for-dfn-icerole-1"><code>[[IceRole]]</code></a> internal
+            slot.
+          </p>
+        </dd>
+        <dt>
+          <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-oncandidatepairadded" data-idl="attribute" data-title="oncandidatepairadded" data-dfn-for="RTCIceController" data-type="EventHandler" data-lt="oncandidatepairadded" data-local-lt="RTCIceController.oncandidatepairadded" tabindex="0" aria-haspopup="dialog"><code>oncandidatepairadded</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="EventHandler" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><code>EventHandler</code></a></span>
+        </dt>
+        <dd>
+          <p>This event handler, of event handler event type <a data-link-type="idl" data-lt="candidatepairadded" href="#dfn-candidatepairadded" class="internalDFN" id="ref-for-dfn-candidatepairadded-1"><code>candidatepairadded</code></a>, <em class="rfc2119">MUST</em> be fired any time the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-2">ICE agent</a> has found a candidate pair.
+          </p>
+        </dd>
+        <dt>
+          <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-oncandidatepairupdated" data-idl="attribute" data-title="oncandidatepairupdated" data-dfn-for="RTCIceController" data-type="EventHandler" data-lt="oncandidatepairupdated" data-local-lt="RTCIceController.oncandidatepairupdated" tabindex="0" aria-haspopup="dialog"><code>oncandidatepairupdated</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="EventHandler" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><code>EventHandler</code></a></span>
+        </dt>
+        <dd>
+          <p>This event handler, of event handler event type <a data-link-type="idl" data-lt="candidatepairupdated" href="#dfn-candidatepairupdated" class="internalDFN" id="ref-for-dfn-candidatepairupdated-1"><code>candidatepairupdated</code></a>.
+          </p>
+        </dd>
+        <dt>
+          <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-oncandidatepairswitched" data-idl="attribute" data-title="oncandidatepairswitched" data-dfn-for="RTCIceController" data-type="EventHandler" data-lt="oncandidatepairswitched" data-local-lt="RTCIceController.oncandidatepairswitched" tabindex="0" aria-haspopup="dialog"><code>oncandidatepairswitched</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="EventHandler" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><code>EventHandler</code></a></span>
+        </dt>
+        <dd>
+          <p>This event handler, of event handler event type <a data-link-type="idl" data-lt="candidatepairswitched" href="#dfn-candidatepairswitched" class="internalDFN" id="ref-for-dfn-candidatepairswitched-1"><code>candidatepairswitched</code></a>, <em class="rfc2119">MUST</em> be fired when the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-3">ICE agent</a> switched the transport to a different candidate pair.
+          </p>
+        </dd>
+        <dt>
+          <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-oncandidatepairdestroyed" data-idl="attribute" data-title="oncandidatepairdestroyed" data-dfn-for="RTCIceController" data-type="EventHandler" data-lt="oncandidatepairdestroyed" data-local-lt="RTCIceController.oncandidatepairdestroyed" tabindex="0" aria-haspopup="dialog"><code>oncandidatepairdestroyed</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="EventHandler" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><code>EventHandler</code></a></span>
+        </dt>
+        <dd>
+          <p>This event handler, of event handler event type <a data-link-type="idl" data-lt="candidatepairdestroyed" href="#dfn-candidatepairdestroyed" class="internalDFN" id="ref-for-dfn-candidatepairdestroyed-1"><code>candidatepairdestroyed</code></a>, <em class="rfc2119">MUST</em> be fired any time the
+            <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-4">ICE agent</a> destroys a candidate pair.
+          </p>
+        </dd>
+      </dl>
+    </section>
+  </section>
+
+
+  <section id="informational-events"><div class="header-wrapper"><h2 id="x4-informational-events"><bdi class="secno">4. </bdi>Informational events</h2><a class="self-link" href="#informational-events" aria-label="Permalink for Section 4."></a></div>
+    
+    <p>These events convey information about some action that has already taken place, and allow the application to have
+      an up-to-date view of the relevant internal state of the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-5">ICE agent</a>.</p>
+
+    <section id="rtcicecandidatepairevent"><div class="header-wrapper"><h3 id="x4-1-rtcicecandidatepairevent"><bdi class="secno">4.1 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtcicecandidatepairevent" data-idl="interface" data-title="RTCIceCandidatePairEvent" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairEvent</code></dfn></h3><a class="self-link" href="#rtcicecandidatepairevent" aria-label="Permalink for Section 4.1"></a></div>
+      
+      <p>
+        The <a data-link-type="idl" href="#dfn-candidatepairadded" class="internalDFN" id="ref-for-dfn-candidatepairadded-2"><code>candidatepairadded</code></a> event uses the <a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-1"><code>RTCIceCandidatePairEvent</code></a> interface.
+      </p>
+      <div>
+        <pre class="idl def" id="webidl-719498905"><span class="idlHeader"><a class="self-link" href="#webidl-719498905">WebIDL</a></span><code><span data-idl="" class="idlInterface" id="idl-def-rtcicecandidatepairevent" data-title="RTCIceCandidatePairEvent">[<span class="extAttr"><a data-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed">Exposed</a>=Window</span>]
+interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtcicecandidatepairevent" id="ref-for-dom-rtcicecandidatepairevent-2"><code>RTCIceCandidatePairEvent</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="interface" href="https://dom.spec.whatwg.org/#event">Event</a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtcicecandidatepairevent-constructor-type-eventinitdict" data-title="constructor" data-dfn-for="RTCIceCandidatePairEvent">
+  <a class="internalDFN" data-link-type="constructor" href="#dom-rtcicecandidatepairevent-constructor" id="ref-for-dom-rtcicecandidatepairevent-constructor-1"><code>constructor</code></a>(<span class="idlType"><a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString">DOMString</a></span> <span class="idlParamName">type</span>,<span class="idlType"> <a data-link-type="idl" href="#dom-rtcicecandidatepaireventinit" class="internalDFN" id="ref-for-dom-rtcicecandidatepaireventinit-1"><code>RTCIceCandidatePairEventInit</code></a></span> <span class="idlParamName">eventInitDict</span>);</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairevent-candidatepair" data-title="candidatePair" data-dfn-for="RTCIceCandidatePairEvent">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairevent-candidatepair" id="ref-for-dom-rtcicecandidatepairevent-candidatepair-1"><code>candidatePair</code></a>;</span>
+};</span></code></pre>
+        <section>
+          <div class="header-wrapper"><h4 id="constructors">Constructors</h4><a class="self-link" href="#constructors" aria-label="Permalink for this Section"></a></div>
+          <dl data-link-for="RTCIceCandidatePairEvent" data-dfn-for="RTCIceCandidatePairEvent" class="constructors">
+            <dt><dfn data-export="" data-dfn-type="constructor" id="dom-rtcicecandidatepairevent-constructor" data-idl="constructor" data-title="RTCIceCandidatePairEvent.constructor()" data-dfn-for="RTCIceCandidatePairEvent" data-lt="constructor()|constructor(type, eventInitDict)" data-local-lt="RTCIceCandidatePairEvent.constructor|RTCIceCandidatePairEvent.constructor()|constructor" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairEvent.constructor()</code></dfn></dt>
+            <dd></dd>
+          </dl>
+        </section>
+        <section>
+          <div class="header-wrapper"><h4 id="attributes-0">Attributes</h4><a class="self-link" href="#attributes-0" aria-label="Permalink for this Section"></a></div>
+          <dl data-link-for="RTCIceCandidatePairEvent" data-dfn-for="RTCIceCandidatePairEvent" class="attributes">
+            <dt>
+              <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairevent-candidatepair" data-idl="attribute" data-title="candidatePair" data-dfn-for="RTCIceCandidatePairEvent" data-type="RTCIceCandidatePair" data-lt="candidatePair" data-local-lt="RTCIceCandidatePairEvent.candidatePair" tabindex="0" aria-haspopup="dialog"><code>candidatePair</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="RTCIceCandidatePair" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair"><code>RTCIceCandidatePair</code></a></span>, readonly
+            </dt>
+            <dd>
+              <p>The <a data-link-type="idl" data-lt="candidatePair" href="#dom-rtcicecandidatepairevent-candidatepair" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-candidatepair-2"><code>candidatePair</code></a> attribute is the <a data-link-type="idl" data-lt="RTCIceCandidatePair" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair"><code>RTCIceCandidatePair</code></a> object with the new ICE candidate pair
+                that was gathered by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-6">ICE agent</a>.
+              </p>
+            </dd>
+          </dl>
+        </section>
+      </div>
+      <div>
+        <pre class="idl def" id="webidl-1074173427"><span class="idlHeader"><a class="self-link" href="#webidl-1074173427">WebIDL</a></span><code><span data-idl="" class="idlDictionary" id="idl-def-rtcicecandidatepaireventinit" data-title="RTCIceCandidatePairEventInit">dictionary <a class="internalDFN idlID" data-link-type="dictionary" href="#dom-rtcicecandidatepaireventinit" id="ref-for-dom-rtcicecandidatepaireventinit-2"><code>RTCIceCandidatePairEventInit</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="dictionary" href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a></span> {<span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepaireventinit-candidatepair" data-title="candidatePair" data-dfn-for="RTCIceCandidatePairEventInit"><span class="idlType">
+  <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepaireventinit-candidatepair" id="ref-for-dom-rtcicecandidatepaireventinit-candidatepair-1"><code>candidatePair</code></a>;</span>
+};</span></code></pre>
+        <section>
+          <div class="header-wrapper"><h4 id="dictionary-rtcicecandidatepaireventinit-members">Dictionary <dfn data-export="" data-dfn-type="dictionary" id="dom-rtcicecandidatepaireventinit" data-idl="dictionary" data-title="RTCIceCandidatePairEventInit" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairEventInit</code></dfn> Members</h4><a class="self-link" href="#dictionary-rtcicecandidatepaireventinit-members" aria-label="Permalink for this Section"></a></div>
+          <dl data-link-for="RTCIceCandidatePairEventInit" data-dfn-for="RTCIceCandidatePairEventInit" class="dictionary-members">
+            <dt>
+              <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepaireventinit-candidatepair" data-idl="field" data-title="candidatePair" data-dfn-for="RTCIceCandidatePairEventInit" data-type="RTCIceCandidatePair" tabindex="0" aria-haspopup="dialog"><code>candidatePair</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="RTCIceCandidatePair" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair"><code>RTCIceCandidatePair</code></a></span>
+            </dt>
+            <dd>
+              <p>See the <a data-link-type="idl" href="#dom-rtcicecandidatepairevent-candidatepair" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-candidatepair-3"><code>candidatePair</code></a> attribute of the <a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-3"><code>RTCIceCandidatePairEvent</code></a>
+                interface.
+              </p>
+            </dd>
+          </dl>
+        </section>
+      </div>
+    </section>
+
+    <section id="rtcicecandidatepairupdateevent"><div class="header-wrapper"><h3 id="x4-2-rtcicecandidatepairupdateevent"><bdi class="secno">4.2 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtcicecandidatepairupdateevent" data-idl="interface" data-title="RTCIceCandidatePairUpdateEvent" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairUpdateEvent</code></dfn></h3><a class="self-link" href="#rtcicecandidatepairupdateevent" aria-label="Permalink for Section 4.2"></a></div>
+      
+      <p>
+        The <a data-link-type="idl" href="#dfn-candidatepairupdated" class="internalDFN" id="ref-for-dfn-candidatepairupdated-2"><code>candidatepairupdated</code></a> event uses the <a data-link-type="idl" data-lt="RTCIceCandidatePairUpdateEvent" href="#dom-rtcicecandidatepairupdateevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairupdateevent-1"><code>RTCIceCandidatePairUpdateEvent</code></a> interface.
+      </p>
+      <div>
+        <pre class="idl def" id="webidl-2084516701"><span class="idlHeader"><a class="self-link" href="#webidl-2084516701">WebIDL</a></span><code><span data-idl="" class="idlInterface" id="idl-def-rtcicecandidatepairupdateevent" data-title="RTCIceCandidatePairUpdateEvent">[<span class="extAttr"><a data-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed">Exposed</a>=Window</span>]
+interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtcicecandidatepairupdateevent" id="ref-for-dom-rtcicecandidatepairupdateevent-2"><code>RTCIceCandidatePairUpdateEvent</code></a> : <span class="idlSuperclass"><a data-link-type="idl" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-4"><code>RTCIceCandidatePairEvent</code></a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtcicecandidatepairupdateevent-constructor-type-eventinitdict" data-title="constructor" data-dfn-for="RTCIceCandidatePairUpdateEvent">
+  <a class="internalDFN" data-link-type="constructor" href="#dom-rtcicecandidatepairupdateevent-constructor" id="ref-for-dom-rtcicecandidatepairupdateevent-constructor-1"><code>constructor</code></a>(<span class="idlType"><a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString">DOMString</a></span> <span class="idlParamName">type</span>,<span class="idlType"> <a data-link-type="idl" href="#dom-rtcicecandidatepairupdateeventinit" class="internalDFN" id="ref-for-dom-rtcicecandidatepairupdateeventinit-1"><code>RTCIceCandidatePairUpdateEventInit</code></a></span> <span class="idlParamName">eventInitDict</span>);</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairupdateevent-report" data-title="report" data-dfn-for="RTCIceCandidatePairUpdateEvent">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" href="#dom-rtcicecandidatepairreport" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-1"><code>RTCIceCandidatePairReport</code></a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairupdateevent-report" id="ref-for-dom-rtcicecandidatepairupdateevent-report-1"><code>report</code></a>;</span>
+};</span></code></pre>
+        <section>
+          <div class="header-wrapper"><h4 id="constructors-0">Constructors</h4><a class="self-link" href="#constructors-0" aria-label="Permalink for this Section"></a></div>
+          <dl data-link-for="RTCIceCandidatePairUpdateEvent" data-dfn-for="RTCIceCandidatePairUpdateEvent" class="constructors">
+            <dt><dfn data-export="" data-dfn-type="constructor" id="dom-rtcicecandidatepairupdateevent-constructor" data-idl="constructor" data-title="RTCIceCandidatePairUpdateEvent.constructor()" data-dfn-for="RTCIceCandidatePairUpdateEvent" data-lt="constructor()|constructor(type, eventInitDict)" data-local-lt="RTCIceCandidatePairUpdateEvent.constructor|RTCIceCandidatePairUpdateEvent.constructor()|constructor" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairUpdateEvent.constructor()</code></dfn></dt>
+            <dd></dd>
+          </dl>
+        </section>
+        <section>
+          <div class="header-wrapper"><h4 id="attributes-1">Attributes</h4><a class="self-link" href="#attributes-1" aria-label="Permalink for this Section"></a></div>
+          <dl data-link-for="RTCIceCandidatePairUpdateEvent" data-dfn-for="RTCIceCandidatePairUpdateEvent" class="attributes">
+            <dt>
+              <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairupdateevent-report" data-idl="attribute" data-title="report" data-dfn-for="RTCIceCandidatePairUpdateEvent" data-type="RTCIceCandidatePairReport" data-lt="report" data-local-lt="RTCIceCandidatePairUpdateEvent.report" tabindex="0" aria-haspopup="dialog"><code>report</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="RTCIceCandidatePairReport" href="#dom-rtcicecandidatepairreport" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-2"><code>RTCIceCandidatePairReport</code></a></span>, readonly
+            </dt>
+            <dd>
+              <p>The <a data-link-type="idl" data-lt="report" href="#dom-rtcicecandidatepairupdateevent-report" class="internalDFN" id="ref-for-dom-rtcicecandidatepairupdateevent-report-2"><code>report</code></a> attribute is the <a data-link-type="idl" data-lt="RTCIceCandidatePairReport" href="#dom-rtcicecandidatepairreport" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-3"><code>RTCIceCandidatePairReport</code></a> object containing the information that
+                the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-7">ICE agent</a> has gathered about a candidate pair through ICE connectivity checks.
+              </p>
+            </dd>
+          </dl>
+        </section>
+      </div>
+      <div>
+        <pre class="idl def" id="webidl-1045978544"><span class="idlHeader"><a class="self-link" href="#webidl-1045978544">WebIDL</a></span><code><span data-idl="" class="idlDictionary" id="idl-def-rtcicecandidatepairupdateeventinit" data-title="RTCIceCandidatePairUpdateEventInit">dictionary <a class="internalDFN idlID" data-link-type="dictionary" href="#dom-rtcicecandidatepairupdateeventinit" id="ref-for-dom-rtcicecandidatepairupdateeventinit-2"><code>RTCIceCandidatePairUpdateEventInit</code></a> : <span class="idlSuperclass"><a data-link-type="idl" href="#dom-rtcicecandidatepaireventinit" class="internalDFN" id="ref-for-dom-rtcicecandidatepaireventinit-3"><code>RTCIceCandidatePairEventInit</code></a></span> {<span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairupdateeventinit-report" data-title="report" data-dfn-for="RTCIceCandidatePairUpdateEventInit"><span class="idlType">
+  <a data-link-type="idl" href="#dom-rtcicecandidatepairreport" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-4"><code>RTCIceCandidatePairReport</code></a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairupdateeventinit-report" id="ref-for-dom-rtcicecandidatepairupdateeventinit-report-1"><code>report</code></a>;</span>
+};</span></code></pre>
+        <section>
+          <div class="header-wrapper"><h4 id="dictionary-rtcicecandidatepairupdateeventinit-members">Dictionary <dfn data-export="" data-dfn-type="dictionary" id="dom-rtcicecandidatepairupdateeventinit" data-idl="dictionary" data-title="RTCIceCandidatePairUpdateEventInit" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairUpdateEventInit</code></dfn> Members</h4><a class="self-link" href="#dictionary-rtcicecandidatepairupdateeventinit-members" aria-label="Permalink for this Section"></a></div>
+          <dl data-link-for="RTCIceCandidatePairUpdateEventInit" data-dfn-for="RTCIceCandidatePairUpdateEventInit" class="dictionary-members">
+            <dt>
+              <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairupdateeventinit-report" data-idl="field" data-title="report" data-dfn-for="RTCIceCandidatePairUpdateEventInit" data-type="RTCIceCandidatePairReport" tabindex="0" aria-haspopup="dialog"><code>report</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="RTCIceCandidatePairReport" href="#dom-rtcicecandidatepairreport" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-5"><code>RTCIceCandidatePairReport</code></a></span>
+            </dt>
+            <dd>
+              <p>See the <a data-link-type="idl" href="#dom-rtcicecandidatepairupdateevent-report" class="internalDFN" id="ref-for-dom-rtcicecandidatepairupdateevent-report-3"><code>report</code></a> attribute of the <a data-link-type="idl" data-lt="RTCIceCandidatePairUpdateEvent" href="#dom-rtcicecandidatepairupdateevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairupdateevent-3"><code>RTCIceCandidatePairUpdateEvent</code></a>
+                interface.
+              </p>
+            </dd>
+          </dl>
+        </section>
+      </div>
+      <section id="rtcicecandidatepairreport"><div class="header-wrapper"><h4 id="x4-2-1-rtcicecandidatepairreport-interface"><bdi class="secno">4.2.1 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtcicecandidatepairreport" data-idl="interface" data-title="RTCIceCandidatePairReport" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairReport</code></dfn> Interface</h4><a class="self-link" href="#rtcicecandidatepairreport" aria-label="Permalink for Section 4.2.1"></a></div>
+        
+        <div>
+          <pre class="idl def" id="webidl-1616207924"><span class="idlHeader"><a class="self-link" href="#webidl-1616207924">WebIDL</a></span><code><span data-idl="" class="idlInterface" id="idl-def-rtcicecandidatepairreport" data-title="RTCIceCandidatePairReport">[<span class="extAttr"><a data-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed">Exposed</a>=Window</span>]
+interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtcicecandidatepairreport" id="ref-for-dom-rtcicecandidatepairreport-6"><code>RTCIceCandidatePairReport</code></a> {<span data-idl="" class="idlConstructor" id="idl-def-rtcicecandidatepairreport-constructor-reportinitdict" data-title="constructor" data-dfn-for="RTCIceCandidatePairReport">
+  <a class="internalDFN" data-link-type="constructor" href="#dom-rtcicecandidatepairreport-constructor" id="ref-for-dom-rtcicecandidatepairreport-constructor-1"><code>constructor</code></a>(<span class="idlType"><a data-link-type="idl" href="#dom-rtcicecandidatepairreportinit" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-1"><code>RTCIceCandidatePairReportInit</code></a></span> <span class="idlParamName">reportInitDict</span>);</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairreport-connected" data-title="connected" data-dfn-for="RTCIceCandidatePairReport">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean">boolean</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairreport-connected" id="ref-for-dom-rtcicecandidatepairreport-connected-1"><code>connected</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairreport-state" data-title="state" data-dfn-for="RTCIceCandidatePairReport">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate">RTCStatsIceCandidatePairState</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairreport-state" id="ref-for-dom-rtcicecandidatepairreport-state-1"><code>state</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairreport-writestate" data-title="writeState" data-dfn-for="RTCIceCandidatePairReport">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" href="#dom-rtcicecandidatepairwritestate" class="internalDFN" id="ref-for-dom-rtcicecandidatepairwritestate-1"><code>RTCIceCandidatePairWriteState</code></a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairreport-writestate" id="ref-for-dom-rtcicecandidatepairreport-writestate-1"><code>writeState</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairreport-lastpingsenttimestamp" data-title="lastPingSentTimestamp" data-dfn-for="RTCIceCandidatePairReport">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a>?</span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairreport-lastpingsenttimestamp" id="ref-for-dom-rtcicecandidatepairreport-lastpingsenttimestamp-1"><code>lastPingSentTimestamp</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp" data-title="lastPingResponseReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReport">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a>?</span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp" id="ref-for-dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp-1"><code>lastPingResponseReceivedTimestamp</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairreport-lastpingreceivedtimestamp" data-title="lastPingReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReport">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a>?</span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairreport-lastpingreceivedtimestamp" id="ref-for-dom-rtcicecandidatepairreport-lastpingreceivedtimestamp-1"><code>lastPingReceivedTimestamp</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairreport-lastpacketreceivedtimestamp" data-title="lastPacketReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReport">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a>?</span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp" id="ref-for-dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp-1"><code>lastPacketReceivedTimestamp</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicecandidatepairreport-pingssent" data-title="pingsSent" data-dfn-for="RTCIceCandidatePairReport">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-long-long">unsigned long long</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicecandidatepairreport-pingssent" id="ref-for-dom-rtcicecandidatepairreport-pingssent-1"><code>pingsSent</code></a>;</span><span data-idl="" class="idlMethod" id="idl-def-rtcicecandidatepairreport-getroundtriptimesamples" data-title="getRoundTripTimeSamples" data-dfn-for="RTCIceCandidatePairReport"><span class="idlType">
+  <a data-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence">sequence</a>&lt;<a data-link-type="idl" href="#dom-rtcroundtriptimesample" class="internalDFN" id="ref-for-dom-rtcroundtriptimesample-1"><code>RTCRoundTripTimeSample</code></a>&gt;</span> <a class="internalDFN idlName" data-link-type="method" href="#dom-rtcicecandidatepairreport-getroundtriptimesamples" id="ref-for-dom-rtcicecandidatepairreport-getroundtriptimesamples-1"><code>getRoundTripTimeSamples</code></a>();</span>
+};</span></code></pre>
+          <section>
+            <div class="header-wrapper"><h5 id="constructors-1">Constructors</h5><a class="self-link" href="#constructors-1" aria-label="Permalink for this Section"></a></div>
+            <dl data-link-for="RTCIceCandidatePairReport" data-dfn-for="RTCIceCandidatePairReport" class="constructors">
+              <dt><dfn data-export="" data-dfn-type="constructor" id="dom-rtcicecandidatepairreport-constructor" data-idl="constructor" data-title="RTCIceCandidatePairReport.constructor()" data-dfn-for="RTCIceCandidatePairReport" data-lt="constructor()|constructor(reportInitDict)" data-local-lt="RTCIceCandidatePairReport.constructor|RTCIceCandidatePairReport.constructor()|constructor" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairReport.constructor()</code></dfn></dt>
+              <dd></dd>
+            </dl>
+          </section>
+          <section>
+            <div class="header-wrapper"><h5 id="attributes-2">Attributes</h5><a class="self-link" href="#attributes-2" aria-label="Permalink for this Section"></a></div>
+            <dl data-link-for="RTCIceCandidatePairReport" data-dfn-for="RTCIceCandidatePairReport" class="attributes">
+              <dt>
+                <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairreport-connected" data-idl="attribute" data-title="connected" data-dfn-for="RTCIceCandidatePairReport" data-type="boolean" data-lt="connected" data-local-lt="RTCIceCandidatePairReport.connected" tabindex="0" aria-haspopup="dialog"><code>connected</code></dfn> of type <span class="idlAttrType">boolean</span>, readonly
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="connected" href="#dom-rtcicecandidatepairreport-connected" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-connected-2"><code>connected</code></a> attribute represents whether the ICE candidate pair is in connected state.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairreport-state" data-idl="attribute" data-title="state" data-dfn-for="RTCIceCandidatePairReport" data-type="RTCStatsIceCandidatePairState" data-lt="state" data-local-lt="RTCIceCandidatePairReport.state" tabindex="0" aria-haspopup="dialog"><code>state</code></dfn> of type <span class="idlAttrType">RTCStatsIceCandidatePairState</span>, readonly
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="state" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-2"><code>state</code></a> attribute represents the state of a candidate pair in an ICE check list defined in
+                  Section 6.1.2.6 of [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8445" title="Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal">RFC8445</a></cite>].</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairreport-writestate" data-idl="attribute" data-title="writeState" data-dfn-for="RTCIceCandidatePairReport" data-type="RTCIceCandidatePairWriteState" data-lt="writeState" data-local-lt="RTCIceCandidatePairReport.writeState" tabindex="0" aria-haspopup="dialog"><code>writeState</code></dfn> of type <span class="idlAttrType">RTCIceCandidatePairWriteState</span>, readonly
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="writeState" href="#dom-rtcicecandidatepairreport-writestate" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-writestate-2"><code>writeState</code></a> attribute indicates the write state of the candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairreport-lastpingsenttimestamp" data-idl="attribute" data-title="lastPingSentTimestamp" data-dfn-for="RTCIceCandidatePairReport" data-type="DOMHighResTimeStamp" data-lt="lastPingSentTimestamp" data-local-lt="RTCIceCandidatePairReport.lastPingSentTimestamp" tabindex="0" aria-haspopup="dialog"><code>lastPingSentTimestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>, readonly
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicecandidatepairreport-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> attribute, if present, represents the timestamp at which the last ping
+                  was sent for an ICE connectivity check on this candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp" data-idl="attribute" data-title="lastPingResponseReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReport" data-type="DOMHighResTimeStamp" data-lt="lastPingResponseReceivedTimestamp" data-local-lt="RTCIceCandidatePairReport.lastPingResponseReceivedTimestamp" tabindex="0" aria-haspopup="dialog"><code>lastPingResponseReceivedTimestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>, readonly
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="lastPingResponseReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp-2"><code>lastPingResponseReceivedTimestamp</code></a> attribute, if present, represents the timestamp at which
+                  the last response was received to a ping for an ICE connectivity check on this candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairreport-lastpingreceivedtimestamp" data-idl="attribute" data-title="lastPingReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReport" data-type="DOMHighResTimeStamp" data-lt="lastPingReceivedTimestamp" data-local-lt="RTCIceCandidatePairReport.lastPingReceivedTimestamp" tabindex="0" aria-haspopup="dialog"><code>lastPingReceivedTimestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>,
+                readonly
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="lastPingReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpingreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingreceivedtimestamp-2"><code>lastPingReceivedTimestamp</code></a> attribute, if present, represents the timestamp at which the last
+                  ping was received from the peer for an ICE connectivity check on this candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp" data-idl="attribute" data-title="lastPacketReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReport" data-type="DOMHighResTimeStamp" data-lt="lastPacketReceivedTimestamp" data-local-lt="RTCIceCandidatePairReport.lastPacketReceivedTimestamp" tabindex="0" aria-haspopup="dialog"><code>lastPacketReceivedTimestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>,
+                readonly
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="lastPacketReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp-2"><code>lastPacketReceivedTimestamp</code></a> attribute, if present, represents the timestamp at which the last
+                  packet was received on this candidate pair, excluding STUN packets.
+                </p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecandidatepairreport-pingssent" data-idl="attribute" data-title="pingsSent" data-dfn-for="RTCIceCandidatePairReport" data-type="unsigned long long" data-lt="pingsSent" data-local-lt="RTCIceCandidatePairReport.pingsSent" tabindex="0" aria-haspopup="dialog"><code>pingsSent</code></dfn> of type <span class="idlAttrType">unsigned long long</span>, readonly
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="pingsSent" href="#dom-rtcicecandidatepairreport-pingssent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-pingssent-2"><code>pingsSent</code></a> attribute represents the total number of pings sent for ICE connectivity check on
+                  this candidate pair.</p>
+              </dd>
+            </dl>
+          </section>
+          <section>
+            <div class="header-wrapper"><h5 id="methods">Methods</h5><a class="self-link" href="#methods" aria-label="Permalink for this Section"></a></div>
+            <dl data-link-for="RTCIceCandidatePairReport" data-dfn-for="RTCIceCandidatePairReport" class="methods">
+              <dt>
+                <dfn data-export="" data-dfn-type="method" id="dom-rtcicecandidatepairreport-getroundtriptimesamples" data-idl="operation" data-title="getRoundTripTimeSamples" data-dfn-for="RTCIceCandidatePairReport" data-type="sequence" data-lt="getRoundTripTimeSamples()" data-local-lt="RTCIceCandidatePairReport.getRoundTripTimeSamples|RTCIceCandidatePairReport.getRoundTripTimeSamples()|getRoundTripTimeSamples" tabindex="0" aria-haspopup="dialog"><code>getRoundTripTimeSamples</code></dfn>
+              </dt>
+              <dd>
+                <p>
+                  The <a data-link-type="idl" data-lt="getRoundTripTimeSamples" href="#dom-rtcicecandidatepairreport-getroundtriptimesamples" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-getroundtriptimesamples-2"><code>getRoundTripTimeSamples</code></a> method returns all the round trip time samples gathered for this
+                  candidate pair.
+                </p>
+              </dd>
+            </dl>
+          </section>
+        </div>
+        <div>
+          <pre class="idl def" id="webidl-617998642"><span class="idlHeader"><a class="self-link" href="#webidl-617998642">WebIDL</a></span><code><span data-idl="" class="idlDictionary" id="idl-def-rtcicecandidatepairreportinit" data-title="RTCIceCandidatePairReportInit">dictionary <a class="internalDFN idlID" data-link-type="dictionary" href="#dom-rtcicecandidatepairreportinit" id="ref-for-dom-rtcicecandidatepairreportinit-2"><code>RTCIceCandidatePairReportInit</code></a> {<span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-connected" data-title="connected" data-dfn-for="RTCIceCandidatePairReportInit">
+  required<span class="idlType"> <a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean">boolean</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-connected" id="ref-for-dom-rtcicecandidatepairreportinit-connected-1"><code>connected</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-state" data-title="state" data-dfn-for="RTCIceCandidatePairReportInit">
+  required<span class="idlType"> <a data-link-type="idl" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate">RTCStatsIceCandidatePairState</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-state" id="ref-for-dom-rtcicecandidatepairreportinit-state-1"><code>state</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-writestate" data-title="writeState" data-dfn-for="RTCIceCandidatePairReportInit">
+  required<span class="idlType"> <a data-link-type="idl" href="#dom-rtcicecandidatepairwritestate" class="internalDFN" id="ref-for-dom-rtcicecandidatepairwritestate-2"><code>RTCIceCandidatePairWriteState</code></a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-writestate" id="ref-for-dom-rtcicecandidatepairreportinit-writestate-1"><code>writeState</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-lastpingsenttimestamp" data-title="lastPingSentTimestamp" data-dfn-for="RTCIceCandidatePairReportInit"><span class="idlType">
+  <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-lastpingsenttimestamp" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingsenttimestamp-1"><code>lastPingSentTimestamp</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp" data-title="lastPingResponseReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReportInit"><span class="idlType">
+  <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp-1"><code>lastPingResponseReceivedTimestamp</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-lastpingreceivedtimestamp" data-title="lastPingReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReportInit"><span class="idlType">
+  <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp-1"><code>lastPingReceivedTimestamp</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp" data-title="lastPacketReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReportInit"><span class="idlType">
+  <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp" id="ref-for-dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp-1"><code>lastPacketReceivedTimestamp</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-pingssent" data-title="pingsSent" data-dfn-for="RTCIceCandidatePairReportInit">
+  required<span class="idlType"> <a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-long-long">unsigned long long</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-pingssent" id="ref-for-dom-rtcicecandidatepairreportinit-pingssent-1"><code>pingsSent</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicecandidatepairreportinit-roundtriptimesamples" data-title="roundTripTimeSamples" data-dfn-for="RTCIceCandidatePairReportInit"><span class="idlType">
+  <a data-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence">sequence</a>&lt;<a data-link-type="idl" href="#dom-rtcroundtriptimesample" class="internalDFN" id="ref-for-dom-rtcroundtriptimesample-2"><code>RTCRoundTripTimeSample</code></a>&gt;</span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicecandidatepairreportinit-roundtriptimesamples" id="ref-for-dom-rtcicecandidatepairreportinit-roundtriptimesamples-1"><code>roundTripTimeSamples</code></a>;</span>
+};</span></code></pre>
+          <section>
+            <div class="header-wrapper"><h5 id="dictionary-rtcicecandidatepairreportinit-members">Dictionary <dfn data-export="" data-dfn-type="dictionary" id="dom-rtcicecandidatepairreportinit" data-idl="dictionary" data-title="RTCIceCandidatePairReportInit" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairReportInit</code></dfn> Members</h5><a class="self-link" href="#dictionary-rtcicecandidatepairreportinit-members" aria-label="Permalink for this Section"></a></div>
+            <dl data-link-for="RTCIceCandidatePairReportInit" data-dfn-for="RTCIceCandidatePairReportInit" class="dictionary-members">
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-connected" data-idl="field" data-title="connected" data-dfn-for="RTCIceCandidatePairReportInit" data-type="boolean" tabindex="0" aria-haspopup="dialog"><code>connected</code></dfn> of type <span class="idlAttrType">boolean</span>, required
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="connected" href="#dom-rtcicecandidatepairreportinit-connected" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-connected-2"><code>connected</code></a> member represents whether the ICE candidate pair is in connected state.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-state" data-idl="field" data-title="state" data-dfn-for="RTCIceCandidatePairReportInit" data-type="RTCStatsIceCandidatePairState" tabindex="0" aria-haspopup="dialog"><code>state</code></dfn> of type <span class="idlAttrType">RTCStatsIceCandidatePairState</span>, required
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="state" href="#dom-rtcicecandidatepairreportinit-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-state-2"><code>state</code></a> member represents the state of a candidate pair in an ICE check list defined in
+                  Section 6.1.2.6 of [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8445" title="Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal">RFC8445</a></cite>].</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-writestate" data-idl="field" data-title="writeState" data-dfn-for="RTCIceCandidatePairReportInit" data-type="RTCIceCandidatePairWriteState" tabindex="0" aria-haspopup="dialog"><code>writeState</code></dfn> of type <span class="idlAttrType">RTCIceCandidatePairWriteState</span>, required
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="writeState" href="#dom-rtcicecandidatepairreportinit-writestate" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-writestate-2"><code>writeState</code></a> member indicates the write state of the candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-lastpingsenttimestamp" data-idl="field" data-title="lastPingSentTimestamp" data-dfn-for="RTCIceCandidatePairReportInit" data-type="DOMHighResTimeStamp" tabindex="0" aria-haspopup="dialog"><code>lastPingSentTimestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> member, if present, represents the timestamp at which the last ping was
+                  sent for an ICE connectivity check on this candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp" data-idl="field" data-title="lastPingResponseReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReportInit" data-type="DOMHighResTimeStamp" tabindex="0" aria-haspopup="dialog"><code>lastPingResponseReceivedTimestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="lastPingResponseReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp-2"><code>lastPingResponseReceivedTimestamp</code></a> member, if present, represents the timestamp at which the
+                  last response was received to a ping for an ICE connectivity check on this candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp" data-idl="field" data-title="lastPingReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReportInit" data-type="DOMHighResTimeStamp" tabindex="0" aria-haspopup="dialog"><code>lastPingReceivedTimestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="lastPingReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp-2"><code>lastPingReceivedTimestamp</code></a> member, if present, represents the timestamp at which the last ping
+                  was received from the peer for an ICE connectivity check on this candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp" data-idl="field" data-title="lastPacketReceivedTimestamp" data-dfn-for="RTCIceCandidatePairReportInit" data-type="DOMHighResTimeStamp" tabindex="0" aria-haspopup="dialog"><code>lastPacketReceivedTimestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="lastPacketReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp-2"><code>lastPacketReceivedTimestamp</code></a> member, if present, represents the timestamp at which the last
+                  packet was received on this candidate pair, excluding STUN packets.
+                </p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-pingssent" data-idl="field" data-title="pingsSent" data-dfn-for="RTCIceCandidatePairReportInit" data-type="unsigned long long" tabindex="0" aria-haspopup="dialog"><code>pingsSent</code></dfn> of type <span class="idlAttrType">unsigned long long</span>, required
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="pingsSent" href="#dom-rtcicecandidatepairreportinit-pingssent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-pingssent-2"><code>pingsSent</code></a> member represents the total number of pings sent for ICE connectivity check on
+                  this candidate pair.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcicecandidatepairreportinit-roundtriptimesamples" data-idl="field" data-title="roundTripTimeSamples" data-dfn-for="RTCIceCandidatePairReportInit" data-type="sequence" tabindex="0" aria-haspopup="dialog"><code>roundTripTimeSamples</code></dfn> of type <span class="idlAttrType">sequence&lt;RTCRoundTripTimeSample&gt;</span>
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="roundTripTimeSamples" href="#dom-rtcicecandidatepairreportinit-roundtriptimesamples" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-roundtriptimesamples-2"><code>roundTripTimeSamples</code></a> member, if present, represents all the round trip time samples gathered
+                  for this candidate pair.</p>
+              </dd>
+            </dl>
+          </section>
+        </div>
+      </section>
+      <section id="rtcroundtriptimesample"><div class="header-wrapper"><h4 id="x4-2-2-rtcroundtriptimesample-dictionary"><bdi class="secno">4.2.2 </bdi><dfn data-export="" data-dfn-type="dictionary" id="dom-rtcroundtriptimesample" data-idl="dictionary" data-title="RTCRoundTripTimeSample" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCRoundTripTimeSample</code></dfn> Dictionary</h4><a class="self-link" href="#rtcroundtriptimesample" aria-label="Permalink for Section 4.2.2"></a></div>
+        
+        <div>
+          <pre class="idl def" id="webidl-491342080"><span class="idlHeader"><a class="self-link" href="#webidl-491342080">WebIDL</a></span><code><span data-idl="" class="idlDictionary" id="idl-def-rtcroundtriptimesample" data-title="RTCRoundTripTimeSample">dictionary <a class="internalDFN idlID" data-link-type="dictionary" href="#dom-rtcroundtriptimesample" id="ref-for-dom-rtcroundtriptimesample-3"><code>RTCRoundTripTimeSample</code></a> {<span data-idl="" class="idlMember" id="idl-def-rtcroundtriptimesample-timestamp" data-title="timestamp" data-dfn-for="RTCRoundTripTimeSample">
+  required<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcroundtriptimesample-timestamp" id="ref-for-dom-rtcroundtriptimesample-timestamp-1"><code>timestamp</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcroundtriptimesample-value" data-title="value" data-dfn-for="RTCRoundTripTimeSample">
+  required<span class="idlType"> <a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-double">double</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcroundtriptimesample-value" id="ref-for-dom-rtcroundtriptimesample-value-1"><code>value</code></a>;</span>
+};</span></code></pre>
+          <section>
+            <div class="header-wrapper"><h5 id="dictionary-rtcroundtriptimesample-members">Dictionary <a data-link-type="idl" data-lt="RTCRoundTripTimeSample" href="#dom-rtcroundtriptimesample" class="internalDFN" id="ref-for-dom-rtcroundtriptimesample-4"><code>RTCRoundTripTimeSample</code></a> Members</h5><a class="self-link" href="#dictionary-rtcroundtriptimesample-members" aria-label="Permalink for this Section"></a></div>
+            <dl data-link-for="RTCRoundTripTimeSample" data-dfn-for="RTCRoundTripTimeSample" class="dictionary-members">
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcroundtriptimesample-timestamp" data-idl="field" data-title="timestamp" data-dfn-for="RTCRoundTripTimeSample" data-type="DOMHighResTimeStamp" tabindex="0" aria-haspopup="dialog"><code>timestamp</code></dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>, required
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="timestamp" href="#dom-rtcroundtriptimesample-timestamp" class="internalDFN" id="ref-for-dom-rtcroundtriptimesample-timestamp-2"><code>timestamp</code></a> member represents the time at which this round trip time sample was measured.</p>
+              </dd>
+              <dt>
+                <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcroundtriptimesample-value" data-idl="field" data-title="value" data-dfn-for="RTCRoundTripTimeSample" data-type="double" tabindex="0" aria-haspopup="dialog"><code>value</code></dfn> of type <span class="idlAttrType">double</span>, required
+              </dt>
+              <dd>
+                <p>The <a data-link-type="idl" data-lt="value" href="#dom-rtcroundtriptimesample-value" class="internalDFN" id="ref-for-dom-rtcroundtriptimesample-value-2"><code>value</code></a> member indicates the measured round trip time in this sample.</p>
+              </dd>
+            </dl>
+          </section>
+        </div>
+      </section>
+      <section id="rtcicecandidatepairwritestate"><div class="header-wrapper"><h4 id="x4-2-3-rtcicecandidatepairwritestate-enum"><bdi class="secno">4.2.3 </bdi><dfn data-export="" data-dfn-type="enum" id="dom-rtcicecandidatepairwritestate" data-idl="enum" data-title="RTCIceCandidatePairWriteState" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairWriteState</code></dfn> Enum</h4><a class="self-link" href="#rtcicecandidatepairwritestate" aria-label="Permalink for Section 4.2.3"></a></div>
+        
+        <p>
+          The <a data-link-type="idl" data-lt="RTCIceCandidatePairWriteState" href="#dom-rtcicecandidatepairwritestate" class="internalDFN" id="ref-for-dom-rtcicecandidatepairwritestate-3"><code>RTCIceCandidatePairWriteState</code></a> represents the write state of the ICE candidate pair as determined by
+          the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-8">ICE agent</a>. The exact criteria for determining the write state, i.e. the number of failures or the
+          timeout period, is left up to the browser
+          implementation.
+        </p>
+        <div>
+          <pre class="idl def" id="webidl-318865592"><span class="idlHeader"><a class="self-link" href="#webidl-318865592">WebIDL</a></span><code><span data-idl="" class="idlEnum" id="idl-def-rtcicecandidatepairwritestate" data-title="RTCIceCandidatePairWriteState">enum <a class="internalDFN idlID" data-link-type="enum" href="#dom-rtcicecandidatepairwritestate" id="ref-for-dom-rtcicecandidatepairwritestate-4"><code>RTCIceCandidatePairWriteState</code></a> {
+  <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtcicecandidatepairwritestate-init" id="ref-for-dom-rtcicecandidatepairwritestate-init-1"><code>init</code></a>"</span>,
+  <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtcicecandidatepairwritestate-writeable" id="ref-for-dom-rtcicecandidatepairwritestate-writeable-1"><code>writeable</code></a>"</span>,
+  <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtcicecandidatepairwritestate-unreliable" id="ref-for-dom-rtcicecandidatepairwritestate-unreliable-1"><code>unreliable</code></a>"</span>,
+  <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtcicecandidatepairwritestate-timeout" id="ref-for-dom-rtcicecandidatepairwritestate-timeout-1"><code>timeout</code></a>"</span>
+};</span></code></pre>
+          <table data-link-for="RTCIceCandidatePairWriteState" data-dfn-for="RTCIceCandidatePairWriteState" class="simple">
+            <caption><a data-link-type="idl" data-lt="RTCIceCandidatePairWriteState" href="#dom-rtcicecandidatepairwritestate" class="internalDFN" id="ref-for-dom-rtcicecandidatepairwritestate-5"><code>RTCIceCandidatePairWriteState</code></a> Enumeration description</caption>
+            <thead>
+              <tr>
+                <th>Enum value</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <dfn data-export="" data-dfn-type="enum-value" id="dom-rtcicecandidatepairwritestate-init" data-idl="enum-value" data-title="init" data-dfn-for="RTCIceCandidatePairWriteState" tabindex="0" aria-haspopup="dialog"><code>init</code></dfn>
+                </td>
+                <td>
+                  Responses have not yet been received to connectivity check on this candidate pair, but the timeout has
+                  not elapsed.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn data-export="" data-dfn-type="enum-value" id="dom-rtcicecandidatepairwritestate-writeable" data-idl="enum-value" data-title="writeable" data-dfn-for="RTCIceCandidatePairWriteState" tabindex="0" aria-haspopup="dialog"><code>writeable</code></dfn>
+                </td>
+                <td>
+                  Responses have been received recently to connectivity checks, and the candidate pair is considered
+                  writeable.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn data-export="" data-dfn-type="enum-value" id="dom-rtcicecandidatepairwritestate-unreliable" data-idl="enum-value" data-title="unreliable" data-dfn-for="RTCIceCandidatePairWriteState" tabindex="0" aria-haspopup="dialog"><code>unreliable</code></dfn>
+                </td>
+                <td>
+                  Some connectivity check have failed recently for this candidate pair, but it may still be writeable.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <dfn data-export="" data-dfn-type="enum-value" id="dom-rtcicecandidatepairwritestate-timeout" data-idl="enum-value" data-title="timeout" data-dfn-for="RTCIceCandidatePairWriteState" tabindex="0" aria-haspopup="dialog"><code>timeout</code></dfn>
+                </td>
+                <td>
+                  A large number of connectivity checks have failed and the candidate pair is not considered writeable
+                  any longer.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+  </section>
+
+
+  <section class="informative" id="event-summary"><div class="header-wrapper"><h2 id="x5-event-summary"><bdi class="secno">5. </bdi>Event summary</h2><a class="self-link" href="#event-summary" aria-label="Permalink for Section 5."></a></div><p><em>This section is non-normative.</em></p>
+    
+    <p>The following events fire on <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-6"><code>RTCIceController</code></a> objects:</p>
+    <table class="simple">
+      <thead>
+        <tr>
+          <th>Event name</th>
+          <th>Interface</th>
+          <th>Fired when...</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-candidatepairadded" tabindex="0" aria-haspopup="dialog" data-export="">candidatepairadded</dfn></th>
+          <td><a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-5"><code>RTCIceCandidatePairEvent</code></a></td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-9">ICE agent</a> has gathered a candidate pair and is making it available to the script.</td>
+        </tr>
+        <tr>
+          <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-candidatepairupdated" tabindex="0" aria-haspopup="dialog" data-export="">candidatepairupdated</dfn></th>
+          <td><a data-link-type="idl" data-lt="RTCIceCandidatePairUpdateEvent" href="#dom-rtcicecandidatepairupdateevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairupdateevent-4"><code>RTCIceCandidatePairUpdateEvent</code></a></td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-10">ICE agent</a> has updated the information it knows about a candidate pair (eg. the round trip time
+            estimate).</td>
+        </tr>
+        <tr>
+          <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-candidatepairswitched" tabindex="0" aria-haspopup="dialog" data-export="">candidatepairswitched</dfn></th>
+          <td><a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-6"><code>RTCIceCandidatePairEvent</code></a></td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-11">ICE agent</a> has switched the transport to a different candidate pair.</td>
+        </tr>
+        <tr>
+          <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-candidatepairdestroyed" tabindex="0" aria-haspopup="dialog" data-export="">candidatepairdestroyed</dfn></th>
+          <td><a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-7"><code>RTCIceCandidatePairEvent</code></a></td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-12">ICE agent</a> has destroyed a candidate pair.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+
+
+<section id="references" class="appendix"><div class="header-wrapper"><h2 id="a-references"><bdi class="secno">A. </bdi>References</h2><a class="self-link" href="#references" aria-label="Permalink for Appendix A."></a></div><section id="normative-references"><div class="header-wrapper"><h3 id="a-1-normative-references"><bdi class="secno">A.1 </bdi>Normative references</h3><a class="self-link" href="#normative-references" aria-label="Permalink for Appendix A.1"></a></div>
+    
+    <dl class="bibliography"><dt id="bib-dom">[dom]</dt><dd>
+      <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Anne van Kesteren.  WHATWG. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+    </dd><dt id="bib-hr-time">[hr-time]</dt><dd>
+      <a href="https://www.w3.org/TR/hr-time-3/"><cite>High Resolution Time</cite></a>. Yoav Weiss.  W3C. 20 September 2022. W3C Working Draft. URL: <a href="https://www.w3.org/TR/hr-time-3/">https://www.w3.org/TR/hr-time-3/</a>
+    </dd><dt id="bib-html">[html]</dt><dd>
+      <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Anne van Kesteren; Domenic Denicola; Ian Hickson; Philip Jägenstedt; Simon Pieters.  WHATWG. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+    </dd><dt id="bib-rfc2119">[RFC2119]</dt><dd>
+      <a href="https://www.rfc-editor.org/rfc/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. S. Bradner.  IETF. March 1997. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>
+    </dd><dt id="bib-rfc5245">[RFC5245]</dt><dd>
+      <a href="https://www.rfc-editor.org/rfc/rfc5245"><cite>Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal for Offer/Answer Protocols</cite></a>. J. Rosenberg.  IETF. April 2010. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc5245">https://www.rfc-editor.org/rfc/rfc5245</a>
+    </dd><dt id="bib-rfc8174">[RFC8174]</dt><dd>
+      <a href="https://www.rfc-editor.org/rfc/rfc8174"><cite>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</cite></a>. B. Leiba.  IETF. May 2017. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>
+    </dd><dt id="bib-rfc8445">[RFC8445]</dt><dd>
+      <a href="https://www.rfc-editor.org/rfc/rfc8445"><cite>Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal</cite></a>. A. Keranen; C. Holmberg; J. Rosenberg.  IETF. July 2018. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8445">https://www.rfc-editor.org/rfc/rfc8445</a>
+    </dd><dt id="bib-webidl">[WEBIDL]</dt><dd>
+      <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Edgar Chen; Timothy Gu.  WHATWG. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
+    </dd><dt id="bib-webrtc">[WEBRTC]</dt><dd>
+      <a href="https://www.w3.org/TR/webrtc/"><cite>WebRTC 1.0: Real-Time Communication Between Browsers</cite></a>. Cullen Jennings; Henrik Boström; Jan-Ivar Bruaroey.  W3C. 26 January 2021. W3C Recommendation. URL: <a href="https://www.w3.org/TR/webrtc/">https://www.w3.org/TR/webrtc/</a>
+    </dd><dt id="bib-webrtc-stats">[webrtc-stats]</dt><dd>
+      <a href="https://www.w3.org/TR/webrtc-stats/"><cite>Identifiers for WebRTC's Statistics API</cite></a>. Harald Alvestrand; Varun Singh; Henrik Boström.  W3C. 7 December 2022. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/webrtc-stats/">https://www.w3.org/TR/webrtc-stats/</a>
+    </dd></dl>
+  </section></section><p role="navigation" id="back-to-top">
     <a href="#title"><abbr title="Back to Top">↑</abbr></a>
-  </p><script id="respec-dfn-panel">(() => {
+  </p><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-user-agent" aria-label="Links in this document to definition: user agent">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-user-agent" aria-label="Permalink for definition: user agent. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-user-agent-1" title="§ 3.2 Constructor">§ 3.2 Constructor</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller" aria-label="Links in this document to definition: RTCIceController">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller" aria-label="Permalink for definition: RTCIceController. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1924882287">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecontroller-1" title="§ Abstract">§ Abstract</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-2" title="§ 1. Introduction">§ 1. Introduction</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-3" title="§ 3. RTCIceController Interface">§ 3. RTCIceController Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-4" title="§ 3.1 Interface Definition">§ 3.1 Interface Definition</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-5" title="§ 3.2 Constructor">§ 3.2 Constructor</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-6" title="§ 5. Event summary">§ 5. Event summary</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-ice-agent" aria-label="Links in this document to definition: ICE agent">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-ice-agent" aria-label="Permalink for definition: ICE agent. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-ice-agent-1" title="§ 3. RTCIceController Interface">§ 3. RTCIceController Interface</a> 
+  </li><li>
+    <a href="#ref-for-dfn-ice-agent-2" title="§ 3.3 Attributes">§ 3.3 Attributes</a> <a href="#ref-for-dfn-ice-agent-3" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-4" title="Reference 3">(3)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-ice-agent-5" title="§ 4. Informational events">§ 4. Informational events</a> 
+  </li><li>
+    <a href="#ref-for-dfn-ice-agent-6" title="§ Attributes">§ Attributes</a> <a href="#ref-for-dfn-ice-agent-7" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-ice-agent-8" title="§ 4.2.3 RTCIceCandidatePairWriteState Enum">§ 4.2.3 RTCIceCandidatePairWriteState Enum</a> 
+  </li><li>
+    <a href="#ref-for-dfn-ice-agent-9" title="§ 5. Event summary">§ 5. Event summary</a> <a href="#ref-for-dfn-ice-agent-10" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-11" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-12" title="Reference 4">(4)</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-getselectedcandidatepair" aria-label="Links in this document to definition: getSelectedCandidatePair">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-getselectedcandidatepair" aria-label="Permalink for definition: getSelectedCandidatePair. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> 
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+      <li>Not referenced in this document.</li>
+    </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-onicepingproposed" aria-label="Links in this document to definition: onicepingproposed">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-onicepingproposed" aria-label="Permalink for definition: onicepingproposed. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> 
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+      <li>Not referenced in this document.</li>
+    </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-oniceswitchproposed" aria-label="Links in this document to definition: oniceswitchproposed">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-oniceswitchproposed" aria-label="Permalink for definition: oniceswitchproposed. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> 
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+      <li>Not referenced in this document.</li>
+    </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-onicepruneproposed" aria-label="Links in this document to definition: onicepruneproposed">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-onicepruneproposed" aria-label="Permalink for definition: onicepruneproposed. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> 
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+      <li>Not referenced in this document.</li>
+    </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-sendiceping" aria-label="Links in this document to definition: sendIcePing">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-sendiceping" aria-label="Permalink for definition: sendIcePing. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> 
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+      <li>Not referenced in this document.</li>
+    </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-switchtocandidatepair" aria-label="Links in this document to definition: switchToCandidatePair">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-switchtocandidatepair" aria-label="Permalink for definition: switchToCandidatePair. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> 
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+      <li>Not referenced in this document.</li>
+    </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-prunecandidatepairs" aria-label="Links in this document to definition: pruneCandidatePairs">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-prunecandidatepairs" aria-label="Permalink for definition: pruneCandidatePairs. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> 
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+      <li>Not referenced in this document.</li>
+    </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-constructor" aria-label="Links in this document to definition: constructor()">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-constructor" aria-label="Permalink for definition: constructor(). Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1924882287">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecontroller-constructor-1" title="§ 3.1 Interface Definition">§ 3.1 Interface Definition</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-icerole" aria-label="Links in this document to definition: [[IceRole]]">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-icerole" aria-label="Permalink for definition: [[IceRole]]. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-icerole-1" title="§ 3.3 Attributes">§ 3.3 Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-selectedcandidatepair" aria-label="Links in this document to definition: [[SelectedCandidatePair]]">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-selectedcandidatepair" aria-label="Permalink for definition: [[SelectedCandidatePair]]. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+      <li>Not referenced in this document.</li>
+    </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-role" aria-label="Links in this document to definition: role">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-role" aria-label="Permalink for definition: role. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1924882287">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecontroller-role-1" title="§ 3.1 Interface Definition">§ 3.1 Interface Definition</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-role-2" title="§ 3.3 Attributes">§ 3.3 Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-oncandidatepairadded" aria-label="Links in this document to definition: oncandidatepairadded">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-oncandidatepairadded" aria-label="Permalink for definition: oncandidatepairadded. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1924882287">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecontroller-oncandidatepairadded-1" title="§ 3.1 Interface Definition">§ 3.1 Interface Definition</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-oncandidatepairupdated" aria-label="Links in this document to definition: oncandidatepairupdated">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-oncandidatepairupdated" aria-label="Permalink for definition: oncandidatepairupdated. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1924882287">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecontroller-oncandidatepairupdated-1" title="§ 3.1 Interface Definition">§ 3.1 Interface Definition</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-oncandidatepairswitched" aria-label="Links in this document to definition: oncandidatepairswitched">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-oncandidatepairswitched" aria-label="Permalink for definition: oncandidatepairswitched. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1924882287">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecontroller-oncandidatepairswitched-1" title="§ 3.1 Interface Definition">§ 3.1 Interface Definition</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-oncandidatepairdestroyed" aria-label="Links in this document to definition: oncandidatepairdestroyed">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecontroller-oncandidatepairdestroyed" aria-label="Permalink for definition: oncandidatepairdestroyed. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1924882287">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecontroller-oncandidatepairdestroyed-1" title="§ 3.1 Interface Definition">§ 3.1 Interface Definition</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairevent" aria-label="Links in this document to definition: RTCIceCandidatePairEvent">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairevent" aria-label="Permalink for definition: RTCIceCandidatePairEvent. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-719498905">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairevent-1" title="§ 4.1 RTCIceCandidatePairEvent">§ 4.1 RTCIceCandidatePairEvent</a> <a href="#ref-for-dom-rtcicecandidatepairevent-2" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairevent-3" title="§ Dictionary RTCIceCandidatePairEventInit Members">§ Dictionary RTCIceCandidatePairEventInit Members</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairevent-4" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairevent-5" title="§ 5. Event summary">§ 5. Event summary</a> <a href="#ref-for-dom-rtcicecandidatepairevent-6" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecandidatepairevent-7" title="Reference 3">(3)</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairevent-constructor" aria-label="Links in this document to definition: RTCIceCandidatePairEvent.constructor()">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairevent-constructor" aria-label="Permalink for definition: RTCIceCandidatePairEvent.constructor(). Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-719498905">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairevent-constructor-1" title="§ 4.1 RTCIceCandidatePairEvent">§ 4.1 RTCIceCandidatePairEvent</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairevent-candidatepair" aria-label="Links in this document to definition: candidatePair">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairevent-candidatepair" aria-label="Permalink for definition: candidatePair. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-719498905">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairevent-candidatepair-1" title="§ 4.1 RTCIceCandidatePairEvent">§ 4.1 RTCIceCandidatePairEvent</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairevent-candidatepair-2" title="§ Attributes">§ Attributes</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairevent-candidatepair-3" title="§ Dictionary RTCIceCandidatePairEventInit Members">§ Dictionary RTCIceCandidatePairEventInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepaireventinit" aria-label="Links in this document to definition: RTCIceCandidatePairEventInit">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepaireventinit" aria-label="Permalink for definition: RTCIceCandidatePairEventInit. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1074173427">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepaireventinit-1" title="§ 4.1 RTCIceCandidatePairEvent">§ 4.1 RTCIceCandidatePairEvent</a> <a href="#ref-for-dom-rtcicecandidatepaireventinit-2" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepaireventinit-3" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepaireventinit-candidatepair" aria-label="Links in this document to definition: candidatePair">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepaireventinit-candidatepair" aria-label="Permalink for definition: candidatePair. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1074173427">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepaireventinit-candidatepair-1" title="§ 4.1 RTCIceCandidatePairEvent">§ 4.1 RTCIceCandidatePairEvent</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairupdateevent" aria-label="Links in this document to definition: RTCIceCandidatePairUpdateEvent">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairupdateevent" aria-label="Permalink for definition: RTCIceCandidatePairUpdateEvent. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-2084516701">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-1" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> <a href="#ref-for-dom-rtcicecandidatepairupdateevent-2" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-3" title="§ Dictionary RTCIceCandidatePairUpdateEventInit Members">§ Dictionary RTCIceCandidatePairUpdateEventInit Members</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-4" title="§ 5. Event summary">§ 5. Event summary</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairupdateevent-constructor" aria-label="Links in this document to definition: RTCIceCandidatePairUpdateEvent.constructor()">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairupdateevent-constructor" aria-label="Permalink for definition: RTCIceCandidatePairUpdateEvent.constructor(). Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-2084516701">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-constructor-1" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairupdateevent-report" aria-label="Links in this document to definition: report">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairupdateevent-report" aria-label="Permalink for definition: report. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-2084516701">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-report-1" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-report-2" title="§ Attributes">§ Attributes</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-report-3" title="§ Dictionary RTCIceCandidatePairUpdateEventInit Members">§ Dictionary RTCIceCandidatePairUpdateEventInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairupdateeventinit" aria-label="Links in this document to definition: RTCIceCandidatePairUpdateEventInit">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairupdateeventinit" aria-label="Permalink for definition: RTCIceCandidatePairUpdateEventInit. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1045978544">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateeventinit-1" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> <a href="#ref-for-dom-rtcicecandidatepairupdateeventinit-2" title="Reference 2">(2)</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairupdateeventinit-report" aria-label="Links in this document to definition: report">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairupdateeventinit-report" aria-label="Permalink for definition: report. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1045978544">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairupdateeventinit-report-1" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport" aria-label="Links in this document to definition: RTCIceCandidatePairReport">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport" aria-label="Permalink for definition: RTCIceCandidatePairReport. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-1" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> <a href="#ref-for-dom-rtcicecandidatepairreport-4" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-2" title="§ Attributes">§ Attributes</a> <a href="#ref-for-dom-rtcicecandidatepairreport-3" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-5" title="§ Dictionary RTCIceCandidatePairUpdateEventInit Members">§ Dictionary RTCIceCandidatePairUpdateEventInit Members</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-6" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-constructor" aria-label="Links in this document to definition: RTCIceCandidatePairReport.constructor()">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-constructor" aria-label="Permalink for definition: RTCIceCandidatePairReport.constructor(). Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-constructor-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-connected" aria-label="Links in this document to definition: connected">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-connected" aria-label="Permalink for definition: connected. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-connected-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-connected-2" title="§ Attributes">§ Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-state" aria-label="Links in this document to definition: state">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-state" aria-label="Permalink for definition: state. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-state-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-state-2" title="§ Attributes">§ Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-writestate" aria-label="Links in this document to definition: writeState">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-writestate" aria-label="Permalink for definition: writeState. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-writestate-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-writestate-2" title="§ Attributes">§ Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-lastpingsenttimestamp" aria-label="Links in this document to definition: lastPingSentTimestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-lastpingsenttimestamp" aria-label="Permalink for definition: lastPingSentTimestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-lastpingsenttimestamp-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-lastpingsenttimestamp-2" title="§ Attributes">§ Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp" aria-label="Links in this document to definition: lastPingResponseReceivedTimestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp" aria-label="Permalink for definition: lastPingResponseReceivedTimestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp-2" title="§ Attributes">§ Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-lastpingreceivedtimestamp" aria-label="Links in this document to definition: lastPingReceivedTimestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-lastpingreceivedtimestamp" aria-label="Permalink for definition: lastPingReceivedTimestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-lastpingreceivedtimestamp-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-lastpingreceivedtimestamp-2" title="§ Attributes">§ Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp" aria-label="Links in this document to definition: lastPacketReceivedTimestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp" aria-label="Permalink for definition: lastPacketReceivedTimestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp-2" title="§ Attributes">§ Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-pingssent" aria-label="Links in this document to definition: pingsSent">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-pingssent" aria-label="Permalink for definition: pingsSent. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-pingssent-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-pingssent-2" title="§ Attributes">§ Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreport-getroundtriptimesamples" aria-label="Links in this document to definition: getRoundTripTimeSamples">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreport-getroundtriptimesamples" aria-label="Permalink for definition: getRoundTripTimeSamples. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-1616207924">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-getroundtriptimesamples-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreport-getroundtriptimesamples-2" title="§ Methods">§ Methods</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit" aria-label="Links in this document to definition: RTCIceCandidatePairReportInit">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit" aria-label="Permalink for definition: RTCIceCandidatePairReportInit. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> <a href="#ref-for-dom-rtcicecandidatepairreportinit-2" title="Reference 2">(2)</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-connected" aria-label="Links in this document to definition: connected">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-connected" aria-label="Permalink for definition: connected. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-connected-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-connected-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-state" aria-label="Links in this document to definition: state">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-state" aria-label="Permalink for definition: state. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-state-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-state-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-writestate" aria-label="Links in this document to definition: writeState">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-writestate" aria-label="Permalink for definition: writeState. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-writestate-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-writestate-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-lastpingsenttimestamp" aria-label="Links in this document to definition: lastPingSentTimestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-lastpingsenttimestamp" aria-label="Permalink for definition: lastPingSentTimestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-lastpingsenttimestamp-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-lastpingsenttimestamp-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp" aria-label="Links in this document to definition: lastPingResponseReceivedTimestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp" aria-label="Permalink for definition: lastPingResponseReceivedTimestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp" aria-label="Links in this document to definition: lastPingReceivedTimestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp" aria-label="Permalink for definition: lastPingReceivedTimestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp" aria-label="Links in this document to definition: lastPacketReceivedTimestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp" aria-label="Permalink for definition: lastPacketReceivedTimestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-pingssent" aria-label="Links in this document to definition: pingsSent">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-pingssent" aria-label="Permalink for definition: pingsSent. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-pingssent-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-pingssent-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit-roundtriptimesamples" aria-label="Links in this document to definition: roundTripTimeSamples">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairreportinit-roundtriptimesamples" aria-label="Permalink for definition: roundTripTimeSamples. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-617998642">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-roundtriptimesamples-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairreportinit-roundtriptimesamples-2" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcroundtriptimesample" aria-label="Links in this document to definition: RTCRoundTripTimeSample">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcroundtriptimesample" aria-label="Permalink for definition: RTCRoundTripTimeSample. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-491342080">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcroundtriptimesample-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> <a href="#ref-for-dom-rtcroundtriptimesample-2" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcroundtriptimesample-3" title="§ 4.2.2 RTCRoundTripTimeSample Dictionary">§ 4.2.2 RTCRoundTripTimeSample Dictionary</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcroundtriptimesample-4" title="§ Dictionary RTCRoundTripTimeSample Members">§ Dictionary RTCRoundTripTimeSample Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcroundtriptimesample-timestamp" aria-label="Links in this document to definition: timestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcroundtriptimesample-timestamp" aria-label="Permalink for definition: timestamp. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-491342080">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcroundtriptimesample-timestamp-1" title="§ 4.2.2 RTCRoundTripTimeSample Dictionary">§ 4.2.2 RTCRoundTripTimeSample Dictionary</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcroundtriptimesample-timestamp-2" title="§ Dictionary RTCRoundTripTimeSample Members">§ Dictionary RTCRoundTripTimeSample Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcroundtriptimesample-value" aria-label="Links in this document to definition: value">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcroundtriptimesample-value" aria-label="Permalink for definition: value. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-491342080">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcroundtriptimesample-value-1" title="§ 4.2.2 RTCRoundTripTimeSample Dictionary">§ 4.2.2 RTCRoundTripTimeSample Dictionary</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcroundtriptimesample-value-2" title="§ Dictionary RTCRoundTripTimeSample Members">§ Dictionary RTCRoundTripTimeSample Members</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairwritestate" aria-label="Links in this document to definition: RTCIceCandidatePairWriteState">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairwritestate" aria-label="Permalink for definition: RTCIceCandidatePairWriteState. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-318865592">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairwritestate-1" title="§ 4.2.1 RTCIceCandidatePairReport Interface">§ 4.2.1 RTCIceCandidatePairReport Interface</a> <a href="#ref-for-dom-rtcicecandidatepairwritestate-2" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecandidatepairwritestate-3" title="§ 4.2.3 RTCIceCandidatePairWriteState Enum">§ 4.2.3 RTCIceCandidatePairWriteState Enum</a> <a href="#ref-for-dom-rtcicecandidatepairwritestate-4" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecandidatepairwritestate-5" title="Reference 3">(3)</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairwritestate-init" aria-label="Links in this document to definition: init">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairwritestate-init" aria-label="Permalink for definition: init. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-318865592">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairwritestate-init-1" title="§ 4.2.3 RTCIceCandidatePairWriteState Enum">§ 4.2.3 RTCIceCandidatePairWriteState Enum</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairwritestate-writeable" aria-label="Links in this document to definition: writeable">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairwritestate-writeable" aria-label="Permalink for definition: writeable. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-318865592">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairwritestate-writeable-1" title="§ 4.2.3 RTCIceCandidatePairWriteState Enum">§ 4.2.3 RTCIceCandidatePairWriteState Enum</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairwritestate-unreliable" aria-label="Links in this document to definition: unreliable">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairwritestate-unreliable" aria-label="Permalink for definition: unreliable. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-318865592">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairwritestate-unreliable-1" title="§ 4.2.3 RTCIceCandidatePairWriteState Enum">§ 4.2.3 RTCIceCandidatePairWriteState Enum</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairwritestate-timeout" aria-label="Links in this document to definition: timeout">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dom-rtcicecandidatepairwritestate-timeout" aria-label="Permalink for definition: timeout. Activate to close this dialog.">Permalink</a>
+        <span class="marker dfn-exported" title="Definition can be referenced by other specifications">exported</span> <a class="marker idl-block" title="Jump to IDL declaration" href="#webidl-318865592">IDL</a>
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dom-rtcicecandidatepairwritestate-timeout-1" title="§ 4.2.3 RTCIceCandidatePairWriteState Enum">§ 4.2.3 RTCIceCandidatePairWriteState Enum</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-candidatepairadded" aria-label="Links in this document to definition: candidatepairadded">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-candidatepairadded" aria-label="Permalink for definition: candidatepairadded. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-candidatepairadded-1" title="§ 3.3 Attributes">§ 3.3 Attributes</a> 
+  </li><li>
+    <a href="#ref-for-dfn-candidatepairadded-2" title="§ 4.1 RTCIceCandidatePairEvent">§ 4.1 RTCIceCandidatePairEvent</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-candidatepairupdated" aria-label="Links in this document to definition: candidatepairupdated">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-candidatepairupdated" aria-label="Permalink for definition: candidatepairupdated. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-candidatepairupdated-1" title="§ 3.3 Attributes">§ 3.3 Attributes</a> 
+  </li><li>
+    <a href="#ref-for-dfn-candidatepairupdated-2" title="§ 4.2 RTCIceCandidatePairUpdateEvent">§ 4.2 RTCIceCandidatePairUpdateEvent</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-candidatepairswitched" aria-label="Links in this document to definition: candidatepairswitched">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-candidatepairswitched" aria-label="Permalink for definition: candidatepairswitched. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-candidatepairswitched-1" title="§ 3.3 Attributes">§ 3.3 Attributes</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-candidatepairdestroyed" aria-label="Links in this document to definition: candidatepairdestroyed">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-candidatepairdestroyed" aria-label="Permalink for definition: candidatepairdestroyed. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-candidatepairdestroyed-1" title="§ 3.3 Attributes">§ 3.3 Attributes</a> 
+  </li>
+  </ul>
+    </div><script id="respec-dfn-panel">(() => {
 // @ts-check
 if (document.respec) {
   document.respec.ready.then(setupPanel);
