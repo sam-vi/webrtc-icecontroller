@@ -100,13 +100,16 @@ interface RTCIceController : EventTarget {
               Let <var>controller</var> be a newly created {{RTCIceController}} object.
             </li>
             <li>
-              Let <var>connection</var> have an <dfn data-dfn-for="RTCIceController">[[\IceRole]]</dfn> internal slot,
+              Let <var>controller</var> have an <dfn data-dfn-for="RTCIceController">[[\IceRole]]</dfn> internal slot,
               initialized to {{RTCIceRole/"unknown"}}.
             </li>
             <li>
-              Let <var>connection</var> have a <dfn data-dfn-for="RTCIceController">[[\SelectedCandidatePair]]</dfn>
-              internal slot,
-              initialized to <code>null</code>.
+              Let <var>controller</var> have a <dfn data-dfn-for="RTCIceController">[[\SelectedCandidatePair]]</dfn>
+              internal slot, initialized to <code>null</code>.
+            </li>
+            <li>
+              Let <var>controller</var> have a <dfn data-dfn-for="RTCIceController">[[\PeerConnection]]</dfn> internal
+              slot, initialized to <code>null</code>.
             </li>
             <li>
               Return <var>controller</var>.
@@ -184,6 +187,109 @@ interface RTCIceController : EventTarget {
           <p>This event handler, of event handler event type {{icepruneproposed}}, MUST be fired when the [=ICE agent =]
             has selected one or more candidate pairs to prune, but before the pruning has actually occurred.
           </p>
+        </dd>
+      </dl>
+    </section>
+    <section>
+      <h2>Methods</h2>
+      <dl data-link-for="RTCIceController" data-dfn-for="RTCIceController" class="methods">
+        <dt>
+          <dfn>getSelectedCandidatePair</dfn>
+        </dt>
+        <dd>
+          <p>The {{getSelectedCandidatePair}} method returns the candidate pair currently selected for the ICE
+            transport. This method MUST return the value of the {{RTCIceController/[[SelectedCandidatePair]]}} slot.
+            {{getSelectedCandidatePair}} returns <code>null</code> before at least one {{candidatepairswitched}} event
+            is fired.</p>
+        </dd>
+        <dt>
+          <dfn>sendIcePing</dfn>
+        </dt>
+        <dd>
+          <p>
+            The {{sendIcePing}} method attempts to send an ICE connectivity check on the provided candidate pair.
+          </p>
+          <p>
+            When the {{sendIcePing}} method is invoked, the user agent MUST run the following steps:
+          </p>
+          <ol class=algorithm>
+            <li>
+              <p>
+                Let <var>controller</var> be the {{RTCIceController}} object on which {{sendIcePing}} is invoked.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var>controller</var>.{{RTCIceController/[[PeerConnection]]}} is <code>null</code>, return a
+                rejected promise.
+              </p>
+            </li>
+            <li>
+              <p>
+                <!-- TODO -->Next steps...
+              </p>
+            </li>
+          </ol>
+        </dd>
+        <dt>
+          <dfn>switchToCandidatePair</dfn>
+        </dt>
+        <dd>
+          <p>
+            The {{switchToCandidatePair}} method attempts to switch the transport to the provided candidate pair.
+          </p>
+          <p>
+            When the {{switchToCandidatePair}} method is invoked, the user agent MUST run the following steps:
+          </p>
+          <ol class=algorithm>
+            <li>
+              <p>
+                Let <var>controller</var> be the {{RTCIceController}} object on which {{switchToCandidatePair}} is
+                invoked.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var>controller</var>.{{RTCIceController/[[PeerConnection]]}} is <code>null</code>, return a
+                rejected promise.
+              </p>
+            </li>
+            <li>
+              <p>
+                <!-- TODO -->Next steps...
+              </p>
+            </li>
+          </ol>
+        </dd>
+        <dt>
+          <dfn>pruneCandidatePairs</dfn>
+        </dt>
+        <dd>
+          <p>
+            The {{pruneCandidatePairs}} method attempts to prune the provided candidate pairs.
+          </p>
+          <p>
+            When the {{pruneCandidatePairs}} method is invoked, the user agent MUST run the following steps:
+          </p>
+          <ol class=algorithm>
+            <li>
+              <p>
+                Let <var>controller</var> be the {{RTCIceController}} object on which {{pruneCandidatePairs}} is
+                invoked.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var>controller</var>.{{RTCIceController/[[PeerConnection]]}} is <code>null</code>, return a
+                rejected promise.
+              </p>
+            </li>
+            <li>
+              <p>
+                <!-- TODO -->Next steps...
+              </p>
+            </li>
+          </ol>
         </dd>
       </dl>
     </section>
@@ -502,7 +608,7 @@ dictionary RTCIceCandidatePairReportInit {
               </dd>
               <dt>
                 <dfn>roundTripTimeSamples</dfn> of type <span
-                  class="idlAttrType">sequence&lt;RTCRoundTripTimeSample&gt;</span>
+                  class="idlAttrType">sequence&lt;{{RTCRoundTripTimeSample}}&gt;</span>
               </dt>
               <dd>
                 <p>The {{roundTripTimeSamples}} member, if present, represents all the round trip time samples gathered
@@ -919,10 +1025,68 @@ dictionary RTCIceRecheck {
 
     <section id="rtcicepruneproposalevent">
       <h3><dfn>RTCIcePruneProposalEvent</dfn></h3>
+      <p>The {{RTCIceController/icepruneproposed}} event uses the {{RTCIcePruneProposalEvent}} interface.</p>
+      <div>
+        <pre class="idl">
+[Exposed=Window]
+interface RTCIcePruneProposalEvent : Event {
+  constructor(DOMString type, RTCIcePruneProposalEventInit eventInitDict);
+  sequence&lt;RTCIceCandidatePair&gt; getCandidatePairs();
+};</pre>
+        <section>
+          <h4>Constructors</h4>
+          <dl data-link-for="RTCIcePruneProposalEvent" data-dfn-for="RTCIcePruneProposalEvent" class="constructors">
+            <dt><dfn>RTCIcePruneProposalEvent.constructor()</dfn></dt>
+            <dd></dd>
+          </dl>
+        </section>
+        <section>
+          <h4>Methods</h4>
+          <dl data-link-for="RTCIcePruneProposalEvent" data-dfn-for="RTCIcePruneProposalEvent" class="methods">
+            <dt>
+              <dfn>getCandidatePairs</dfn>
+            </dt>
+            <dd>
+              <p>
+                The {{getCandidatePairs}} method returns the candidate pairs selected by the [= ICE agent =] for pruning
+                at this time.
+              </p>
+            </dd>
+          </dl>
+        </section>
+      </div>
+      <div>
+        <pre class="idl">
+dictionary RTCIcePruneProposalEventInit : EventInit {
+  required sequence&lt;RTCIceCandidatePair&gt; candidatePairs;
+};</pre>
+        <section id="rtcicepruneproposaleventinit">
+          <h5>Dictionary <dfn>RTCIcePruneProposalEventInit</dfn> Members</h5>
+          <dl data-link-for="RTCIcePruneProposalEventInit" data-dfn-for="RTCIcePruneProposalEventInit"
+            class="dictionary-members">
+            <dt>
+              <dfn>candidatePairs</dfn> of type <span
+                class="idlAttrType">sequence&lt;{{RTCIceCandidatePair}}&gt;</span>, required
+            </dt>
+            <dd>
+              <p>The {{candidatePairs}} member represents the candidate pairs selected by the [= ICE agent =] for
+                pruning at this time.
+              </p>
+            </dd>
+          </dl>
+        </section>
+      </div>
     </section>
 
   </section>
 
+  <!-- TODO describe somewhere that certain proposals can be rejected (when, how). -->
+
+  <!-- TODO add the extension to RTCPeerConnection to set and validate RTCIceController in RTCConfiguration. -->
+
+  <!-- TODO add how setting RTConfiguration affects the PeerConnection internal slot. -->
+
+  <!-- TODO add how the IceRoler internal slot is set when an RTCIceTransport is initialized. -->
 
   <section class="informative">
     <h2>Event summary</h2>
