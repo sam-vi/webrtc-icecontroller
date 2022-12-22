@@ -1082,11 +1082,204 @@ dictionary RTCIcePruneProposalEventInit : EventInit {
 
   <!-- TODO describe somewhere that certain proposals can be rejected (when, how). -->
 
-  <!-- TODO add the extension to RTCPeerConnection to set and validate RTCIceController in RTCConfiguration. -->
+  <section id="rtcpeerconnection">
+    <h2>{{RTCPeerConnection}} Extensions</h2>
+    <p>The {{RTCPeerConnection}} extension allows associating an {{RTCIceController}} with an {{RTCPeerConnection}}
+      object at the time of its construction or through {{RTCPeerConnection/setConfiguration()}}. An application can
+      test for support of this specification by checking for the presence of an {{RTCIceController}} object.</p>
 
-  <!-- TODO add how setting RTConfiguration affects the PeerConnection internal slot. -->
+    <section id="rtcconfiguration">
+      <h3>{{RTCConfiguration}} Extensions</h3>
+      <p>The {{RTCConfiguration}} dictionary is extended with an {{RTCConfiguration/iceController}} member.</p>
+      <div>
+        <pre class="idl">
+partial dictionary RTCConfiguration {
+  RTCIceController iceController;
+};</pre>
+        <section>
+          <h4>Dictionary {{RTCConfiguration}} Members</h4>
+          <dl data-link-for="RTCConfiguration" data-dfn-for="RTCConfiguration" class="dictionary-members">
+            <dt>
+              <dfn>iceController</dfn> of type <span class="idlMemberType">{{RTCIceController}}</span>
+            </dt>
+            <dd>
+              <p>The {{iceController}} member represents the {{RTCIceController}} object to associate with the
+                {{RTCPeerConnection}}. Proposals from its [= ICE agent =] will result in events firing on
+                {{iceController}} while it is associated with the {{RTCPeerConnection}}.</p>
+            </dd>
+          </dl>
+        </section>
+      </div>
+    </section>
 
-  <!-- TODO add how the IceRoler internal slot is set when an RTCIceTransport is initialized. -->
+    <section>
+      <h3>Operation</h3>
+      <p>Certain additional steps need to be performed during the construction of an {{RTCPeerConnection}} and when
+        {{RTCPeerConnection/setConfiguration()}} is invoked to establish its association with an {{RTCIceController}},
+        if supplied. Both operations achieve this through an extension to [= Set the configuration =] operation.
+      </p>
+      <section>
+        <h4>Constructor</h4>
+        <p>When the <code>RTCPeerConnection.constructor()</code> is invoked, run the following additional steps:</p>
+        <ol class=algorithm>
+          <li>
+            <p>
+              Let <var>connection</var> be the newly created {{RTCPeerConnection}} object.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var>connection</var> have an <dfn data-dfn-for="RTCPeerConnection">[[\IceController]]</dfn> internal
+              slot, initialized to <code>null</code>.
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h4>Set the configuration</h4>
+        <p>To <dfn data-lt="set the configuration" id="set-pc-configuration">set a configuration</dfn> with
+          <var>configuration</var>, run the following additional steps:
+        </p>
+        <ol class=algorithm>
+          <li>
+            <p>
+              Let <var>connection</var> be the target {{RTCPeerConnection}} object.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var>oldConfig</var> be <var>connection</var>.<code>[[\Configuration]]</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var>oldConfig</var> is not <code>null</code>, and if the value of
+              <var>configuration</var>.{{RTCConfiguration/iceController}} differs from
+              <var>oldConfig</var>.{{RTCConfiguration/iceController}}, [=
+              exception/throw =] an {{InvalidModificationError}}.
+            </p>
+          </li>
+          <li>
+            <p>
+              Otherwise, if <var>configuration</var>.{{RTCConfiguration/iceController}} is not <code>null</code>, run
+              the following steps:
+            </p>
+            <ol>
+              <li>
+                <p>
+                  If <var>configuration</var>.{{RTCConfiguration/iceController}}.{{RTCIceController/[[PeerConnection]]}}
+                  is not null, [= exception/throw =] an {{InvalidModificationError}}.
+                </p>
+              </li>
+              <li>
+                <p>
+                  If the value of <var>configuration</var>.{{RTCConfiguration/bundlePolicy}} is not
+                  {{RTCBundlePolicy/"max-bundle"}}, [= exception/throw =] a {{NotSupportedError}}.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Store <var>configuration</var>.{{RTCConfiguration/iceController}} in the
+                  {{RTCPeerConnection/[[IceController]]}} internal slot.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Store <var>connection</var> in {{RTCIceController/[[PeerConnection]]}} of
+                  <var>configuration</var>.{{RTCConfiguration/iceController}}.
+                </p>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h4>Set the session description</h4>
+        <p>
+          When either {{RTCPeerConnection/setLocalDescription()}} or {{RTCPeerConnection/setRemoteDescription()}} is
+          invoked, and a session description is set as a result, run the following additional steps:
+        </p>
+        <ol class="algorithm">
+          <li>
+            <p>
+              Let <var>connection</var> be the target {{RTCPeerConnection}} object.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var>connection</var>.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var>controller</var> be the {{RTCIceController}} object stored in
+              <var>connection</var>.{{RTCPeerConnection/[[IceController]]}}.
+            </p>
+          </li>
+          <li>
+            <p>
+              When setting the {{RTCIceTransport/[[IceRole]]}} of the relevant {{RTCIceTransport}} object according to
+              the rules of [[RFC8445]], also set <var>controller</var>.{{RTCIceController/[[IceRole]]}} to the same
+              value.
+            </p>
+          </li>
+        </ol>
+      </section>
+    </section>
+
+  </section>
+
+  <section id="rtcicetransport">
+    <h2>{{RTCIceTransport}} Extensions</h2>
+    <p>
+      The {{RTCIceTransport}} extensions allow accessing a small subset of the attributes of an {{RTCIceTransport}}
+      object through an {{RTCIceController}} object to make it easy for an application to refer to this information.
+    </p>
+    <p>
+      The {{RTCIceTransport}} extensions do not change the interface of {{RTCIceTransport}} or its associated types.
+      Rather, they specify certain additional steps to be performed during the course of {{RTCIceTransport}} operations.
+    </p>
+    <p>
+      When the [= ICE agent =] signals that the ICE role for an {{RTCIceTransport}} has changed due to an ICE binding
+      request with a role collision per [[RFC8445]] section 7.3.1.1, the UA will queue a task to set the value of
+      {{RTCIceTransport/[[IceRole]]}} for the {{RTCIceTransport}} to the new value. The task will also set the value of
+      {{RTCIceController/[[IceRole]]}} for the {{RTCPeerConnection/[[IceController]]}} of the {{RTCPeerConnection}}
+      object associated with this [= ICE agent =] to the new value.
+    </p>
+    <p>
+      When the [= ICE agent =] indicates that an {{RTCIceTransport}} has changed the selected candidate pair, run the
+      following additional steps:
+    </p>
+    <ol class="algorithm">
+      <li>
+        <p>
+          Let <var>connection</var> be the {{RTCPeerConnection}} object associated with this [= ICE agent =].
+        </p>
+      </li>
+      <li>
+        <p>
+          If <var>connection</var>.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
+        </p>
+      </li>
+      <li>
+        <p>
+          Let <var>controller</var> be the {{RTCIceController}} object stored in
+          <var>connection</var>.{{RTCPeerConnection/[[IceController]]}}.
+        </p>
+      </li>
+      <li>
+        <p>
+          Let <var>newCandidatePair</var> be a newly created {{RTCIceCandidatePair}} representing the indicated pair if
+          one is selected, and <code>null</code> otherwise.
+        </p>
+      </li>
+      <li>
+        <p>
+          Set <var>controller</var>.{{RTCIceController/[[SelectedCandidatePair]]}} to <var>newCandidatePair</var>.
+        </p>
+      </li>
+    </ol>
+  </section>
 
   <section class="informative">
     <h2>Event summary</h2>
