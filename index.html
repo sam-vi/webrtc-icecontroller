@@ -12,36 +12,46 @@
 <body>
 
   <section id="abstract">
-    <p>This document defines a set of ECMAScript APIs in WebIDL to allow creation of an {{RTCIceController}} object to
-      manage the ICE connection used by an {{RTCPeerConnection}}.</p>
+    <p>
+      his document defines a set of ECMAScript APIs in WebIDL to allow creation of an {{RTCIceController}} object to
+      manage the ICE connection used by an {{RTCPeerConnection}}.
+    </p>
   </section>
 
   <section id="sotd"></section>
 
   <section class="informative" id="intro">
     <h2>Introduction</h2>
-    <p>This specification extends the WebRTC specification [[WEBRTC]] to allow construction of an
-      {{RTCIceController}} object to manage the ICE connection used by an {{RTCPeerConnection}}.
+    <p>
+      This specification extends the WebRTC specification [[WEBRTC]] to allow construction of an {{RTCIceController}}
+      object to manage the ICE connection used by an {{RTCPeerConnection}}.
     </p>
   </section>
 
   <section id="conformance">
-    <p>This specification defines conformance criteria that apply to a single
-      product: the <dfn>user agent</dfn> that implements the interfaces that it contains.</p>
-    <p>Conformance requirements phrased as algorithms or specific steps may be
-      implemented in any manner, so long as the end result is equivalent. (In
-      particular, the algorithms defined in this specification are intended to be
-      easy to follow, and not intended to be performant.)</p>
-    <p>Implementations that use ECMAScript to implement the APIs defined in
-      this specification MUST implement them in a manner consistent with the
-      ECMAScript Bindings defined in the Web IDL specification [[WEBIDL]], as
-      this specification uses that specification and terminology.</p>
+    <p>
+      This specification defines conformance criteria that apply to a single product: the <dfn>user agent</dfn> that
+      implements the interfaces that it contains.
+    </p>
+    <p>
+      Conformance requirements phrased as algorithms or specific steps may be implemented in any manner, so long as the
+      end result is equivalent. (In particular, the algorithms defined in this specification are intended to be easy to
+      follow, and not intended to be performant.)
+    </p>
+    <p>
+      Implementations that use ECMAScript to implement the APIs defined in this specification MUST implement them in a
+      manner consistent with the ECMAScript Bindings defined in the Web IDL specification [[WEBIDL]], as this
+      specification uses that specification and terminology.
+    </p>
   </section>
 
   <section>
     <h2>Terminology</h2>
     <p>
       The {{EventHandler}} interface, representing a callback used for event handlers, is defined in [[!HTML]].
+    </p>
+    <p>
+      The concepts [= queue a task =] and [= networking task source =] are defined in [[!HTML]].
     </p>
     <p>
       The concept [= fire an event =] is defined in [[!DOM]].
@@ -52,15 +62,28 @@
     <p>
       The term <dfn>generation</dfn> is defined in [[RFC8838]] Section 2.
     </p>
+    <p>
+      When referring to exceptions, the terms [= exception/throw =] and [= exception/created =] are defined in
+      [[!WEBIDL]].
+    </p>
+    <p>
+      The term "throw" is used as specified in [[!INFRA]]: it terminates the current processing steps.
+    </p>
+    <p>
+      The terms <dfn data-lt="reject|rejection|rejecting">rejected</dfn> and <dfn
+        data-lt="resolve|resolves">resolved</dfn> used in the context of Promises are defined in [[!ECMASCRIPT-6.0]].
+    </p>
   </section>
 
 
   <section id="rtcicecontroller">
     <h2><dfn class="export">RTCIceController</dfn> Interface</h2>
-    <p>The {{RTCIceController}} interface allows an application to observe and affect certain actions that an <dfn>ICE
+    <p>
+      The {{RTCIceController}} interface allows an application to observe and affect certain actions that an <dfn>ICE
         agent</dfn> [[RFC5245]] undertakes, such as performing connectivity checks, nominating a candidate pair, and
       pruning candidate pairs when unviable or no longer necessary. It also allows the application to request the [= ICE
-      agent =] to perform these actions for candidate pairs selected by the application.</p>
+      agent =] to perform these actions for candidate pairs selected by the application.
+    </p>
     <section id="rtcicecontroller-interface-definition">
       <h3>Interface Definition</h3>
       <div>
@@ -93,7 +116,7 @@ interface RTCIceController : EventTarget {
         <dt><dfn>constructor()</dfn></dt>
         <dd>
           <p>
-            When the constructor is invoked, the <a>user agent</a> MUST run the following steps:
+            When the constructor is invoked, the [= user agent =] MUST run the following steps:
           </p>
           <ol class="algorithm">
             <li>
@@ -128,7 +151,8 @@ interface RTCIceController : EventTarget {
           <dfn>role</dfn> of type <span class="idlAttrType">{{RTCIceRole}}</span>, readonly
         </dt>
         <dd>
-          <p>The {{role}} attribute MUST, on getting, return the value of the {{RTCIceController/[[IceRole]]}} internal
+          <p>
+            The {{role}} attribute MUST, on getting, return the value of the {{RTCIceController/[[IceRole]]}} internal
             slot.
           </p>
         </dd>
@@ -136,7 +160,8 @@ interface RTCIceController : EventTarget {
           <dfn>oncandidatepairadded</dfn> of type <span class="idlAttrType">{{EventHandler}}</span>
         </dt>
         <dd>
-          <p>This event handler, of event handler event type {{candidatepairadded}}, MUST be fired any time the [= ICE
+          <p>
+            This event handler, of event handler event type {{candidatepairadded}}, MUST be fired any time the [= ICE
             agent =] has found a candidate pair.
           </p>
         </dd>
@@ -144,48 +169,73 @@ interface RTCIceController : EventTarget {
           <dfn>oncandidatepairupdated</dfn> of type <span class="idlAttrType">{{EventHandler}}</span>
         </dt>
         <dd>
-          <p>This event handler, of event handler event type {{candidatepairupdated}}.
+          <p>
+            This event handler, of event handler event type {{candidatepairupdated}}, MUST be fired any time the [= ICE
+            agent =] completes a connectivity check on a candidate pair, and when a candidate pair undergoes a state
+            change. This may have been a consequence of the application invoking {{RTCIceController/sendIcePing()}}.
+          <p>
+            The [= user agent =] may choose to batch together these events to reduce the volume and increase the
+            efficiency of the updates.
+          </p>
           </p>
         </dd>
         <dt>
           <dfn>oncandidatepairswitched</dfn> of type <span class="idlAttrType">{{EventHandler}}</span>
         </dt>
         <dd>
-          <p>This event handler, of event handler event type {{candidatepairswitched}}, MUST be fired when the [=ICE
-            agent =] switched the transport to a different candidate pair.
+          <p>
+            This event handler, of event handler event type {{candidatepairswitched}}, MUST be fired when the [=ICE
+            agent =] switched the transport to a different candidate pair. The switch may have been a consequence of the
+            application invoking {{RTCIceController/switchToCandidatePair()}}.
           </p>
         </dd>
         <dt>
           <dfn>oncandidatepairdestroyed</dfn> of type <span class="idlAttrType">{{EventHandler}}</span>
         </dt>
         <dd>
-          <p>This event handler, of event handler event type {{candidatepairdestroyed}}, MUST be fired any time the
-            [=ICE agent =] destroys a candidate pair.
+          <p>
+            This event handler, of event handler event type {{candidatepairdestroyed}}, MUST be fired any time the
+            [=ICE agent =] destroys a candidate pair. This may have been a consequence of the application invoking
+            {{RTCIceController/pruneCandidatePairs()}}.
           </p>
         </dd>
-
         <dt>
           <dfn>onicepingproposed</dfn> of type <span class="idlAttrType">{{EventHandler}}</span>
         </dt>
         <dd>
-          <p>This event handler, of event handler event type {{icepingproposed}}, MUST be fired when the [=ICE agent =]
+          <p>
+            This event handler, of event handler event type {{icepingproposed}}, MUST be fired when the [=ICE agent =]
             has selected a candidate pair to ping for a connectivity check, but before the ping has actually been sent.
+          </p>
+          <p>
+            This event handler MUST not be fired when the application has requested a connectivity check by invoking
+            {{RTCIceController/sendIcePing()}}.
           </p>
         </dd>
         <dt>
           <dfn>oniceswitchproposed</dfn> of type <span class="idlAttrType">{{EventHandler}}</span>
         </dt>
         <dd>
-          <p>This event handler, of event handler event type {{iceswitchproposed}}, MUST be fired when the [=ICE agent
+          <p>
+            This event handler, of event handler event type {{iceswitchproposed}}, MUST be fired when the [=ICE agent
             =] has selected a candidate pair to switch the transport to, but before the switch has actually occurred.
+          </p>
+          <p>
+            This event handler MUST not be fired when the application has requested a candidate pair switch by invoking
+            {{RTCIceController/switchToCandidatePair()}}.
           </p>
         </dd>
         <dt>
           <dfn>onicepruneproposed</dfn> of type <span class="idlAttrType">{{EventHandler}}</span>
         </dt>
         <dd>
-          <p>This event handler, of event handler event type {{icepruneproposed}}, MUST be fired when the [=ICE agent =]
+          <p>
+            This event handler, of event handler event type {{icepruneproposed}}, MUST be fired when the [=ICE agent =]
             has selected one or more candidate pairs to prune, but before the pruning has actually occurred.
+          </p>
+          <p>
+            This event handler MUST not be fired when the application has requested to prune candidate pairs by invoking
+            {{RTCIceController/pruneCandidatePairs()}}.
           </p>
         </dd>
       </dl>
@@ -197,22 +247,27 @@ interface RTCIceController : EventTarget {
           <dfn>getSelectedCandidatePair</dfn>
         </dt>
         <dd>
-          <p>The {{getSelectedCandidatePair}} method returns the candidate pair currently selected for the ICE
+          <p>
+            The {{getSelectedCandidatePair}} method returns the candidate pair currently selected for the ICE
             transport. This method MUST return the value of the {{RTCIceController/[[SelectedCandidatePair]]}} slot.
             {{getSelectedCandidatePair}} returns <code>null</code> before at least one {{candidatepairswitched}} event
-            is fired.</p>
+            is fired.
+          </p>
         </dd>
         <dt>
           <dfn>sendIcePing</dfn>
         </dt>
         <dd>
           <p>
-            The {{sendIcePing}} method attempts to send an ICE connectivity check on the provided candidate pair.
-          </p>
-          <p>
-            When the {{sendIcePing}} method is invoked, the user agent MUST run the following steps:
+            The {{sendIcePing}} method attempts to send an ICE connectivity check on the provided candidate pair. When
+            the {{sendIcePing}} method is invoked, the [= user agent =] MUST run the following steps:
           </p>
           <ol class=algorithm>
+            <li>
+              <p>
+                Let <var>candidatePair</var> be the method's first argument.
+              </p>
+            </li>
             <li>
               <p>
                 Let <var>controller</var> be the {{RTCIceController}} object on which {{sendIcePing}} is invoked.
@@ -220,13 +275,61 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
-                If <var>controller</var>.{{RTCIceController/[[PeerConnection]]}} is <code>null</code>, return a
-                rejected promise.
+                Let <var>connection</var> be the {{RTCPeerConnection}} object stored in
+                <var>controller</var>.{{RTCIceController/[[PeerConnection]]}}.
               </p>
             </li>
             <li>
               <p>
-                <!-- TODO -->Next steps...
+                Let <var>p</var> be a new promise.
+              </p>
+            </li>
+            <li>
+              <p>
+                Run the steps described by the [= validate() algorithm =] to which <var>connection</var>, a new sequence
+                containing <var>candidatePair</var>, and <var>p</var> are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
+                If either the local or remote candidate pair identified by <var>candidatePair</var> is [=
+                administratively prohibited =], [= resolve =] <var>p</var> with <code>undefined</code>.
+              </p>
+              <div class="note">
+                <p>
+                  A candidate is <dfn id="administratively-prohibited">administratively prohibited</dfn> if the [= user
+                  agent =] has decided not to allow connection attempts to this address, as described further in
+                  {{RTCPeerConnection/addIceCandidate()}}.
+                </p>
+              </div>
+            </li>
+            <li>
+              <p>
+                If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
+                {{RTCStatsIceCandidatePairState}} is {{RTCStatsIceCandidatePairState/"failed"}}, [= reject =]
+                <var>p</var> with a newly [= exception/created =] {{InvalidStateError}}.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var>X</var> connectivity checks have been sent in the previous <var>Y</var> duration of time, reject
+                <var>p</var> with a newly [= exception/created =] {{QuotaExceededError}}.
+              </p>
+              <div class="note">
+                <p>
+                  The exact nature of this rate-limiting check is TBD.
+                </p>
+              </div>
+            </li>
+            <li>
+              <p>
+                Instruct the [= ICE agent=] to construct and send a STUN check from the local candidate to the remote
+                candidate.
+              </p>
+            </li>
+            <li>
+              <p>
+                [= Resolve =] <var>p</var> with <code>undefined</code>.
               </p>
             </li>
           </ol>
@@ -236,27 +339,60 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            The {{switchToCandidatePair}} method attempts to switch the transport to the provided candidate pair.
-          </p>
-          <p>
-            When the {{switchToCandidatePair}} method is invoked, the user agent MUST run the following steps:
+            The {{switchToCandidatePair}} method attempts to switch the transport to the provided candidate pair. When
+            the {{switchToCandidatePair}} method is invoked, the [= user agent =] MUST run the following steps:
           </p>
           <ol class=algorithm>
             <li>
               <p>
-                Let <var>controller</var> be the {{RTCIceController}} object on which {{switchToCandidatePair}} is
-                invoked.
+                Let <var>candidatePair</var> be the method's first argument.
               </p>
             </li>
             <li>
               <p>
-                If <var>controller</var>.{{RTCIceController/[[PeerConnection]]}} is <code>null</code>, return a
-                rejected promise.
+                Let <var>controller</var> be the {{RTCIceController}} object on which {{sendIcePing}} is invoked.
               </p>
             </li>
             <li>
               <p>
-                <!-- TODO -->Next steps...
+                Let <var>connection</var> be the {{RTCPeerConnection}} object stored in
+                <var>controller</var>.{{RTCIceController/[[PeerConnection]]}}.
+              </p>
+            </li>
+            <li>
+              <p>
+                Let <var>p</var> be a new promise.
+              </p>
+            </li>
+            <li>
+              <p>
+                Run the steps described by the [= validate() algorithm =] to which <var>connection</var>, a new sequence
+                containing <var>candidatePair</var>, and <var>p</var> are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
+                If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
+                {{RTCStatsIceCandidatePairState}} is not {{RTCStatsIceCandidatePairState/"succeeded"}}, reject
+                <var>p</var> with a newly [= exception/created =] {{InvalidStateError}}.
+              </p>
+              <div class="note">
+                <p>
+                  Attempting to switch to a candidate pair with either a local or remote candidate that is [=
+                  administratively prohibited =] will also lead to an abort at this stage, because connectivity checks
+                  are prohibited on such a candidate pair, so it will never transition to the
+                  {{RTCStatsIceCandidatePairState/"succeeded"}} state.
+                </p>
+              </div>
+            </li>
+            <li>
+              <p>
+                Instruct the [= ICE agent =] to change the selected candidate pair to <var>candidatePair</var>.
+              </p>
+            </li>
+            <li>
+              <p>
+                [= Resolve =] <var>p</var> with undefined.
               </p>
             </li>
           </ol>
@@ -266,32 +402,111 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            The {{pruneCandidatePairs}} method attempts to prune the provided candidate pairs.
-          </p>
-          <p>
-            When the {{pruneCandidatePairs}} method is invoked, the user agent MUST run the following steps:
+            The {{pruneCandidatePairs}} method attempts to prune the provided candidate pairs. When the
+            {{pruneCandidatePairs}} method is invoked, the [= user agent =] MUST run the following steps:
           </p>
           <ol class=algorithm>
             <li>
               <p>
-                Let <var>controller</var> be the {{RTCIceController}} object on which {{pruneCandidatePairs}} is
-                invoked.
+                Let <var>candidatePairs</var> be the method's first argument.
               </p>
             </li>
             <li>
               <p>
-                If <var>controller</var>.{{RTCIceController/[[PeerConnection]]}} is <code>null</code>, return a
-                rejected promise.
+                Let <var>controller</var> be the {{RTCIceController}} object on which {{sendIcePing}} is invoked.
               </p>
             </li>
             <li>
               <p>
-                <!-- TODO -->Next steps...
+                Let <var>connection</var> be the {{RTCPeerConnection}} object stored in
+                <var>controller</var>.{{RTCIceController/[[PeerConnection]]}}.
+              </p>
+            </li>
+            <li>
+              <p>
+                Let <var>p</var> be a new promise.
+              </p>
+            </li>
+            <li>
+              <p>
+                Run the steps described by the [= validate() algorithm =] to which <var>connection</var>,
+                <var>candidatePairs</var>, and <var>p</var> are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
+                Instruct the [= ICE agent =] to prune the candidate pairs in <var>candidatePairs</var>.
+              </p>
+            </li>
+            <li>
+              <p>
+                [= Resolve =] <var>p</var> with undefined.
               </p>
             </li>
           </ol>
         </dd>
       </dl>
+      <div>
+        <p>
+          The [= user agent =] MUST validate that the application is allowed to perform a requested operation. When this
+          validation is requested, the [= user agent =] MUST <dfn id="rtcicecontroller-validate"
+            data-lt="validate() algorithm">run the following steps</dfn>:
+        </p>
+        <ol class="algorithm">
+          <li>
+            <p>
+              Let <var>connection</var> be the {{RTCPeerConnection}} object, <var>candidatePairs</var> be the sequence
+              of candidate pairs, and <var>p</var> be the Promise supplied to the algorithm.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var>connection</var> is <code>null</code>, [= reject =] <var>p</var> with a newly [= exception/created
+              =]
+              {{InvalidStateError}} and abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var>connection</var>.{{RTCPeerConnection/[[IsClosed]]}} is <code>true</code>, [= reject =]
+              <var>p</var> with a newly [= exception/created =] {{InvalidStateError}}.
+            </p>
+          </li>
+          <!-- TODO if possible to have no transport, add a check that rejects with invalid state. -->
+          <li>
+            <p>
+              Let <var>transport</var> be the sole {{RTCIceTransport}} object in use by <var>connection</var>.
+            </p>
+            <div class="note">
+              <p>
+                The presence of one and only one {{RTCIceTransport}} object is ensured by limiting the use of
+                {{RTCIceController}} to cases where {{RTCBundlePolicy}} is set to {{RTCBundlePolicy/"max-bundle"}}.
+              </p>
+            </div>
+          </li>
+          <li>
+            <p>
+              If <var>transport</var>.{{RTCIceTransport/[[IceTransportState]]}} is either of
+              {{RTCIceTransportState/"new"}}, {{RTCIceTransportState/"failed"}} or {{RTCIceTransportState/"closed"}},
+              [= reject =] <var>p</var> with a newly [= exception/created =] {{InvalidStateError}}.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var>candidatePair</var> does not identify a valid candidate pair sent in
+              {{RTCIceController/oncandidatepairadded}}, [= reject =] <var>p</var> with a newly [= exception/created =]
+              {{NotFoundError}}.
+            </p>
+            <div class="note">
+              <p>
+                A valid candidate pair will be composed of a local candidate gathered by <var>transport</var>, and a
+                remote candidate received by <var>transport</var> via {{RTCPeerConnection/addIceCandidate()}} or a
+                peer reflexive candidate.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
     </section>
   </section>
 
@@ -329,7 +544,8 @@ interface RTCIceCandidatePairEvent : Event {
               <dfn>candidatePair</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePair}}</span>, readonly
             </dt>
             <dd>
-              <p>The {{candidatePair}} attribute is the {{RTCIceCandidatePair}} object with the new ICE candidate pair
+              <p>
+                The {{candidatePair}} attribute is the {{RTCIceCandidatePair}} object with the new ICE candidate pair
                 that was gathered by the [= ICE agent =].
               </p>
             </dd>
@@ -349,7 +565,8 @@ dictionary RTCIceCandidatePairEventInit : EventInit {
               <dfn>candidatePair</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePair}}</span>, required
             </dt>
             <dd>
-              <p>See the {{RTCIceCandidatePairEvent/candidatePair}} attribute of the {{RTCIceCandidatePairEvent}}
+              <p>
+                See the {{RTCIceCandidatePairEvent/candidatePair}} attribute of the {{RTCIceCandidatePairEvent}}
                 interface.
               </p>
             </dd>
@@ -387,7 +604,8 @@ interface RTCIceCandidatePairUpdateEvent : Event {
               <dfn>candidatePair</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePair}}</span>, readonly
             </dt>
             <dd>
-              <p>The {{candidatePair}} attribute is the {{RTCIceCandidatePair}} object that represents the candidate
+              <p>
+                The {{candidatePair}} attribute is the {{RTCIceCandidatePair}} object that represents the candidate
                 pair for which updated information is available.
               </p>
             </dd>
@@ -395,7 +613,8 @@ interface RTCIceCandidatePairUpdateEvent : Event {
               <dfn>report</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePairReport}}</span>, readonly
             </dt>
             <dd>
-              <p>The {{report}} attribute is the {{RTCIceCandidatePairReport}} object containing the information that
+              <p>
+                The {{report}} attribute is the {{RTCIceCandidatePairReport}} object containing the information that
                 the [= ICE agent =] has gathered about a candidate pair through ICE connectivity checks.
               </p>
             </dd>
@@ -416,7 +635,8 @@ dictionary RTCIceCandidatePairUpdateEventInit : EventInit {
               <dfn>candidatePair</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePair}}</span>, required
             </dt>
             <dd>
-              <p>See the {{RTCIceCandidatePairUpdateEvent/candidatePair}} attribute of the
+              <p>
+                See the {{RTCIceCandidatePairUpdateEvent/candidatePair}} attribute of the
                 {{RTCIceCandidatePairUpdateEvent}} interface.
               </p>
             </dd>
@@ -424,7 +644,8 @@ dictionary RTCIceCandidatePairUpdateEventInit : EventInit {
               <dfn>report</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePairReport}}</span>, required
             </dt>
             <dd>
-              <p>See the {{RTCIceCandidatePairUpdateEvent/report}} attribute of the {{RTCIceCandidatePairUpdateEvent}}
+              <p>
+                See the {{RTCIceCandidatePairUpdateEvent/report}} attribute of the {{RTCIceCandidatePairUpdateEvent}}
                 interface.
               </p>
             </dd>
@@ -462,50 +683,63 @@ interface RTCIceCandidatePairReport {
                 <dfn>connected</dfn> of type <span class="idlAttrType">boolean</span>, readonly
               </dt>
               <dd>
-                <p>The {{connected}} attribute represents whether the ICE candidate pair is in connected state.</p>
+                <p>
+                  The {{connected}} attribute represents whether the ICE candidate pair is in connected state.
+                </p>
               </dd>
               <dt>
                 <dfn>state</dfn> of type <span class="idlAttrType">RTCStatsIceCandidatePairState</span>, readonly
               </dt>
               <dd>
-                <p>The {{state}} attribute represents the state of a candidate pair in an ICE check list defined in
-                  Section 6.1.2.6 of [[RFC8445]].</p>
+                <p>
+                  The {{state}} attribute represents the state of a candidate pair in an ICE check list defined in
+                  Section 6.1.2.6 of [[RFC8445]].
+                </p>
               </dd>
               <dt>
                 <dfn>writeState</dfn> of type <span class="idlAttrType">RTCIceCandidatePairWriteState</span>, readonly
               </dt>
               <dd>
-                <p>The {{writeState}} attribute indicates the write state of the candidate pair.</p>
+                <p>
+                  The {{writeState}} attribute indicates the write state of the candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>lastPingSentTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>, readonly
               </dt>
               <dd>
-                <p>The {{lastPingSentTimestamp}} attribute, if present, represents the timestamp at which the last ping
-                  was sent for an ICE connectivity check on this candidate pair.</p>
+                <p>
+                  The {{lastPingSentTimestamp}} attribute, if present, represents the timestamp at which the last ping
+                  was sent for an ICE connectivity check on this candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>lastPingResponseReceivedTimestamp</dfn> of type <span
                   class="idlAttrType">DOMHighResTimeStamp</span>, readonly
               </dt>
               <dd>
-                <p>The {{lastPingResponseReceivedTimestamp}} attribute, if present, represents the timestamp at which
-                  the last response was received to a ping for an ICE connectivity check on this candidate pair.</p>
+                <p>
+                  The {{lastPingResponseReceivedTimestamp}} attribute, if present, represents the timestamp at which
+                  the last response was received to a ping for an ICE connectivity check on this candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>lastPingReceivedTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>,
                 readonly
               </dt>
               <dd>
-                <p>The {{lastPingReceivedTimestamp}} attribute, if present, represents the timestamp at which the last
-                  ping was received from the peer for an ICE connectivity check on this candidate pair.</p>
+                <p>
+                  The {{lastPingReceivedTimestamp}} attribute, if present, represents the timestamp at which the last
+                  ping was received from the peer for an ICE connectivity check on this candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>lastPacketReceivedTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>,
                 readonly
               </dt>
               <dd>
-                <p>The {{lastPacketReceivedTimestamp}} attribute, if present, represents the timestamp at which the last
+                <p>
+                  The {{lastPacketReceivedTimestamp}} attribute, if present, represents the timestamp at which the last
                   packet was received on this candidate pair, excluding STUN packets.
                 </p>
               </dd>
@@ -513,8 +747,10 @@ interface RTCIceCandidatePairReport {
                 <dfn>pingsSent</dfn> of type <span class="idlAttrType">unsigned long long</span>, readonly
               </dt>
               <dd>
-                <p>The {{pingsSent}} attribute represents the total number of pings sent for ICE connectivity check on
-                  this candidate pair.</p>
+                <p>
+                  The {{pingsSent}} attribute represents the total number of pings sent for ICE connectivity check on
+                  this candidate pair.
+                </p>
               </dd>
             </dl>
           </section>
@@ -554,48 +790,61 @@ dictionary RTCIceCandidatePairReportInit {
                 <dfn>connected</dfn> of type <span class="idlAttrType">boolean</span>, required
               </dt>
               <dd>
-                <p>The {{connected}} member represents whether the ICE candidate pair is in connected state.</p>
+                <p>
+                  The {{connected}} member represents whether the ICE candidate pair is in connected state.
+                </p>
               </dd>
               <dt>
                 <dfn>state</dfn> of type <span class="idlAttrType">RTCStatsIceCandidatePairState</span>, required
               </dt>
               <dd>
-                <p>The {{state}} member represents the state of a candidate pair in an ICE check list defined in
-                  Section 6.1.2.6 of [[RFC8445]].</p>
+                <p>
+                  The {{state}} member represents the state of a candidate pair in an ICE check list defined in
+                  Section 6.1.2.6 of [[RFC8445]].
+                </p>
               </dd>
               <dt>
                 <dfn>writeState</dfn> of type <span class="idlAttrType">RTCIceCandidatePairWriteState</span>, required
               </dt>
               <dd>
-                <p>The {{writeState}} member indicates the write state of the candidate pair.</p>
+                <p>
+                  The {{writeState}} member indicates the write state of the candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>lastPingSentTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
               </dt>
               <dd>
-                <p>The {{lastPingSentTimestamp}} member, if present, represents the timestamp at which the last ping was
-                  sent for an ICE connectivity check on this candidate pair.</p>
+                <p>
+                  The {{lastPingSentTimestamp}} member, if present, represents the timestamp at which the last ping was
+                  sent for an ICE connectivity check on this candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>lastPingResponseReceivedTimestamp</dfn> of type <span
                   class="idlAttrType">DOMHighResTimeStamp</span>
               </dt>
               <dd>
-                <p>The {{lastPingResponseReceivedTimestamp}} member, if present, represents the timestamp at which the
-                  last response was received to a ping for an ICE connectivity check on this candidate pair.</p>
+                <p>
+                  The {{lastPingResponseReceivedTimestamp}} member, if present, represents the timestamp at which the
+                  last response was received to a ping for an ICE connectivity check on this candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>lastPingReceivedTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
               </dt>
               <dd>
-                <p>The {{lastPingReceivedTimestamp}} member, if present, represents the timestamp at which the last ping
-                  was received from the peer for an ICE connectivity check on this candidate pair.</p>
+                <p>
+                  The {{lastPingReceivedTimestamp}} member, if present, represents the timestamp at which the last ping
+                  was received from the peer for an ICE connectivity check on this candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>lastPacketReceivedTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
               </dt>
               <dd>
-                <p>The {{lastPacketReceivedTimestamp}} member, if present, represents the timestamp at which the last
+                <p>
+                  The {{lastPacketReceivedTimestamp}} member, if present, represents the timestamp at which the last
                   packet was received on this candidate pair, excluding STUN packets.
                 </p>
               </dd>
@@ -603,16 +852,20 @@ dictionary RTCIceCandidatePairReportInit {
                 <dfn>pingsSent</dfn> of type <span class="idlAttrType">unsigned long long</span>, required
               </dt>
               <dd>
-                <p>The {{pingsSent}} member represents the total number of pings sent for ICE connectivity check on
-                  this candidate pair.</p>
+                <p>
+                  The {{pingsSent}} member represents the total number of pings sent for ICE connectivity check on
+                  this candidate pair.
+                </p>
               </dd>
               <dt>
                 <dfn>roundTripTimeSamples</dfn> of type <span
                   class="idlAttrType">sequence&lt;{{RTCRoundTripTimeSample}}&gt;</span>
               </dt>
               <dd>
-                <p>The {{roundTripTimeSamples}} member, if present, represents all the round trip time samples gathered
-                  for this candidate pair.</p>
+                <p>
+                  The {{roundTripTimeSamples}} member, if present, represents all the round trip time samples gathered
+                  for this candidate pair.
+                </p>
               </dd>
             </dl>
           </section>
@@ -633,13 +886,17 @@ dictionary RTCRoundTripTimeSample {
                 <dfn>timestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>, required
               </dt>
               <dd>
-                <p>The {{timestamp}} member represents the time at which this round trip time sample was measured.</p>
+                <p>
+                  The {{timestamp}} member represents the time at which this round trip time sample was measured.
+                </p>
               </dd>
               <dt>
                 <dfn>value</dfn> of type <span class="idlAttrType">double</span>, required
               </dt>
               <dd>
-                <p>The {{value}} member indicates the measured round trip time in this sample.</p>
+                <p>
+                  The {{value}} member indicates the measured round trip time in this sample.
+                </p>
               </dd>
             </dl>
           </section>
@@ -725,9 +982,13 @@ enum RTCIceCandidatePairWriteState {
       its own actions instead through {{RTCIceController}} methods.
     </p>
 
+    <!-- TODO describe that certain proposals can be cancelable / rejected (when, how, what happens). -->
+
     <section id="rtcicepingproposalevent">
       <h3><dfn>RTCIcePingProposalEvent</dfn></h3>
-      <p>The {{RTCIceController/icepingproposed}} event uses the {{RTCIcePingProposalEvent}} interface.</p>
+      <p>
+        The {{RTCIceController/icepingproposed}} event uses the {{RTCIcePingProposalEvent}} interface.
+      </p>
       <div>
         <pre class="idl">
 [Exposed=Window]
@@ -751,7 +1012,8 @@ interface RTCIcePingProposalEvent : Event {
               <dfn>candidatePair</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePair}}</span>, readonly
             </dt>
             <dd>
-              <p>The {{candidatePair}} attribute is the {{RTCIceCandidatePair}} object that represents the candidate
+              <p>
+                The {{candidatePair}} attribute is the {{RTCIceCandidatePair}} object that represents the candidate
                 pair that the [= ICE agent =] has selected to ping for a connectivity check.
               </p>
             </dd>
@@ -760,16 +1022,20 @@ interface RTCIcePingProposalEvent : Event {
               nullable
             </dt>
             <dd>
-              <p>The {{lastPingSentTimestamp}} attribute represents the timestamp at which the last connectivity check
-                ping was sent by the [= ICE agent =].</p>
+              <p>
+                The {{lastPingSentTimestamp}} attribute represents the timestamp at which the last connectivity check
+                ping was sent by the [= ICE agent =].
+              </p>
             </dd>
             <dt>
               <dfn>earliestNextPingTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>,
               readonly, nullable
             </dt>
             <dd>
-              <p>The {{earliestNextPingTimestamp}} attribute represents the earliest time at which the [= ICE agent =]
-                will select another candidate pair to ping for connectivity check.</p>
+              <p>
+                The {{earliestNextPingTimestamp}} attribute represents the earliest time at which the [= ICE agent =]
+                will select another candidate pair to ping for connectivity check.
+              </p>
             </dd>
           </dl>
         </section>
@@ -789,7 +1055,8 @@ dictionary RTCIcePingProposalEventInit : EventInit {
               <dfn>candidatePair</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePair}}</span>, required
             </dt>
             <dd>
-              <p>See the {{RTCIcePingProposalEvent/candidatePair}} attribute of the
+              <p>
+                See the {{RTCIcePingProposalEvent/candidatePair}} attribute of the
                 {{RTCIcePingProposalEvent}} interface.
               </p>
             </dd>
@@ -797,7 +1064,8 @@ dictionary RTCIcePingProposalEventInit : EventInit {
               <dfn>lastPingSentTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
             </dt>
             <dd>
-              <p>See the {{RTCIcePingProposalEvent/lastPingSentTimestamp}} attribute of the
+              <p>
+                See the {{RTCIcePingProposalEvent/lastPingSentTimestamp}} attribute of the
                 {{RTCIcePingProposalEvent}} interface.
               </p>
             </dd>
@@ -805,7 +1073,8 @@ dictionary RTCIcePingProposalEventInit : EventInit {
               <dfn>earliestNextPingTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>
             </dt>
             <dd>
-              <p>See the {{RTCIcePingProposalEvent/earliestNextPingTimestamp}} attribute of the
+              <p>
+                See the {{RTCIcePingProposalEvent/earliestNextPingTimestamp}} attribute of the
                 {{RTCIcePingProposalEvent}} interface.
               </p>
             </dd>
@@ -816,7 +1085,9 @@ dictionary RTCIcePingProposalEventInit : EventInit {
 
     <section id="rtciceswitchproposalevent">
       <h3><dfn>RTCIceSwitchProposalEvent</dfn></h3>
-      <p>The {{RTCIceController/iceswitchproposed}} event uses the {{RTCIceSwitchProposalEvent}} interface.</p>
+      <p>
+        The {{RTCIceController/iceswitchproposed}} event uses the {{RTCIceSwitchProposalEvent}} interface.
+      </p>
       <div>
         <pre class="idl">
 [Exposed=Window]
@@ -840,7 +1111,8 @@ interface RTCIceSwitchProposalEvent : Event {
               <dfn>candidatePair</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePair}}</span>, readonly
             </dt>
             <dd>
-              <p>The {{candidatePair}} attribute is the {{RTCIceCandidatePair}} object that represents the candidate
+              <p>
+                The {{candidatePair}} attribute is the {{RTCIceCandidatePair}} object that represents the candidate
                 pair that the [= ICE agent =] has selected to switch to using for the transport.
               </p>
             </dd>
@@ -848,7 +1120,8 @@ interface RTCIceSwitchProposalEvent : Event {
               <dfn>reason</dfn> of type <span class="idlAttrType">{{RTCIceSwitchReason}}</span>, readonly
             </dt>
             <dd>
-              <p>The {{reason}} attribute represents the reason that triggered the [= ICE agent =] to search for a
+              <p>
+                The {{reason}} attribute represents the reason that triggered the [= ICE agent =] to search for a
                 different candidate pair to switch the transport to.
               </p>
             </dd>
@@ -857,7 +1130,8 @@ interface RTCIceSwitchProposalEvent : Event {
               <dfn>recheck</dfn> of type <span class="idlAttrType">{{RTCIceRecheck}}</span>, readonly, nullable
             </dt>
             <dd>
-              <p>The {{recheck}} attribute represent a future trigger for the [= ICE agent =] to search for a different
+              <p>
+                The {{recheck}} attribute represent a future trigger for the [= ICE agent =] to search for a different
                 candidate pair to switch the transport to.
               </p>
             </dd>
@@ -879,7 +1153,8 @@ dictionary RTCIceSwitchProposalEventInit : EventInit {
               <dfn>candidatePair</dfn> of type <span class="idlAttrType">{{RTCIceCandidatePair}}</span>, required
             </dt>
             <dd>
-              <p>See the {{RTCIceSwitchProposalEvent/candidatePair}} attribute of the
+              <p>
+                See the {{RTCIceSwitchProposalEvent/candidatePair}} attribute of the
                 {{RTCIceSwitchProposalEvent}} interface.
               </p>
             </dd>
@@ -887,7 +1162,8 @@ dictionary RTCIceSwitchProposalEventInit : EventInit {
               <dfn>reason</dfn> of type <span class="idlAttrType">{{RTCIceSwitchReason}}</span>, required
             </dt>
             <dd>
-              <p>See the {{RTCIceSwitchProposalEvent/reason}} attribute of the
+              <p>
+                See the {{RTCIceSwitchProposalEvent/reason}} attribute of the
                 {{RTCIceSwitchProposalEvent}} interface.
               </p>
             </dd>
@@ -895,7 +1171,8 @@ dictionary RTCIceSwitchProposalEventInit : EventInit {
               <dfn>recheck</dfn> of type <span class="idlAttrType">{{RTCIceRecheck}}</span>
             </dt>
             <dd>
-              <p>See the {{RTCIceSwitchProposalEvent/recheck}} attribute of the
+              <p>
+                See the {{RTCIceSwitchProposalEvent/recheck}} attribute of the
                 {{RTCIceSwitchProposalEvent}} interface.
               </p>
             </dd>
@@ -937,7 +1214,7 @@ enum RTCIceSwitchReason {
                 <td>
                   <dfn>network-preference-change</dfn>
                 </td>
-                <td>The preferred network type changed for the user agent.</td>
+                <td>The preferred network type changed for the [= user agent =] .</td>
               </tr>
               <tr>
                 <td>
@@ -967,7 +1244,7 @@ enum RTCIceSwitchReason {
                 <td>
                   <dfn>data-received</dfn>
                 </td>
-                <td>The user agent received data on a candidate pair.</td>
+                <td>The [= user agent =] received data on a candidate pair.</td>
               </tr>
               <tr>
                 <td>
@@ -1006,16 +1283,20 @@ dictionary RTCIceRecheck {
                 <dfn>reason</dfn> of type <span class="idlAttrType">RTCIceSwitchReason</span>, required
               </dt>
               <dd>
-                <p>The {{reason}} member represents the reason for the future trigger to search for a different
-                  candidate pair for the transport.</p>
+                <p>
+                  The {{reason}} member represents the reason for the future trigger to search for a different
+                  candidate pair for the transport.
+                </p>
               </dd>
               <dt>
                 <dfn>earliestRecheckTimestamp</dfn> of type <span class="idlAttrType">DOMHighResTimeStamp</span>,
                 required
               </dt>
               <dd>
-                <p>The {{earliestRecheckTimestamp}} member indicates the earliest time at which the future check will be
-                  performed.</p>
+                <p>
+                  The {{earliestRecheckTimestamp}} member indicates the earliest time at which the future check will be
+                  performed.
+                </p>
               </dd>
             </dl>
           </section>
@@ -1025,7 +1306,9 @@ dictionary RTCIceRecheck {
 
     <section id="rtcicepruneproposalevent">
       <h3><dfn>RTCIcePruneProposalEvent</dfn></h3>
-      <p>The {{RTCIceController/icepruneproposed}} event uses the {{RTCIcePruneProposalEvent}} interface.</p>
+      <p>
+        The {{RTCIceController/icepruneproposed}} event uses the {{RTCIcePruneProposalEvent}} interface.
+      </p>
       <div>
         <pre class="idl">
 [Exposed=Window]
@@ -1069,7 +1352,8 @@ dictionary RTCIcePruneProposalEventInit : EventInit {
                 class="idlAttrType">sequence&lt;{{RTCIceCandidatePair}}&gt;</span>, required
             </dt>
             <dd>
-              <p>The {{candidatePairs}} member represents the candidate pairs selected by the [= ICE agent =] for
+              <p>
+                The {{candidatePairs}} member represents the candidate pairs selected by the [= ICE agent =] for
                 pruning at this time.
               </p>
             </dd>
@@ -1080,17 +1364,19 @@ dictionary RTCIcePruneProposalEventInit : EventInit {
 
   </section>
 
-  <!-- TODO describe somewhere that certain proposals can be rejected (when, how). -->
-
   <section id="rtcpeerconnection">
     <h2>{{RTCPeerConnection}} Extensions</h2>
-    <p>The {{RTCPeerConnection}} extension allows associating an {{RTCIceController}} with an {{RTCPeerConnection}}
+    <p>
+      The {{RTCPeerConnection}} extension allows associating an {{RTCIceController}} with an {{RTCPeerConnection}}
       object at the time of its construction or through {{RTCPeerConnection/setConfiguration()}}. An application can
-      test for support of this specification by checking for the presence of an {{RTCIceController}} object.</p>
+      test for support of this specification by checking for the presence of an {{RTCIceController}} object.
+    </p>
 
     <section id="rtcconfiguration">
       <h3>{{RTCConfiguration}} Extensions</h3>
-      <p>The {{RTCConfiguration}} dictionary is extended with an {{RTCConfiguration/iceController}} member.</p>
+      <p>
+        The {{RTCConfiguration}} dictionary is extended with an {{RTCConfiguration/iceController}} member.
+      </p>
       <div>
         <pre class="idl">
 partial dictionary RTCConfiguration {
@@ -1103,9 +1389,11 @@ partial dictionary RTCConfiguration {
               <dfn>iceController</dfn> of type <span class="idlMemberType">{{RTCIceController}}</span>
             </dt>
             <dd>
-              <p>The {{iceController}} member represents the {{RTCIceController}} object to associate with the
+              <p>
+                The {{iceController}} member represents the {{RTCIceController}} object to associate with the
                 {{RTCPeerConnection}}. Proposals from its [= ICE agent =] will result in events firing on
-                {{iceController}} while it is associated with the {{RTCPeerConnection}}.</p>
+                {{iceController}} while it is associated with the {{RTCPeerConnection}}.
+              </p>
             </dd>
           </dl>
         </section>
@@ -1114,13 +1402,15 @@ partial dictionary RTCConfiguration {
 
     <section>
       <h3>Operation</h3>
-      <p>Certain additional steps need to be performed during the construction of an {{RTCPeerConnection}} and when
+      <p>
+        Certain additional steps need to be performed during the construction of an {{RTCPeerConnection}} and when
         {{RTCPeerConnection/setConfiguration()}} is invoked to establish its association with an {{RTCIceController}},
         if supplied. Both operations achieve this through an extension to [= Set the configuration =] operation.
       </p>
       <section>
         <h4>Constructor</h4>
-        <p>When the <code>RTCPeerConnection.constructor()</code> is invoked, run the following additional steps:</p>
+        <p>
+          When the <code>RTCPeerConnection.constructor()</code> is invoked, run the following additional steps:</p>
         <ol class=algorithm>
           <li>
             <p>
@@ -1137,7 +1427,8 @@ partial dictionary RTCConfiguration {
       </section>
       <section>
         <h4>Set the configuration</h4>
-        <p>To <dfn data-lt="set the configuration" id="set-pc-configuration">set a configuration</dfn> with
+        <p>
+          To <dfn data-lt="set the configuration" id="set-pc-configuration">set a configuration</dfn> with
           <var>configuration</var>, run the following additional steps:
         </p>
         <ol class=algorithm>
@@ -1176,6 +1467,18 @@ partial dictionary RTCConfiguration {
                   If the value of <var>configuration</var>.{{RTCConfiguration/bundlePolicy}} is not
                   {{RTCBundlePolicy/"max-bundle"}}, [= exception/throw =] a {{NotSupportedError}}.
                 </p>
+                <div class="note">
+                  <p>
+                    The use of an {{RTCIceController}} is currently only supported when {{RTCBundlePolicy}} is set to
+                    {{RTCBundlePolicy/"max-bundle"}}, and thus only one media track is negotiated and a single
+                    {{RTCIceTransport}} is used.
+                  </p>
+                  <p>
+                    A future extension to the specification is possible either by allowing to associate an
+                    {{RTCIceController}} with each individual {{RTCIceTransport}} or by multiplexing of several
+                    {{RTCIceTransport}} events and actions to a single {{RTCIceController}}.
+                  </p>
+                </div>
               </li>
               <li>
                 <p>
@@ -1241,10 +1544,11 @@ partial dictionary RTCConfiguration {
     </p>
     <p>
       When the [= ICE agent =] signals that the ICE role for an {{RTCIceTransport}} has changed due to an ICE binding
-      request with a role collision per [[RFC8445]] section 7.3.1.1, the UA will queue a task to set the value of
-      {{RTCIceTransport/[[IceRole]]}} for the {{RTCIceTransport}} to the new value. The task will also set the value of
-      {{RTCIceController/[[IceRole]]}} for the {{RTCPeerConnection/[[IceController]]}} of the {{RTCPeerConnection}}
-      object associated with this [= ICE agent =] to the new value.
+      request with a role collision per [[RFC8445]] section 7.3.1.1, the [= user agent =] will [= queue a task =] on the
+      [= networking task source =] to set the value of {{RTCIceTransport/[[IceRole]]}} for the {{RTCIceTransport}} to
+      the new value. The task will also set the value of {{RTCIceController/[[IceRole]]}} for the
+      {{RTCPeerConnection/[[IceController]]}} of the {{RTCPeerConnection}} object associated with this [= ICE agent =]
+      to the new value.
     </p>
     <p>
       When the [= ICE agent =] indicates that an {{RTCIceTransport}} has changed the selected candidate pair, run the
@@ -1283,7 +1587,8 @@ partial dictionary RTCConfiguration {
 
   <section class="informative">
     <h2>Event summary</h2>
-    <p>The following events fire on {{RTCIceController}} objects:</p>
+    <p>
+      The following events fire on {{RTCIceController}} objects:</p>
     <table class="simple">
       <thead>
         <tr>
