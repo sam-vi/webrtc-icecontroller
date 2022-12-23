@@ -174,7 +174,7 @@ interface RTCIceController : EventTarget {
             agent =] completes a connectivity check on a candidate pair, and when a candidate pair undergoes a state
             change. This may have been a consequence of the application invoking {{RTCIceController/sendIcePing()}}.
           <p>
-            The [= user agent =] may choose to batch together these events to reduce the volume and increase the
+            The [= user agent =] MAY choose to batch together these events to reduce the volume and increase the
             efficiency of the updates.
           </p>
           </p>
@@ -978,8 +978,7 @@ enum RTCIceCandidatePairWriteState {
       These events represent some action that the [= ICE agent =] is proposing to take with regards to ICE connectivity
       checks, changing the candidate pair used for the transport, or maintainence of the candidate pairs. The
       application can affect the operation of the [= ICE agent =] by rejecting any of the proposed actions, and
-      initiating
-      its own actions instead through {{RTCIceController}} methods.
+      initiating its own actions instead through {{RTCIceController}} methods.
     </p>
 
     <!-- TODO describe that certain proposals can be cancelable / rejected (when, how, what happens). -->
@@ -987,7 +986,20 @@ enum RTCIceCandidatePairWriteState {
     <section id="rtcicepingproposalevent">
       <h3><dfn>RTCIcePingProposalEvent</dfn></h3>
       <p>
-        The {{RTCIceController/icepingproposed}} event uses the {{RTCIcePingProposalEvent}} interface.
+        The {{RTCIceController/icepingproposed}} event uses the {{RTCIcePingProposalEvent}} interface. The
+        {{RTCIceController/icepingproposed}} event is fired when the [= ICE agent =] has selected a candidate pair to
+        ping for connectivity check, but the ping has not yet been sent.
+      </p>
+      <p>
+        The {{Event/cancelable}} attribute of the event is initialized to <code>true</code>. If the application sets
+        the canceled flag of the event by invoking {{Event/preventDefault()}} with the event, the [= user agent =] MUST
+        not proceed with sending the proposed connectivity check. The [= user agent =] MAY continue to propose further
+        connectivity checks in the future for the same or other candidate pairs.
+      </p>
+      <p>
+        If the application does not invoke {{Event/preventDefault()}} with the event, the [= user agent =] SHOULD
+        continue to send the proposed connectivity check, unless a change in circumstances has made the check infeasible
+        or unnecessary.
       </p>
       <div>
         <pre class="idl">
@@ -1086,7 +1098,25 @@ dictionary RTCIcePingProposalEventInit : EventInit {
     <section id="rtciceswitchproposalevent">
       <h3><dfn>RTCIceSwitchProposalEvent</dfn></h3>
       <p>
-        The {{RTCIceController/iceswitchproposed}} event uses the {{RTCIceSwitchProposalEvent}} interface.
+        The {{RTCIceController/iceswitchproposed}} event uses the {{RTCIceSwitchProposalEvent}} interface. The
+        {{RTCIceController/iceswitchproposed}} event is fired when the [= ICE agent =] has selected a candidate pair to
+        switch the transport to, but the switch has not yet occurred.
+      </p>
+      <p>
+        The {{Event/cancelable}} attribute of the event is initialized to <code>false</code> if the
+        {{RTCIceSwitchProposalEvent/reason}} for the event is one of {{RTCIceSwitchReason/"data-received"}} or
+        {{RTCIceSwitchReason/"nomination-on-controlled-side"}}, indicating that such a switch may not be prevented by
+        the application. Otherwise, the {{Event/cancelable}} attribute is initialized to <code>true</code>.
+      </p>
+      <p>
+        If the application sets the canceled flag of the event by invoking {{Event/preventDefault()}} with the event,
+        the [= user agent =] MUST not proceed with the switch to the proposed candidate pair. The [= user agent =] MAY
+        continue to propose further switches in the future to the same or other candidate pairs.
+      </p>
+      <p>
+        If the application does not invoke {{Event/preventDefault()}} with the event, the [= user agent =] SHOULD
+        continue to switch the transport to the proposed candidate pair, unless a change in circumstances has made the
+        switch infeasible or unnecessary.
       </p>
       <div>
         <pre class="idl">
@@ -1307,7 +1337,20 @@ dictionary RTCIceRecheck {
     <section id="rtcicepruneproposalevent">
       <h3><dfn>RTCIcePruneProposalEvent</dfn></h3>
       <p>
-        The {{RTCIceController/icepruneproposed}} event uses the {{RTCIcePruneProposalEvent}} interface.
+        The {{RTCIceController/icepruneproposed}} event uses the {{RTCIcePruneProposalEvent}} interface. The
+        {{RTCIceController/icepruneproposed}} event is fired when the [= ICE agent =] has selected some candidate pairs
+        to prune, but the pruning has not yet happened.
+      </p>
+      <p>
+        The {{Event/cancelable}} attribute of the event is initialized to <code>true</code>. If the application sets the
+        canceled flag of the event by invoking {{Event/preventDefault()}} with the event, the [= user agent =] MUST not
+        proceed with pruning the proposed candidate pairs. The [= user agent =] MAY continue to propose pruning of the
+        same or other candidate pairs in the future.
+      </p>
+      <p>
+        If the application does not invoke {{Event/preventDefault()}} with the event, the [= user agent =] SHOULD
+        continue with pruning the proposed candidate pairs, unless a change in circumstances has made the pruning
+        infeasible or unnecessary.
       </p>
       <div>
         <pre class="idl">
@@ -1629,7 +1672,7 @@ partial dictionary RTCConfiguration {
         <tr>
           <th scope=row><dfn data-dfn-for="RTCIceController" data-dfn-type=event>iceswitchproposed</dfn></th>
           <td>{{RTCIceSwitchProposalEvent}}</td>
-          <td>The [= ICE agent =] has selected a candidate pair to switch the transport, but the switch has not yet
+          <td>The [= ICE agent =] has selected a candidate pair to switch the transport to, but the switch has not yet
             occurred.
           </td>
         </tr>
