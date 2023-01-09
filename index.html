@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en" dir="ltr"><head>
 <meta charset="utf-8">
-<meta name="generator" content="ReSpec 32.6.0">
+<meta name="generator" content="ReSpec 32.6.1">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <style>
 .issue-label{text-transform:initial}
@@ -129,7 +129,7 @@ dd{margin-left:0}
 </style>
   
 
-<meta name="description" content="his document defines a set of ECMAScript APIs in WebIDL to allow creation of an RTCIceController object to
+<meta name="description" content="This document defines a set of ECMAScript APIs in WebIDL to allow creation of an RTCIceController object to
       manage the ICE connection used by an RTCPeerConnection.">
 <style>
 var{position:relative;cursor:pointer}
@@ -145,11 +145,6 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
   "editors": [
     {
       "name": "Sameer Vijaykar",
-      "company": "Google",
-      "w3cid": "00000"
-    },
-    {
-      "name": "Harald Alvestrand",
       "company": "Google",
       "w3cid": "00000"
     }
@@ -183,20 +178,20 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
     "hr-time"
   ],
   "localBiblio": {},
-  "publishISODate": "2022-12-23T00:00:00.000Z",
-  "generatedSubtitle": "Unofficial Draft 23 December 2022"
+  "publishISODate": "2023-01-09T00:00:00.000Z",
+  "generatedSubtitle": "Unofficial Draft 09 January 2023"
 }</script>
 <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD"></head>
 
 <body class="h-entry" data-cite="WEBIDL webrtc webrtc-stats html webidl dom hr-time"><div class="head">
     
     <h1 id="title" class="title">IceController Extensions for WebRTC</h1> 
-    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2022-12-23">23 December 2022</time></p>
+    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2023-01-09">09 January 2023</time></p>
     <details open="">
       <summary>More details about this document</summary>
       <dl>
         <dt>This version:</dt><dd>
-                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20221223/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20221223/</a>
+                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230109/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230109/</a>
               </dd>
         <dt>Latest published version:</dt><dd>
                 <a href="https://sam-vi.github.io/webrtc-icecontroller/">https://sam-vi.github.io/webrtc-icecontroller/</a>
@@ -210,10 +205,8 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
         
         
         
-        <dt>Editors:</dt><dd class="editor p-author h-card vcard" data-editor-id="00000">
+        <dt>Editor:</dt><dd class="editor p-author h-card vcard" data-editor-id="00000">
     <span class="p-name fn">Sameer Vijaykar</span> (<span class="p-org org h-org">Google</span>)
-  </dd><dd class="editor p-author h-card vcard" data-editor-id="00000">
-    <span class="p-name fn">Harald Alvestrand</span> (<span class="p-org org h-org">Google</span>)
   </dd>
         
         
@@ -235,7 +228,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
     
     <p class="copyright">
       Copyright ©
-      2022
+      2023
       the document editors/authors.
       Text is available under the
             <a rel="license" href="https://creativecommons.org/licenses/by/4.0/legalcode">Creative Commons Attribution 4.0 International Public License</a>; additional terms may apply.
@@ -245,7 +238,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
 
   <section id="abstract" class="introductory"><h2>Abstract</h2>
     <p>
-      his document defines a set of ECMAScript APIs in WebIDL to allow creation of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-1"><code>RTCIceController</code></a> object to
+      This document defines a set of ECMAScript APIs in WebIDL to allow creation of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-1"><code>RTCIceController</code></a> object to
       manage the ICE connection used by an <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>.
     </p>
   </section>
@@ -267,7 +260,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
       This document is a draft of a potential specification. It has no official
       standing of any kind and does not represent the support or consensus of
       any standards organization.
-    </p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#sotd">Status of This Document</a></li><li class="tocline"><a class="tocxref" href="#intro"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">2. </bdi>Conformance</a></li><li class="tocline"><a class="tocxref" href="#terminology"><bdi class="secno">3. </bdi>Terminology</a></li><li class="tocline"><a class="tocxref" href="#rtcicecontroller"><bdi class="secno">4. </bdi><span class="export" data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceController" data-dfn-for=""><code>RTCIceController</code></span> Interface</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecontroller-interface-definition"><bdi class="secno">4.1 </bdi>Interface Definition</a></li><li class="tocline"><a class="tocxref" href="#constructor"><bdi class="secno">4.2 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#attributes"><bdi class="secno">4.3 </bdi>Attributes</a></li><li class="tocline"><a class="tocxref" href="#methods"><bdi class="secno">4.4 </bdi>Methods</a></li></ol></li><li class="tocline"><a class="tocxref" href="#informational-events"><bdi class="secno">5. </bdi>Informational events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairevent"><bdi class="secno">5.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairEvent" data-dfn-for=""><code>RTCIceCandidatePairEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairupdateevent"><bdi class="secno">5.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairUpdateEvent" data-dfn-for=""><code>RTCIceCandidatePairUpdateEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairreport"><bdi class="secno">5.2.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairReport" data-dfn-for=""><code>RTCIceCandidatePairReport</code></span> Interface</a></li><li class="tocline"><a class="tocxref" href="#rtcroundtriptimesample"><bdi class="secno">5.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCRoundTripTimeSample" data-dfn-for=""><code>RTCRoundTripTimeSample</code></span> Dictionary</a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairwritestate"><bdi class="secno">5.2.3 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceCandidatePairWriteState" data-dfn-for=""><code>RTCIceCandidatePairWriteState</code></span> Enum</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#proposal-events"><bdi class="secno">6. </bdi>Proposal events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicepingproposalevent"><bdi class="secno">6.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIcePingProposalEvent" data-dfn-for=""><code>RTCIcePingProposalEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtciceswitchproposalevent"><bdi class="secno">6.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceSwitchProposalEvent" data-dfn-for=""><code>RTCIceSwitchProposalEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtciceswitchreason"><bdi class="secno">6.2.1 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceSwitchReason" data-dfn-for=""><code>RTCIceSwitchReason</code></span> Enum</a></li><li class="tocline"><a class="tocxref" href="#rtcicerecheck"><bdi class="secno">6.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCIceRecheck" data-dfn-for=""><code>RTCIceRecheck</code></span> Dictionary</a></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcicepruneproposalevent"><bdi class="secno">6.3 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIcePruneProposalEvent" data-dfn-for=""><code>RTCIcePruneProposalEvent</code></span></a></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcpeerconnection"><bdi class="secno">7. </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCPeerConnection" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcpeerconnection" data-type="interface" class="formerLink"><code>RTCPeerConnection</code></span> Extensions</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcconfiguration"><bdi class="secno">7.1 </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCConfiguration" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcconfiguration" data-type="dictionary" class="formerLink"><code>RTCConfiguration</code></span> Extensions</a></li><li class="tocline"><a class="tocxref" href="#operation"><bdi class="secno">7.2 </bdi>Operation</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#constructor-0"><bdi class="secno">7.2.1 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#set-the-configuration"><bdi class="secno">7.2.2 </bdi>Set the configuration</a></li><li class="tocline"><a class="tocxref" href="#set-the-session-description"><bdi class="secno">7.2.3 </bdi>Set the session description</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcicetransport"><bdi class="secno">8. </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCIceTransport" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcicetransport" data-type="interface" class="formerLink"><code>RTCIceTransport</code></span> Extensions</a></li><li class="tocline"><a class="tocxref" href="#event-summary"><bdi class="secno">9. </bdi>Event summary</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">A. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">A.1 </bdi>Normative references</a></li></ol></li></ol></nav>
+    </p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#sotd">Status of This Document</a></li><li class="tocline"><a class="tocxref" href="#intro"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">2. </bdi>Conformance</a></li><li class="tocline"><a class="tocxref" href="#terminology"><bdi class="secno">3. </bdi>Terminology</a></li><li class="tocline"><a class="tocxref" href="#rtcicecontroller"><bdi class="secno">4. </bdi><span class="export" data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceController" data-dfn-for=""><code>RTCIceController</code></span> Interface</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecontroller-interface-definition"><bdi class="secno">4.1 </bdi>Interface Definition</a></li><li class="tocline"><a class="tocxref" href="#constructor"><bdi class="secno">4.2 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#attributes"><bdi class="secno">4.3 </bdi>Attributes</a></li><li class="tocline"><a class="tocxref" href="#methods"><bdi class="secno">4.4 </bdi>Methods</a></li></ol></li><li class="tocline"><a class="tocxref" href="#informational-events"><bdi class="secno">5. </bdi>Informational events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairevent"><bdi class="secno">5.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairEvent" data-dfn-for=""><code>RTCIceCandidatePairEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairupdateevent"><bdi class="secno">5.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairUpdateEvent" data-dfn-for=""><code>RTCIceCandidatePairUpdateEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairreport"><bdi class="secno">5.2.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairReport" data-dfn-for=""><code>RTCIceCandidatePairReport</code></span> Interface</a></li><li class="tocline"><a class="tocxref" href="#rtcroundtriptimesample"><bdi class="secno">5.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCRoundTripTimeSample" data-dfn-for=""><code>RTCRoundTripTimeSample</code></span> Dictionary</a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairwritestate"><bdi class="secno">5.2.3 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceCandidatePairWriteState" data-dfn-for=""><code>RTCIceCandidatePairWriteState</code></span> Enum</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#proposal-events"><bdi class="secno">6. </bdi>Proposal events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicepingproposalevent"><bdi class="secno">6.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIcePingProposalEvent" data-dfn-for=""><code>RTCIcePingProposalEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtciceswitchproposalevent"><bdi class="secno">6.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceSwitchProposalEvent" data-dfn-for=""><code>RTCIceSwitchProposalEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtciceswitchreason"><bdi class="secno">6.2.1 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceSwitchReason" data-dfn-for=""><code>RTCIceSwitchReason</code></span> Enum</a></li><li class="tocline"><a class="tocxref" href="#rtcicerecheck"><bdi class="secno">6.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCIceRecheck" data-dfn-for=""><code>RTCIceRecheck</code></span> Dictionary</a></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcicepruneproposalevent"><bdi class="secno">6.3 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIcePruneProposalEvent" data-dfn-for=""><code>RTCIcePruneProposalEvent</code></span></a></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcpeerconnection"><bdi class="secno">7. </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCPeerConnection" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcpeerconnection" data-type="interface" class="formerLink"><code>RTCPeerConnection</code></span> Extensions</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcconfiguration"><bdi class="secno">7.1 </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCConfiguration" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcconfiguration" data-type="dictionary" class="formerLink"><code>RTCConfiguration</code></span> Extensions</a></li><li class="tocline"><a class="tocxref" href="#operation"><bdi class="secno">7.2 </bdi>Operation</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#constructor-0"><bdi class="secno">7.2.1 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#set-the-configuration"><bdi class="secno">7.2.2 </bdi>Set the configuration</a></li><li class="tocline"><a class="tocxref" href="#set-the-session-description"><bdi class="secno">7.2.3 </bdi>Set the session description</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcicetransport"><bdi class="secno">8. </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCIceTransport" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcicetransport" data-type="interface" class="formerLink"><code>RTCIceTransport</code></span> Extensions</a></li><li class="tocline"><a class="tocxref" href="#event-summary"><bdi class="secno">9. </bdi>Event summary</a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><bdi class="secno">A. </bdi>Acknowledgements</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">B. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">B.1 </bdi>Normative references</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><bdi class="secno">B.2 </bdi>Informative references</a></li></ol></li></ol></nav>
 
   <section class="informative" id="intro"><div class="header-wrapper"><h2 id="x1-introduction"><bdi class="secno">1. </bdi>Introduction</h2><a class="self-link" href="#intro" aria-label="Permalink for Section 1."></a></div><p><em>This section is non-normative.</em></p>
     
@@ -1207,8 +1200,6 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       initiating its own actions instead through <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-10"><code>RTCIceController</code></a> methods.
     </p>
 
-    
-
     <section id="rtcicepingproposalevent"><div class="header-wrapper"><h3 id="x6-1-rtcicepingproposalevent"><bdi class="secno">6.1 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtcicepingproposalevent" data-idl="interface" data-title="RTCIcePingProposalEvent" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIcePingProposalEvent</code></dfn></h3><a class="self-link" href="#rtcicepingproposalevent" aria-label="Permalink for Section 6.1"></a></div>
       
       <p>
@@ -1327,8 +1318,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </p>
       <p>
         The <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute of the event is initialized to <code>false</code> if the
-        <a data-link-type="idl" href="#dom-rtciceswitchproposalevent-reason" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-reason-1"><code>reason</code></a> for the event is one of "<a data-link-type="idl" href="#dom-rtciceswitchreason-data-received" class="internalDFN" id="ref-for-dom-rtciceswitchreason-data-received-1"><code>data-received</code></a>" or
-        "<a data-link-type="idl" href="#dom-rtciceswitchreason-nomination-on-controlled-side" class="internalDFN" id="ref-for-dom-rtciceswitchreason-nomination-on-controlled-side-1"><code>nomination-on-controlled-side</code></a>", indicating that such a switch may not be prevented by
+        <a data-link-type="idl" href="#dom-rtciceswitchproposalevent-reason" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-reason-1"><code>reason</code></a> for the event is one of "<a data-link-type="idl" href="#dom-rtciceswitchreason-data-received" class="internalDFN" id="ref-for-dom-rtciceswitchreason-data-received-1"><code>data-received</code></a>",
+        "<a data-link-type="idl" href="#dom-rtciceswitchreason-nomination-on-controlled-side" class="internalDFN" id="ref-for-dom-rtciceswitchreason-nomination-on-controlled-side-1"><code>nomination-on-controlled-side</code></a>", or
+        "<a data-link-type="idl" href="#dom-rtciceswitchreason-selected-connection-destroyed" class="internalDFN" id="ref-for-dom-rtciceswitchreason-selected-connection-destroyed-1"><code>selected-connection-destroyed</code></a>", indicating that such a switch may not be prevented by
         the application. Otherwise, the <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute is initialized to <code>true</code>.
       </p>
       <p>
@@ -1441,7 +1433,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtciceswitchreason-nomination-on-controlled-side" id="ref-for-dom-rtciceswitchreason-nomination-on-controlled-side-2"><code>nomination-on-controlled-side</code></a>"</span>,
   <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtciceswitchreason-data-received" id="ref-for-dom-rtciceswitchreason-data-received-2"><code>data-received</code></a>"</span>,
   <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtciceswitchreason-connect-state-change" id="ref-for-dom-rtciceswitchreason-connect-state-change-1"><code>connect-state-change</code></a>"</span>,
-  <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtciceswitchreason-selected-connection-destroyed" id="ref-for-dom-rtciceswitchreason-selected-connection-destroyed-1"><code>selected-connection-destroyed</code></a>"</span>,
+  <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtciceswitchreason-selected-connection-destroyed" id="ref-for-dom-rtciceswitchreason-selected-connection-destroyed-2"><code>selected-connection-destroyed</code></a>"</span>,
   <span class="idlEnumItem">"<a class="internalDFN" data-link-type="enum-value" href="#dom-rtciceswitchreason-scheduled-recheck" id="ref-for-dom-rtciceswitchreason-scheduled-recheck-1"><code>scheduled-recheck</code></a>"</span>
 };</span></code></pre>
           <table data-link-for="RTCIceSwitchReason" data-dfn-for="RTCIceSwitchReason" class="simple">
@@ -1626,7 +1618,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <p>
       The <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> extension allows associating an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-11"><code>RTCIceController</code></a> with an <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>
       object at the time of its construction or through <a data-link-type="idl" data-lt="setConfiguration()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-setconfiguration"><code>setConfiguration</code></a><code>()</code>. An application can
-      test for support of this specification by checking for the presence of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-12"><code>RTCIceController</code></a> object.
+      test for support of this specification by checking for the presence of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-12"><code>RTCIceController</code></a> prototype object.
     </p>
 
     <section id="rtcconfiguration"><div class="header-wrapper"><h3 id="x7-1-rtcconfiguration-extensions"><bdi class="secno">7.1 </bdi><a data-link-type="idl" data-lt="RTCConfiguration" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration"><code>RTCConfiguration</code></a> Extensions</h3><a class="self-link" href="#rtcconfiguration" aria-label="Permalink for Section 7.1"></a></div>
@@ -1737,6 +1729,19 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </li>
               <li>
                 <p>
+                  If the value of <var>configuration</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-icecandidatepoolsize"><code>iceCandidatePoolSize</code></a> is not
+                  <code>0</code>, <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw">throw</a> a <a data-link-type="idl" data-lt="NotSupportedError" data-type="exception" href="https://webidl.spec.whatwg.org/#notsupportederror"><code>NotSupportedError</code></a>.
+                </p>
+                <div class="note" role="note" id="issue-container-generatedID-5"><div role="heading" class="note-title marker" id="h-note-5" aria-level="5"><span>Note</span></div><div class="">
+                  <p>
+                    For simplicity, the use of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-20"><code>RTCIceController</code></a> is currently only supported when the application
+                    does not use a prefetched ICE pool as defined in [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8829" title="JavaScript Session Establishment Protocol (JSEP)">RFC8829</a></cite>] (section <a href="https://datatracker.ietf.org/doc/html/rfc8829#section-3.5.4">3.5.4</a> and section
+                    <a href="https://datatracker.ietf.org/doc/html/rfc8829#section-4.1.1">4.1.1</a>).
+                  </p>
+                </div></div>
+              </li>
+              <li>
+                <p>
                   Store <var>configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-9"><code>iceController</code></a> in the
                   <a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-1"><code>[[IceController]]</code></a> internal slot.
                 </p>
@@ -1770,7 +1775,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           </li>
           <li>
             <p>
-              Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-20"><code>RTCIceController</code></a> object stored in
+              Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-21"><code>RTCIceController</code></a> object stored in
               <var>connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-3"><code>[[IceController]]</code></a>.
             </p>
           </li>
@@ -1791,7 +1796,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     
     <p>
       The <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> extensions allow accessing a small subset of the attributes of an <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a>
-      object through an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-21"><code>RTCIceController</code></a> object to make it easy for an application to refer to this information.
+      object through an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-22"><code>RTCIceController</code></a> object to make it easy for an application to refer to this information.
     </p>
     <p>
       The <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> extensions do not change the interface of <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> or its associated types.
@@ -1822,7 +1827,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </li>
       <li>
         <p>
-          Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-22"><code>RTCIceController</code></a> object stored in
+          Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-23"><code>RTCIceController</code></a> object stored in
           <var>connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-6"><code>[[IceController]]</code></a>.
         </p>
       </li>
@@ -1843,7 +1848,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   <section class="informative" id="event-summary"><div class="header-wrapper"><h2 id="x9-event-summary"><bdi class="secno">9. </bdi>Event summary</h2><a class="self-link" href="#event-summary" aria-label="Permalink for Section 9."></a></div><p><em>This section is non-normative.</em></p>
     
     <p>
-      The following events fire on <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-23"><code>RTCIceController</code></a> objects:</p>
+      The following events fire on <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-24"><code>RTCIceController</code></a> objects:</p>
     <table class="simple">
       <thead>
         <tr>
@@ -1899,9 +1904,18 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     </table>
   </section>
 
+  <section class="appendix" id="acknowledgements"><div class="header-wrapper"><h2 id="a-acknowledgements"><bdi class="secno">A. </bdi>Acknowledgements</h2><a class="self-link" href="#acknowledgements" aria-label="Permalink for Appendix A."></a></div>
+    
+    <p>
+      The editors wish to thank the Working Group chairs for their support. The editors would like to thank Harald
+      Alvestrand, Henrik Boström, Jonas Oreland, and Erik Övelius for their contributions to this
+      specification.
+    </p>
+  </section>
 
 
-<section id="references" class="appendix"><div class="header-wrapper"><h2 id="a-references"><bdi class="secno">A. </bdi>References</h2><a class="self-link" href="#references" aria-label="Permalink for Appendix A."></a></div><section id="normative-references"><div class="header-wrapper"><h3 id="a-1-normative-references"><bdi class="secno">A.1 </bdi>Normative references</h3><a class="self-link" href="#normative-references" aria-label="Permalink for Appendix A.1"></a></div>
+
+<section id="references" class="appendix"><div class="header-wrapper"><h2 id="b-references"><bdi class="secno">B. </bdi>References</h2><a class="self-link" href="#references" aria-label="Permalink for Appendix B."></a></div><section id="normative-references"><div class="header-wrapper"><h3 id="b-1-normative-references"><bdi class="secno">B.1 </bdi>Normative references</h3><a class="self-link" href="#normative-references" aria-label="Permalink for Appendix B.1"></a></div>
     
     <dl class="bibliography"><dt id="bib-dom">[DOM]</dt><dd>
       <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Anne van Kesteren.  WHATWG. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
@@ -1928,7 +1942,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     </dd><dt id="bib-webrtc">[WEBRTC]</dt><dd>
       <a href="https://www.w3.org/TR/webrtc/"><cite>WebRTC 1.0: Real-Time Communication Between Browsers</cite></a>. Cullen Jennings; Henrik Boström; Jan-Ivar Bruaroey.  W3C. 26 January 2021. W3C Recommendation. URL: <a href="https://www.w3.org/TR/webrtc/">https://www.w3.org/TR/webrtc/</a>
     </dd><dt id="bib-webrtc-stats">[webrtc-stats]</dt><dd>
-      <a href="https://www.w3.org/TR/webrtc-stats/"><cite>Identifiers for WebRTC's Statistics API</cite></a>. Harald Alvestrand; Varun Singh; Henrik Boström.  W3C. 16 December 2022. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/webrtc-stats/">https://www.w3.org/TR/webrtc-stats/</a>
+      <a href="https://www.w3.org/TR/webrtc-stats/"><cite>Identifiers for WebRTC's Statistics API</cite></a>. Harald Alvestrand; Varun Singh; Henrik Boström.  W3C. 25 December 2022. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/webrtc-stats/">https://www.w3.org/TR/webrtc-stats/</a>
+    </dd></dl>
+  </section><section id="informative-references"><div class="header-wrapper"><h3 id="b-2-informative-references"><bdi class="secno">B.2 </bdi>Informative references</h3><a class="self-link" href="#informative-references" aria-label="Permalink for Appendix B.2"></a></div>
+    
+    <dl class="bibliography"><dt id="bib-rfc8829">[RFC8829]</dt><dd>
+      <a href="https://www.rfc-editor.org/rfc/rfc8829"><cite>JavaScript Session Establishment Protocol (JSEP)</cite></a>. J. Uberti; C. Jennings; E. Rescorla, Ed..  IETF. January 2021. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8829">https://www.rfc-editor.org/rfc/rfc8829</a>
     </dd></dl>
   </section></section><p role="navigation" id="back-to-top">
     <a href="#title"><abbr title="Back to Top">↑</abbr></a>
@@ -2025,13 +2044,13 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecontroller-16" title="§ 7.2 Operation">§ 7.2 Operation</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-17" title="§ 7.2.2 Set the configuration">§ 7.2.2 Set the configuration</a> <a href="#ref-for-dom-rtcicecontroller-18" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-19" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-17" title="§ 7.2.2 Set the configuration">§ 7.2.2 Set the configuration</a> <a href="#ref-for-dom-rtcicecontroller-18" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-19" title="Reference 3">(3)</a> <a href="#ref-for-dom-rtcicecontroller-20" title="Reference 4">(4)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-20" title="§ 7.2.3 Set the session description">§ 7.2.3 Set the session description</a> 
+    <a href="#ref-for-dom-rtcicecontroller-21" title="§ 7.2.3 Set the session description">§ 7.2.3 Set the session description</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-21" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dom-rtcicecontroller-22" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-22" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dom-rtcicecontroller-23" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-23" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtcicecontroller-24" title="§ 9. Event summary">§ 9. Event summary</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-ice-agent" aria-label="Links in this document to definition: ICE agent">
@@ -3261,7 +3280,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtciceswitchreason-selected-connection-destroyed-1" title="§ 6.2.1 RTCIceSwitchReason Enum">§ 6.2.1 RTCIceSwitchReason Enum</a> 
+    <a href="#ref-for-dom-rtciceswitchreason-selected-connection-destroyed-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtciceswitchreason-selected-connection-destroyed-2" title="§ 6.2.1 RTCIceSwitchReason Enum">§ 6.2.1 RTCIceSwitchReason Enum</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtciceswitchreason-scheduled-recheck" aria-label="Links in this document to definition: scheduled-recheck">
