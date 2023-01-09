@@ -13,7 +13,7 @@
 
   <section id="abstract">
     <p>
-      his document defines a set of ECMAScript APIs in WebIDL to allow creation of an {{RTCIceController}} object to
+      This document defines a set of ECMAScript APIs in WebIDL to allow creation of an {{RTCIceController}} object to
       manage the ICE connection used by an {{RTCPeerConnection}}.
     </p>
   </section>
@@ -981,8 +981,6 @@ enum RTCIceCandidatePairWriteState {
       initiating its own actions instead through {{RTCIceController}} methods.
     </p>
 
-    <!-- TODO describe that certain proposals can be cancelable / rejected (when, how, what happens). -->
-
     <section id="rtcicepingproposalevent">
       <h3><dfn>RTCIcePingProposalEvent</dfn></h3>
       <p>
@@ -1104,8 +1102,9 @@ dictionary RTCIcePingProposalEventInit : EventInit {
       </p>
       <p>
         The {{Event/cancelable}} attribute of the event is initialized to <code>false</code> if the
-        {{RTCIceSwitchProposalEvent/reason}} for the event is one of {{RTCIceSwitchReason/"data-received"}} or
-        {{RTCIceSwitchReason/"nomination-on-controlled-side"}}, indicating that such a switch may not be prevented by
+        {{RTCIceSwitchProposalEvent/reason}} for the event is one of {{RTCIceSwitchReason/"data-received"}},
+        {{RTCIceSwitchReason/"nomination-on-controlled-side"}}, or
+        {{RTCIceSwitchReason/"selected-connection-destroyed"}}, indicating that such a switch may not be prevented by
         the application. Otherwise, the {{Event/cancelable}} attribute is initialized to <code>true</code>.
       </p>
       <p>
@@ -1412,7 +1411,7 @@ dictionary RTCIcePruneProposalEventInit : EventInit {
     <p>
       The {{RTCPeerConnection}} extension allows associating an {{RTCIceController}} with an {{RTCPeerConnection}}
       object at the time of its construction or through {{RTCPeerConnection/setConfiguration()}}. An application can
-      test for support of this specification by checking for the presence of an {{RTCIceController}} object.
+      test for support of this specification by checking for the presence of an {{RTCIceController}} prototype object.
     </p>
 
     <section id="rtcconfiguration">
@@ -1520,6 +1519,20 @@ partial dictionary RTCConfiguration {
                     A future extension to the specification is possible either by allowing to associate an
                     {{RTCIceController}} with each individual {{RTCIceTransport}} or by multiplexing of several
                     {{RTCIceTransport}} events and actions to a single {{RTCIceController}}.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <p>
+                  If the value of <var>configuration</var>.{{RTCConfiguration/iceCandidatePoolSize}} is not
+                  <code>0</code>, [= exception/throw =] a {{NotSupportedError}}.
+                </p>
+                <div class="note">
+                  <p>
+                    For simplicity, the use of an {{RTCIceController}} is currently only supported when the application
+                    does not use a prefetched ICE pool as defined in [[RFC8829]] (section <a
+                      href="https://datatracker.ietf.org/doc/html/rfc8829#section-3.5.4">3.5.4</a> and section
+                    <a href="https://datatracker.ietf.org/doc/html/rfc8829#section-4.1.1">4.1.1</a>).
                   </p>
                 </div>
               </li>
@@ -1685,6 +1698,15 @@ partial dictionary RTCConfiguration {
         </tr>
       </tbody>
     </table>
+  </section>
+
+  <section class="appendix">
+    <h2>Acknowledgements</h2>
+    <p>
+      The editors wish to thank the Working Group chairs for their support. The editors would like to thank Harald
+      Alvestrand, Henrik Boström, Jonas Oreland, and Erik Övelius for their contributions to this
+      specification.
+    </p>
   </section>
 
 </body>

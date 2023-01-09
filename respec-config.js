@@ -5,8 +5,7 @@ var respecConfig = {
   latestVersion: "https://sam-vi.github.io/webrtc-icecontroller/",
   shortName: "webrtc-icecontroller",
   editors: [
-    { name: "Sameer Vijaykar", company: "Google", w3cid: "00000" },
-    { name: "Harald Alvestrand", company: "Google", w3cid: "00000" }
+    { name: "Sameer Vijaykar", company: "Google", w3cid: "00000" }
   ],
   authors: [
   ],
