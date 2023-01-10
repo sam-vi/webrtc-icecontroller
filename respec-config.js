@@ -32,4 +32,8 @@ var respecConfig = {
   xref: ["webrtc", "webrtc-stats", "html", "webidl", "dom", "hr-time"],
   localBiblio: {
   },
+  highlightVars: true,
+  lint: {
+    "no-unused-vars": true,
+  },
 }

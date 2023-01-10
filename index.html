@@ -73,6 +73,14 @@
       The terms <dfn data-lt="reject|rejection|rejecting">rejected</dfn> and <dfn
         data-lt="resolve|resolves">resolved</dfn> used in the context of Promises are defined in [[!ECMASCRIPT-6.0]].
     </p>
+    <p>
+      {{DOMHighResTimeStamp}}, {{Performance.timeOrigin}}, and {{Performance.now()}} are defined in [[!HIGHRES-TIME]].
+    </p>
+    <p>
+      A <dfn>timestamp</dfn> is expressed with {{DOMHighResTimeStamp}}, and is defined as
+      {{Performance}}.{{Performance/timeOrigin}} + {{Performance}}.{{Performance/now()}} at the time at which a past
+      event occurred or a future event will occur.
+    </p>
   </section>
 
 
@@ -120,22 +128,22 @@ interface RTCIceController : EventTarget {
           </p>
           <ol class="algorithm">
             <li>
-              Let <var>controller</var> be a newly created {{RTCIceController}} object.
+              Let |controller:RTCIceController| be a newly created {{RTCIceController}} object.
             </li>
             <li>
-              Let <var>controller</var> have an <dfn data-dfn-for="RTCIceController">[[\IceRole]]</dfn> internal slot,
+              Let |controller| have an <dfn data-dfn-for="RTCIceController">[[\IceRole]]</dfn> internal slot,
               initialized to {{RTCIceRole/"unknown"}}.
             </li>
             <li>
-              Let <var>controller</var> have a <dfn data-dfn-for="RTCIceController">[[\SelectedCandidatePair]]</dfn>
+              Let |controller| have a <dfn data-dfn-for="RTCIceController">[[\SelectedCandidatePair]]</dfn>
               internal slot, initialized to <code>null</code>.
             </li>
             <li>
-              Let <var>controller</var> have a <dfn data-dfn-for="RTCIceController">[[\PeerConnection]]</dfn> internal
+              Let |controller| have a <dfn data-dfn-for="RTCIceController">[[\PeerConnection]]</dfn> internal
               slot, initialized to <code>null</code>.
             </li>
             <li>
-              Return <var>controller</var>.
+              Return |controller|.
             </li>
           </ol>
           <div>
@@ -195,7 +203,7 @@ interface RTCIceController : EventTarget {
         <dd>
           <p>
             This event handler, of event handler event type {{candidatepairdestroyed}}, MUST be fired any time the
-            [=ICE agent =] destroys a candidate pair. This may have been a consequence of the application invoking
+            [= ICE agent =] destroys a candidate pair. This may have been a consequence of the application invoking
             {{RTCIceController/pruneCandidatePairs()}}.
           </p>
         </dd>
@@ -312,8 +320,8 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
-                If <var>X</var> connectivity checks have been sent in the previous <var>Y</var> duration of time, reject
-                <var>p</var> with a newly [= exception/created =] {{QuotaExceededError}}.
+                If <code>X</code> connectivity checks have been sent in the previous <code>Y</code> duration of time,
+                reject <var>p</var> with a newly [= exception/created =] {{QuotaExceededError}}.
               </p>
               <div class="note">
                 <p>
@@ -709,8 +717,8 @@ interface RTCIceCandidatePairReport {
               </dt>
               <dd>
                 <p>
-                  The {{lastPingSentTimestamp}} attribute, if present, represents the timestamp at which the last ping
-                  was sent for an ICE connectivity check on this candidate pair.
+                  The {{lastPingSentTimestamp}} attribute, if present, represents the [= timestamp =] at which the last
+                  ping was sent for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -719,8 +727,8 @@ interface RTCIceCandidatePairReport {
               </dt>
               <dd>
                 <p>
-                  The {{lastPingResponseReceivedTimestamp}} attribute, if present, represents the timestamp at which
-                  the last response was received to a ping for an ICE connectivity check on this candidate pair.
+                  The {{lastPingResponseReceivedTimestamp}} attribute, if present, represents the [= timestamp =] at
+                  which the last response was received to a ping for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -729,8 +737,8 @@ interface RTCIceCandidatePairReport {
               </dt>
               <dd>
                 <p>
-                  The {{lastPingReceivedTimestamp}} attribute, if present, represents the timestamp at which the last
-                  ping was received from the peer for an ICE connectivity check on this candidate pair.
+                  The {{lastPingReceivedTimestamp}} attribute, if present, represents the [= timestamp =] at which the
+                  last ping was received from the peer for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -739,8 +747,8 @@ interface RTCIceCandidatePairReport {
               </dt>
               <dd>
                 <p>
-                  The {{lastPacketReceivedTimestamp}} attribute, if present, represents the timestamp at which the last
-                  packet was received on this candidate pair, excluding STUN packets.
+                  The {{lastPacketReceivedTimestamp}} attribute, if present, represents the [= timestamp =] at which the
+                  last packet was received on this candidate pair, excluding STUN packets.
                 </p>
               </dd>
               <dt>
@@ -816,8 +824,8 @@ dictionary RTCIceCandidatePairReportInit {
               </dt>
               <dd>
                 <p>
-                  The {{lastPingSentTimestamp}} member, if present, represents the timestamp at which the last ping was
-                  sent for an ICE connectivity check on this candidate pair.
+                  The {{lastPingSentTimestamp}} member, if present, represents the [= timestamp =] at which the last
+                  ping was sent for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -826,8 +834,8 @@ dictionary RTCIceCandidatePairReportInit {
               </dt>
               <dd>
                 <p>
-                  The {{lastPingResponseReceivedTimestamp}} member, if present, represents the timestamp at which the
-                  last response was received to a ping for an ICE connectivity check on this candidate pair.
+                  The {{lastPingResponseReceivedTimestamp}} member, if present, represents the [= timestamp =] at which
+                  the last response was received to a ping for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -835,8 +843,8 @@ dictionary RTCIceCandidatePairReportInit {
               </dt>
               <dd>
                 <p>
-                  The {{lastPingReceivedTimestamp}} member, if present, represents the timestamp at which the last ping
-                  was received from the peer for an ICE connectivity check on this candidate pair.
+                  The {{lastPingReceivedTimestamp}} member, if present, represents the [= timestamp =] at which the last
+                  ping was received from the peer for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -844,8 +852,8 @@ dictionary RTCIceCandidatePairReportInit {
               </dt>
               <dd>
                 <p>
-                  The {{lastPacketReceivedTimestamp}} member, if present, represents the timestamp at which the last
-                  packet was received on this candidate pair, excluding STUN packets.
+                  The {{lastPacketReceivedTimestamp}} member, if present, represents the [= timestamp =] at which the
+                  last packet was received on this candidate pair, excluding STUN packets.
                 </p>
               </dd>
               <dt>
@@ -887,7 +895,8 @@ dictionary RTCRoundTripTimeSample {
               </dt>
               <dd>
                 <p>
-                  The {{timestamp}} member represents the time at which this round trip time sample was measured.
+                  The {{RTCRoundTripTimeSample/timestamp}} member represents the time at which this round trip time
+                  sample was measured.
                 </p>
               </dd>
               <dt>
@@ -1033,8 +1042,8 @@ interface RTCIcePingProposalEvent : Event {
             </dt>
             <dd>
               <p>
-                The {{lastPingSentTimestamp}} attribute represents the timestamp at which the last connectivity check
-                ping was sent by the [= ICE agent =].
+                The {{lastPingSentTimestamp}} attribute represents the [= timestamp =] at which the last connectivity
+                check ping was sent by the [= ICE agent =].
               </p>
             </dd>
             <dt>
@@ -1043,8 +1052,8 @@ interface RTCIcePingProposalEvent : Event {
             </dt>
             <dd>
               <p>
-                The {{earliestNextPingTimestamp}} attribute represents the earliest time at which the [= ICE agent =]
-                will select another candidate pair to ping for connectivity check.
+                The {{earliestNextPingTimestamp}} attribute represents the earliest [= timestamp =] at which the [= ICE
+                agent =] will select another candidate pair to ping for connectivity check.
               </p>
             </dd>
           </dl>
@@ -1323,8 +1332,8 @@ dictionary RTCIceRecheck {
               </dt>
               <dd>
                 <p>
-                  The {{earliestRecheckTimestamp}} member indicates the earliest time at which the future check will be
-                  performed.
+                  The {{earliestRecheckTimestamp}} member indicates the earliest [= timestamp =] at which the future
+                  check will be performed.
                 </p>
               </dd>
             </dl>
