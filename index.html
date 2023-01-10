@@ -185,7 +185,6 @@ interface RTCIceController : EventTarget {
             The [= user agent =] MAY choose to batch together these events to reduce the volume and increase the
             efficiency of the updates.
           </p>
-          </p>
         </dd>
         <dt>
           <dfn>oncandidatepairswitched</dfn> of type <span class="idlAttrType">{{EventHandler}}</span>
@@ -297,58 +296,60 @@ interface RTCIceController : EventTarget {
               <p>
                 Run the following steps in parallel:
               </p>
+              <ol>
+                <li>
+                  <p>
+                    Run the steps described by the [= validate() algorithm =] to which |connection|, a new sequence
+                    containing |candidatePair|, and |p| are supplied as arguments.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If either the local or remote candidate pair identified by |candidatePair| is [=
+                    administratively prohibited =], [= resolve =] |p| with <code>undefined</code>.
+                  </p>
+                  <div class="note">
+                    <p>
+                      A candidate is <dfn id="administratively-prohibited">administratively prohibited</dfn> if the [=
+                      user
+                      agent =] has decided not to allow connection attempts to this address, as described further in
+                      {{RTCPeerConnection/addIceCandidate()}}.
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <p>
+                    If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
+                    {{RTCStatsIceCandidatePairState}} is {{RTCStatsIceCandidatePairState/"failed"}}, [= reject =]
+                    |p| with a newly [= exception/created =] {{InvalidStateError}}.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If <code>X</code> connectivity checks have been sent in the previous <code>Y</code> duration of
+                    time,
+                    reject |p| with a newly [= exception/created =] {{QuotaExceededError}}.
+                  </p>
+                  <div class="note">
+                    <p>
+                      The exact nature of this rate-limiting check is TBD.
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <p>
+                    Instruct the [= ICE agent=] to construct and send a STUN check from the local candidate to the
+                    remote
+                    candidate.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    [= Resolve =] |p| with <code>undefined</code>.
+                  </p>
+                </li>
+              </ol>
             </li>
-            <ol>
-              <li>
-                <p>
-                  Run the steps described by the [= validate() algorithm =] to which |connection|, a new sequence
-                  containing |candidatePair|, and |p| are supplied as arguments.
-                </p>
-              </li>
-              <li>
-                <p>
-                  If either the local or remote candidate pair identified by |candidatePair| is [=
-                  administratively prohibited =], [= resolve =] |p| with <code>undefined</code>.
-                </p>
-                <div class="note">
-                  <p>
-                    A candidate is <dfn id="administratively-prohibited">administratively prohibited</dfn> if the [=
-                    user
-                    agent =] has decided not to allow connection attempts to this address, as described further in
-                    {{RTCPeerConnection/addIceCandidate()}}.
-                  </p>
-                </div>
-              </li>
-              <li>
-                <p>
-                  If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
-                  {{RTCStatsIceCandidatePairState}} is {{RTCStatsIceCandidatePairState/"failed"}}, [= reject =]
-                  |p| with a newly [= exception/created =] {{InvalidStateError}}.
-                </p>
-              </li>
-              <li>
-                <p>
-                  If <code>X</code> connectivity checks have been sent in the previous <code>Y</code> duration of time,
-                  reject |p| with a newly [= exception/created =] {{QuotaExceededError}}.
-                </p>
-                <div class="note">
-                  <p>
-                    The exact nature of this rate-limiting check is TBD.
-                  </p>
-                </div>
-              </li>
-              <li>
-                <p>
-                  Instruct the [= ICE agent=] to construct and send a STUN check from the local candidate to the remote
-                  candidate.
-                </p>
-              </li>
-              <li>
-                <p>
-                  [= Resolve =] |p| with <code>undefined</code>.
-                </p>
-              </li>
-            </ol>
             <li>
               <p>
                 Return |p|.
@@ -391,40 +392,41 @@ interface RTCIceController : EventTarget {
               <p>
                 Run the following steps in parallel:
               </p>
-            </li>
-            <ol>
-              <li>
-                <p>
-                  Run the steps described by the [= validate() algorithm =] to which |connection|, a new sequence
-                  containing |candidatePair|, and |p| are supplied as arguments.
-                </p>
-              </li>
-              <li>
-                <p>
-                  If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
-                  {{RTCStatsIceCandidatePairState}} is not {{RTCStatsIceCandidatePairState/"succeeded"}}, reject
-                  |p| with a newly [= exception/created =] {{InvalidStateError}}.
-                </p>
-                <div class="note">
+              <ol>
+                <li>
                   <p>
-                    Attempting to switch to a candidate pair with either a local or remote candidate that is [=
-                    administratively prohibited =] will also lead to an abort at this stage, because connectivity checks
-                    are prohibited on such a candidate pair, so it will never transition to the
-                    {{RTCStatsIceCandidatePairState/"succeeded"}} state.
+                    Run the steps described by the [= validate() algorithm =] to which |connection|, a new sequence
+                    containing |candidatePair|, and |p| are supplied as arguments.
                   </p>
-                </div>
-              </li>
-              <li>
-                <p>
-                  Instruct the [= ICE agent =] to change the selected candidate pair to |candidatePair|.
-                </p>
-              </li>
-              <li>
-                <p>
-                  [= Resolve =] |p| with undefined.
-                </p>
-              </li>
-            </ol>
+                </li>
+                <li>
+                  <p>
+                    If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
+                    {{RTCStatsIceCandidatePairState}} is not {{RTCStatsIceCandidatePairState/"succeeded"}}, reject
+                    |p| with a newly [= exception/created =] {{InvalidStateError}}.
+                  </p>
+                  <div class="note">
+                    <p>
+                      Attempting to switch to a candidate pair with either a local or remote candidate that is [=
+                      administratively prohibited =] will also lead to an abort at this stage, because connectivity
+                      checks
+                      are prohibited on such a candidate pair, so it will never transition to the
+                      {{RTCStatsIceCandidatePairState/"succeeded"}} state.
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <p>
+                    Instruct the [= ICE agent =] to change the selected candidate pair to |candidatePair|.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    [= Resolve =] |p| with undefined.
+                  </p>
+                </li>
+              </ol>
+            </li>
             <li>
               <p>
                 Return |p|.
@@ -463,24 +465,29 @@ interface RTCIceController : EventTarget {
                 Let |p:Promise| be a new promise.
               </p>
             </li>
-            <ol>
-              <li>
-                <p>
-                  Run the steps described by the [= validate() algorithm =] to which |connection|,
-                  |candidatePairs|, and |p| are supplied as arguments.
-                </p>
-              </li>
-              <li>
-                <p>
-                  Instruct the [= ICE agent =] to prune the candidate pairs in |candidatePairs|.
-                </p>
-              </li>
-              <li>
-                <p>
-                  [= Resolve =] |p| with undefined.
-                </p>
-              </li>
-            </ol>
+            <li>
+              <p>
+                Run the following steps in parallel:
+              </p>
+              <ol>
+                <li>
+                  <p>
+                    Run the steps described by the [= validate() algorithm =] to which |connection|,
+                    |candidatePairs|, and |p| are supplied as arguments.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Instruct the [= ICE agent =] to prune the candidate pairs in |candidatePairs|.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    [= Resolve =] |p| with undefined.
+                  </p>
+                </li>
+              </ol>
+            </li>
             <li>
               <p>
                 Return |p|.
