@@ -518,34 +518,35 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           <ol class="algorithm">
             <li>
               <p>
-                Let <var>candidatePair</var> be the method's first argument.
+                Let <var data-type="RTCIceCandidatePair">candidatePair</var> be the method's first argument.
               </p>
             </li>
             <li>
               <p>
-                Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-6"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-6"><code>sendIcePing</code></a> is invoked.
+                Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-6"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-6"><code>sendIcePing</code></a> is
+                invoked.
               </p>
             </li>
             <li>
               <p>
-                Let <var>connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object stored in
-                <var>controller</var>.<a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-1"><code>[[PeerConnection]]</code></a>.
+                Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object stored in
+                <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-1"><code>[[PeerConnection]]</code></a>.
               </p>
             </li>
             <li>
               <p>
-                Let <var>p</var> be a new promise.
+                Let <var data-type="Promise">p</var> be a new promise.
               </p>
             </li>
             <li>
               <p>
-                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-1">validate() algorithm</a> to which <var>connection</var>, a new sequence
-                containing <var>candidatePair</var>, and <var>p</var> are supplied as arguments.
+                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-1">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>, a new sequence
+                containing <var data-type="RTCIceCandidatePair">candidatePair</var>, and <var data-type="Promise">p</var> are supplied as arguments.
               </p>
             </li>
             <li>
               <p>
-                If either the local or remote candidate pair identified by <var>candidatePair</var> is <a data-link-type="dfn" href="#administratively-prohibited" class="internalDFN" id="ref-for-administratively-prohibited-1">administratively prohibited</a>, <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-1">resolve</a> <var>p</var> with <code>undefined</code>.
+                If either the local or remote candidate pair identified by <var data-type="RTCIceCandidatePair">candidatePair</var> is <a data-link-type="dfn" href="#administratively-prohibited" class="internalDFN" id="ref-for-administratively-prohibited-1">administratively prohibited</a>, <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-1">resolve</a> <var data-type="Promise">p</var> with <code>undefined</code>.
               </p>
               <div class="note" role="note" id="issue-container-generatedID"><div role="heading" class="note-title marker" id="h-note" aria-level="4"><span>Note</span></div><div class="">
                 <p>
@@ -558,13 +559,13 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               <p>
                 If the current <a data-link-type="idl" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-1"><code>state</code></a> of the candidate pair
                 <a data-link-type="idl" data-lt="RTCStatsIceCandidatePairState" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate"><code>RTCStatsIceCandidatePairState</code></a> is "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-failed"><code>failed</code></a>", <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-1">reject</a>
-                <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+                <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
               </p>
             </li>
             <li>
               <p>
                 If <code>X</code> connectivity checks have been sent in the previous <code>Y</code> duration of time,
-                reject <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="QuotaExceededError" data-type="exception" href="https://webidl.spec.whatwg.org/#quotaexceedederror"><code>QuotaExceededError</code></a>.
+                reject <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="QuotaExceededError" data-type="exception" href="https://webidl.spec.whatwg.org/#quotaexceedederror"><code>QuotaExceededError</code></a>.
               </p>
               <div class="note" role="note" id="issue-container-generatedID-0"><div role="heading" class="note-title marker" id="h-note-0" aria-level="4"><span>Note</span></div><div class="">
                 <p>
@@ -580,7 +581,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
-                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-2">Resolve</a> <var>p</var> with <code>undefined</code>.
+                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-2">Resolve</a> <var data-type="Promise">p</var> with <code>undefined</code>.
               </p>
             </li>
           </ol>
@@ -596,36 +597,37 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           <ol class="algorithm">
             <li>
               <p>
-                Let <var>candidatePair</var> be the method's first argument.
+                Let <var data-type="RTCIceCandidatePair">candidatePair</var> be the method's first argument.
               </p>
             </li>
             <li>
               <p>
-                Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-7"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-7"><code>sendIcePing</code></a> is invoked.
+                Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-7"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-7"><code>sendIcePing</code></a> is
+                invoked.
               </p>
             </li>
             <li>
               <p>
-                Let <var>connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object stored in
-                <var>controller</var>.<a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-2"><code>[[PeerConnection]]</code></a>.
+                Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object stored in
+                <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-2"><code>[[PeerConnection]]</code></a>.
               </p>
             </li>
             <li>
               <p>
-                Let <var>p</var> be a new promise.
+                Let <var data-type="Promise">p</var> be a new promise.
               </p>
             </li>
             <li>
               <p>
-                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-2">validate() algorithm</a> to which <var>connection</var>, a new sequence
-                containing <var>candidatePair</var>, and <var>p</var> are supplied as arguments.
+                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-2">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>, a new sequence
+                containing <var data-type="RTCIceCandidatePair">candidatePair</var>, and <var data-type="Promise">p</var> are supplied as arguments.
               </p>
             </li>
             <li>
               <p>
                 If the current <a data-link-type="idl" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-2"><code>state</code></a> of the candidate pair
                 <a data-link-type="idl" data-lt="RTCStatsIceCandidatePairState" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate"><code>RTCStatsIceCandidatePairState</code></a> is not "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-succeeded"><code>succeeded</code></a>", reject
-                <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+                <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
               </p>
               <div class="note" role="note" id="issue-container-generatedID-1"><div role="heading" class="note-title marker" id="h-note-1" aria-level="4"><span>Note</span></div><div class="">
                 <p>
@@ -637,12 +639,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
-                Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-10">ICE agent</a> to change the selected candidate pair to <var>candidatePair</var>.
+                Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-10">ICE agent</a> to change the selected candidate pair to <var data-type="RTCIceCandidatePair">candidatePair</var>.
               </p>
             </li>
             <li>
               <p>
-                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-3">Resolve</a> <var>p</var> with undefined.
+                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-3">Resolve</a> <var data-type="Promise">p</var> with undefined.
               </p>
             </li>
           </ol>
@@ -658,39 +660,40 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           <ol class="algorithm">
             <li>
               <p>
-                Let <var>candidatePairs</var> be the method's first argument.
+                Let <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var> be the method's first argument.
               </p>
             </li>
             <li>
               <p>
-                Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-8"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-8"><code>sendIcePing</code></a> is invoked.
+                Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-8"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-8"><code>sendIcePing</code></a> is
+                invoked.
               </p>
             </li>
             <li>
               <p>
-                Let <var>connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object stored in
-                <var>controller</var>.<a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-3"><code>[[PeerConnection]]</code></a>.
+                Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object stored in
+                <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-3"><code>[[PeerConnection]]</code></a>.
               </p>
             </li>
             <li>
               <p>
-                Let <var>p</var> be a new promise.
+                Let <var data-type="Promise">p</var> be a new promise.
               </p>
             </li>
             <li>
               <p>
-                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-3">validate() algorithm</a> to which <var>connection</var>,
-                <var>candidatePairs</var>, and <var>p</var> are supplied as arguments.
+                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-3">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>,
+                <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>, and <var data-type="Promise">p</var> are supplied as arguments.
               </p>
             </li>
             <li>
               <p>
-                Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-11">ICE agent</a> to prune the candidate pairs in <var>candidatePairs</var>.
+                Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-11">ICE agent</a> to prune the candidate pairs in <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>.
               </p>
             </li>
             <li>
               <p>
-                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-4">Resolve</a> <var>p</var> with undefined.
+                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-4">Resolve</a> <var data-type="Promise">p</var> with undefined.
               </p>
             </li>
           </ol>
@@ -704,26 +707,26 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         <ol class="algorithm">
           <li>
             <p>
-              Let <var>connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object, <var>candidatePairs</var> be the sequence
-              of candidate pairs, and <var>p</var> be the Promise supplied to the algorithm.
+              Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object,
+              <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var> be the sequence of candidate pairs, and <var data-type="Promise">p</var>
+              be the Promise supplied to the algorithm.
             </p>
           </li>
           <li>
             <p>
-              If <var>connection</var> is <code>null</code>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-2">reject</a> <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a>
-              <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a> and abort these steps.
+              If <var data-type="RTCPeerConnection">connection</var> is <code>null</code>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-2">reject</a> <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a> and abort these steps.
             </p>
           </li>
           <li>
             <p>
-              If <var>connection</var>.<a data-link-type="attribute" data-lt="[[IsClosed]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-isclosed"><code>[[IsClosed]]</code></a> is <code>true</code>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-3">reject</a>
-              <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IsClosed]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-isclosed"><code>[[IsClosed]]</code></a> is <code>true</code>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-3">reject</a>
+              <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
             </p>
           </li>
           
           <li>
             <p>
-              Let <var>transport</var> be the sole <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> object in use by <var>connection</var>.
+              Let <var data-type="RTCIceTransport">transport</var> be the sole <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> object in use by <var data-type="RTCPeerConnection">connection</var>.
             </p>
             <div class="note" role="note" id="issue-container-generatedID-2"><div role="heading" class="note-title marker" id="h-note-2" aria-level="4"><span>Note</span></div><div class="">
               <p>
@@ -734,21 +737,21 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           </li>
           <li>
             <p>
-              If <var>transport</var>.<a data-link-type="attribute" data-lt="[[IceTransportState]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-icetransportstate"><code>[[IceTransportState]]</code></a> is either of
+              If <var data-type="RTCIceTransport">transport</var>.<a data-link-type="attribute" data-lt="[[IceTransportState]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-icetransportstate"><code>[[IceTransportState]]</code></a> is either of
               "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-new"><code>new</code></a>", "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-failed"><code>failed</code></a>" or "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-closed"><code>closed</code></a>",
-              <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-4">reject</a> <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+              <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-4">reject</a> <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
             </p>
           </li>
           <li>
             <p>
-              If <var>candidatePair</var> does not identify a valid candidate pair sent in
-              <a data-link-type="idl" href="#dom-rtcicecontroller-oncandidatepairadded" class="internalDFN" id="ref-for-dom-rtcicecontroller-oncandidatepairadded-2"><code>oncandidatepairadded</code></a>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-5">reject</a> <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a>
+              If <var data-type="RTCIceCandidatePair">candidatePair</var> does not identify a valid candidate pair sent in
+              <a data-link-type="idl" href="#dom-rtcicecontroller-oncandidatepairadded" class="internalDFN" id="ref-for-dom-rtcicecontroller-oncandidatepairadded-2"><code>oncandidatepairadded</code></a>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-5">reject</a> <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a>
               <a data-link-type="idl" data-lt="NotFoundError" data-type="exception" href="https://webidl.spec.whatwg.org/#notfounderror"><code>NotFoundError</code></a>.
             </p>
             <div class="note" role="note" id="issue-container-generatedID-3"><div role="heading" class="note-title marker" id="h-note-3" aria-level="4"><span>Note</span></div><div class="">
               <p>
-                A valid candidate pair will be composed of a local candidate gathered by <var>transport</var>, and a
-                remote candidate received by <var>transport</var> via <a data-link-type="idl" data-lt="addIceCandidate()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-peerconnection-addicecandidate"><code>addIceCandidate</code></a><code>()</code> or a
+                A valid candidate pair will be composed of a local candidate gathered by <var data-type="RTCIceTransport">transport</var>, and a
+                remote candidate received by <var data-type="RTCIceTransport">transport</var> via <a data-link-type="idl" data-lt="addIceCandidate()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-peerconnection-addicecandidate"><code>addIceCandidate</code></a><code>()</code> or a
                 peer reflexive candidate.
               </p>
             </div></div>
@@ -1674,12 +1677,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         <ol class="algorithm">
           <li>
             <p>
-              Let <var>connection</var> be the newly created <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object.
+              Let <var data-type="RTCPeerConnection">connection</var> be the newly created <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object.
             </p>
           </li>
           <li>
             <p>
-              Let <var>connection</var> have an <dfn data-dfn-for="RTCPeerConnection" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-icecontroller" tabindex="0" aria-haspopup="dialog">[[IceController]]</dfn> internal
+              Let <var data-type="RTCPeerConnection">connection</var> have an <dfn data-dfn-for="RTCPeerConnection" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-icecontroller" tabindex="0" aria-haspopup="dialog">[[IceController]]</dfn> internal
               slot, initialized to <code>null</code>.
             </p>
           </li>
@@ -1689,41 +1692,41 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         
         <p>
           To <dfn data-lt="set the configuration|set a configuration" id="set-pc-configuration" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">set a configuration</dfn> with
-          <var>configuration</var>, run the following additional steps:
+          <var data-type="RTCConfiguration">configuration</var>, run the following additional steps:
         </p>
         <ol class="algorithm">
           <li>
             <p>
-              Let <var>connection</var> be the target <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object.
+              Let <var data-type="RTCPeerConnection">connection</var> be the target <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object.
             </p>
           </li>
           <li>
             <p>
-              Let <var>oldConfig</var> be <var>connection</var>.<code>[[Configuration]]</code>.
+              Let <var data-type="RTCConfiguration">oldConfig</var> be <var data-type="RTCPeerConnection">connection</var>.<code>[[Configuration]]</code>.
             </p>
           </li>
           <li>
             <p>
-              If <var>oldConfig</var> is not <code>null</code>, and if the value of
-              <var>configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-5"><code>iceController</code></a> differs from
-              <var>oldConfig</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-6"><code>iceController</code></a>, <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw">throw</a> an <a data-link-type="idl" data-lt="InvalidModificationError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidmodificationerror"><code>InvalidModificationError</code></a>.
+              If <var data-type="RTCConfiguration">oldConfig</var> is not <code>null</code>, and if the value of
+              <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-5"><code>iceController</code></a> differs from
+              <var data-type="RTCConfiguration">oldConfig</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-6"><code>iceController</code></a>, <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw">throw</a> an <a data-link-type="idl" data-lt="InvalidModificationError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidmodificationerror"><code>InvalidModificationError</code></a>.
             </p>
           </li>
           <li>
             <p>
-              Otherwise, if <var>configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-7"><code>iceController</code></a> is not <code>null</code>, run
+              Otherwise, if <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-7"><code>iceController</code></a> is not <code>null</code>, run
               the following steps:
             </p>
             <ol>
               <li>
                 <p>
-                  If <var>configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-8"><code>iceController</code></a>.<a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-4"><code>[[PeerConnection]]</code></a>
+                  If <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-8"><code>iceController</code></a>.<a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-4"><code>[[PeerConnection]]</code></a>
                   is not null, <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw">throw</a> an <a data-link-type="idl" data-lt="InvalidModificationError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidmodificationerror"><code>InvalidModificationError</code></a>.
                 </p>
               </li>
               <li>
                 <p>
-                  If the value of <var>configuration</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-bundlepolicy"><code>bundlePolicy</code></a> is not
+                  If the value of <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-bundlepolicy"><code>bundlePolicy</code></a> is not
                   "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcbundlepolicy-max-bundle"><code>max-bundle</code></a>", <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw">throw</a> a <a data-link-type="idl" data-lt="NotSupportedError" data-type="exception" href="https://webidl.spec.whatwg.org/#notsupportederror"><code>NotSupportedError</code></a>.
                 </p>
                 <div class="note" role="note" id="issue-container-generatedID-4"><div role="heading" class="note-title marker" id="h-note-4" aria-level="5"><span>Note</span></div><div class="">
@@ -1741,7 +1744,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </li>
               <li>
                 <p>
-                  If the value of <var>configuration</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-icecandidatepoolsize"><code>iceCandidatePoolSize</code></a> is not
+                  If the value of <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-icecandidatepoolsize"><code>iceCandidatePoolSize</code></a> is not
                   <code>0</code>, <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw">throw</a> a <a data-link-type="idl" data-lt="NotSupportedError" data-type="exception" href="https://webidl.spec.whatwg.org/#notsupportederror"><code>NotSupportedError</code></a>.
                 </p>
                 <div class="note" role="note" id="issue-container-generatedID-5"><div role="heading" class="note-title marker" id="h-note-5" aria-level="5"><span>Note</span></div><div class="">
@@ -1754,14 +1757,14 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </li>
               <li>
                 <p>
-                  Store <var>configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-9"><code>iceController</code></a> in the
+                  Store <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-9"><code>iceController</code></a> in the
                   <a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-1"><code>[[IceController]]</code></a> internal slot.
                 </p>
               </li>
               <li>
                 <p>
-                  Store <var>connection</var> in <a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-5"><code>[[PeerConnection]]</code></a> of
-                  <var>configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-10"><code>iceController</code></a>.
+                  Store <var data-type="RTCPeerConnection">connection</var> in <a data-link-type="attribute" data-lt="[[PeerConnection]]" href="#dfn-peerconnection" class="internalDFN" id="ref-for-dfn-peerconnection-5"><code>[[PeerConnection]]</code></a> of
+                  <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-10"><code>iceController</code></a>.
                 </p>
               </li>
             </ol>
@@ -1777,24 +1780,24 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         <ol class="algorithm">
           <li>
             <p>
-              Let <var>connection</var> be the target <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object.
+              Let <var data-type="RTCPeerConnection">connection</var> be the target <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object.
             </p>
           </li>
           <li>
             <p>
-              If <var>connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-2"><code>[[IceController]]</code></a> is null, abort these steps.
+              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-2"><code>[[IceController]]</code></a> is null, abort these steps.
             </p>
           </li>
           <li>
             <p>
-              Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-21"><code>RTCIceController</code></a> object stored in
-              <var>connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-3"><code>[[IceController]]</code></a>.
+              Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-21"><code>RTCIceController</code></a> object stored in
+              <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-3"><code>[[IceController]]</code></a>.
             </p>
           </li>
           <li>
             <p>
               When setting the <a data-link-type="attribute" data-lt="[[IceRole]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-icerole"><code>[[IceRole]]</code></a> of the relevant <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> object according to
-              the rules of [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8445" title="Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal">RFC8445</a></cite>], also set <var>controller</var>.<a data-link-type="attribute" data-lt="[[IceRole]]" href="#dfn-icerole" class="internalDFN" id="ref-for-dfn-icerole-2"><code>[[IceRole]]</code></a> to the same
+              the rules of [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8445" title="Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal">RFC8445</a></cite>], also set <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[IceRole]]" href="#dfn-icerole" class="internalDFN" id="ref-for-dfn-icerole-2"><code>[[IceRole]]</code></a> to the same
               value.
             </p>
           </li>
@@ -1829,29 +1832,29 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <ol class="algorithm">
       <li>
         <p>
-          Let <var>connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-33">ICE agent</a>.
+          Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-33">ICE agent</a>.
         </p>
       </li>
       <li>
         <p>
-          If <var>connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-5"><code>[[IceController]]</code></a> is null, abort these steps.
+          If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-5"><code>[[IceController]]</code></a> is null, abort these steps.
         </p>
       </li>
       <li>
         <p>
-          Let <var>controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-23"><code>RTCIceController</code></a> object stored in
-          <var>connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-6"><code>[[IceController]]</code></a>.
+          Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-23"><code>RTCIceController</code></a> object stored in
+          <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-6"><code>[[IceController]]</code></a>.
         </p>
       </li>
       <li>
         <p>
-          Let <var>newCandidatePair</var> be a newly created <a data-link-type="idl" data-lt="RTCIceCandidatePair" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair"><code>RTCIceCandidatePair</code></a> representing the indicated pair if
-          one is selected, and <code>null</code> otherwise.
+          Let <var data-type="RTCIceCandidatePair">newCandidatePair</var> be a newly created <a data-link-type="idl" data-lt="RTCIceCandidatePair" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair"><code>RTCIceCandidatePair</code></a> representing the
+          indicated pair if one is selected, and <code>null</code> otherwise.
         </p>
       </li>
       <li>
         <p>
-          Set <var>controller</var>.<a data-link-type="attribute" data-lt="[[SelectedCandidatePair]]" href="#dfn-selectedcandidatepair" class="internalDFN" id="ref-for-dfn-selectedcandidatepair-2"><code>[[SelectedCandidatePair]]</code></a> to <var>newCandidatePair</var>.
+          Set <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[SelectedCandidatePair]]" href="#dfn-selectedcandidatepair" class="internalDFN" id="ref-for-dfn-selectedcandidatepair-2"><code>[[SelectedCandidatePair]]</code></a> to <var data-type="RTCIceCandidatePair">newCandidatePair</var>.
         </p>
       </li>
     </ol>
