@@ -169,8 +169,11 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            This event handler, of event handler event type {{candidatepairadded}}, MUST be fired any time the [= ICE
-            agent =] has found a candidate pair.
+            The event type of this event handler is {{candidatepairadded}}.
+          </p>
+          <p>When the [= ICE agent =] has found a candidate pair, the [= user agent =] MUST queue a task to [= fire an
+            event =] named {{candidatepairadded}} using the {{RTCIceCandidatePairEvent}} interface with the
+            {{RTCIceCandidatePairEvent/candidatePair}} attribute set to the found candidate pair.
           </p>
         </dd>
         <dt>
@@ -178,9 +181,14 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            This event handler, of event handler event type {{candidatepairupdated}}, MUST be fired any time the [= ICE
-            agent =] completes a connectivity check on a candidate pair, and when a candidate pair undergoes a state
-            change. This may have been a consequence of the application invoking {{RTCIceController/sendIcePing()}}.
+            The event type of this event handler is {{candidatepairupdated}}.
+          </p>
+          <p>
+            When the [= ICE agent =] completes a connectivity check on a candidate pair, or when a candidate pair
+            undergoes a state change, the [= user agent =] MUST queue a task to [= fire an event =] named
+            {{candidatepairupdated}} using the {{RTCIceCandidatePairUpdateEvent}} interface. This may have been a
+            consequence of the application invoking {{RTCIceController/sendIcePing()}}.
+          </p>
           <p>
             The [= user agent =] MAY choose to batch together these events to reduce the volume and increase the
             efficiency of the updates.
@@ -191,9 +199,12 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            This event handler, of event handler event type {{candidatepairswitched}}, MUST be fired when the [=ICE
-            agent =] switched the transport to a different candidate pair. The switch may have been a consequence of the
-            application invoking {{RTCIceController/switchToCandidatePair()}}.
+            The event type of this event handler is {{candidatepairswitched}}.
+          </p>
+          <p>
+            This event is fired when the [= ICE agent =] indicates that the selected candidate pair for the transport
+            has changed through the running of the [= candidatepairchange() algorithm =]. The change may have been a
+            consequence of the application invoking {{RTCIceController/switchToCandidatePair()}}.
           </p>
         </dd>
         <dt>
@@ -201,9 +212,13 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            This event handler, of event handler event type {{candidatepairdestroyed}}, MUST be fired any time the
-            [= ICE agent =] destroys a candidate pair. This may have been a consequence of the application invoking
-            {{RTCIceController/pruneCandidatePairs()}}.
+            The event type of this event handler is {{candidatepairdestroyed}}.
+          </p>
+          <p>
+            When the [= ICE agent =] destroys a candidate pair, the [= user agent =] MUST queue a task to [= fire an
+            event =] named {{candidatepairdestroyed}} using the {{RTCIceCandidatePairEvent}} interface with the
+            {{RTCIceCandidatePairEvent/candidatePair}} attribute set to the destroyed candidate pair. This may have been
+            a consequence of the application invoking {{RTCIceController/pruneCandidatePairs()}}.
           </p>
         </dd>
         <dt>
@@ -211,7 +226,7 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            This event handler, of event handler event type {{icepingproposed}}, MUST be fired when the [=ICE agent =]
+            The event type of this event handler is {{icepingproposed}}. MUST be fired when the [=ICE agent =]
             has selected a candidate pair to ping for a connectivity check, but before the ping has actually been sent.
           </p>
           <p>
@@ -224,7 +239,7 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            This event handler, of event handler event type {{iceswitchproposed}}, MUST be fired when the [=ICE agent
+            The event type of this event handler is {{iceswitchproposed}}. MUST be fired when the [=ICE agent
             =] has selected a candidate pair to switch the transport to, but before the switch has actually occurred.
           </p>
           <p>
@@ -237,7 +252,7 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            This event handler, of event handler event type {{icepruneproposed}}, MUST be fired when the [=ICE agent =]
+            The event type of this event handler is {{icepruneproposed}}. MUST be fired when the [=ICE agent =]
             has selected one or more candidate pairs to prune, but before the pruning has actually occurred.
           </p>
           <p>
@@ -1658,7 +1673,8 @@ partial dictionary RTCConfiguration {
     </p>
     <p>
       When the [= ICE agent =] indicates that an {{RTCIceTransport}} has changed the selected candidate pair, run the
-      following additional steps:
+      <dfn id="rtcicetransport-candidatepairchange" data-lt="candidatepairchange() algorithm">following additional
+        steps</dfn>:
     </p>
     <ol class="algorithm">
       <li>
@@ -1686,6 +1702,13 @@ partial dictionary RTCConfiguration {
       <li>
         <p>
           Set |controller|.{{RTCIceController/[[SelectedCandidatePair]]}} to |newCandidatePair|.
+        </p>
+      </li>
+      <li>
+        <p>
+          [= Fire an event =] named {{RTCIceController/candidatepairswitched}} using the {{RTCIceCandidatePairEvent}}
+          interface with the {{RTCIceCandidatePairEvent/candidatePair}} attribute set to |newCandidatePair| at
+          |controller|.
         </p>
       </li>
     </ol>
