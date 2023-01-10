@@ -178,20 +178,24 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
     "hr-time"
   ],
   "localBiblio": {},
-  "publishISODate": "2023-01-09T00:00:00.000Z",
-  "generatedSubtitle": "Unofficial Draft 09 January 2023"
+  "highlightVars": true,
+  "lint": {
+    "no-unused-vars": true
+  },
+  "publishISODate": "2023-01-10T00:00:00.000Z",
+  "generatedSubtitle": "Unofficial Draft 10 January 2023"
 }</script>
 <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD"></head>
 
 <body class="h-entry" data-cite="WEBIDL webrtc webrtc-stats html webidl dom hr-time"><div class="head">
     
     <h1 id="title" class="title">IceController Extensions for WebRTC</h1> 
-    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2023-01-09">09 January 2023</time></p>
+    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2023-01-10">10 January 2023</time></p>
     <details open="">
       <summary>More details about this document</summary>
       <dl>
         <dt>This version:</dt><dd>
-                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230109/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230109/</a>
+                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230110/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230110/</a>
               </dd>
         <dt>Latest published version:</dt><dd>
                 <a href="https://sam-vi.github.io/webrtc-icecontroller/">https://sam-vi.github.io/webrtc-icecontroller/</a>
@@ -320,6 +324,14 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
     <p>
       The terms <dfn data-lt="reject|rejection|rejecting|rejected" id="dfn-reject" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">rejected</dfn> and <dfn data-lt="resolve|resolves|resolved" id="dfn-resolve" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">resolved</dfn> used in the context of Promises are defined in [<cite><a class="bibref" data-link-type="biblio" href="#bib-ecmascript-6.0" title="ECMA-262 6th Edition, The ECMAScript 2015 Language Specification">ECMASCRIPT-6.0</a></cite>].
     </p>
+    <p>
+      <a data-link-type="idl" data-lt="DOMHighResTimeStamp" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp"><code>DOMHighResTimeStamp</code></a>, <a data-link-type="idl" data-lt="Performance" data-type="interface" href="https://www.w3.org/TR/hr-time-3/#dom-performance"><code>Performance</code></a>.<a data-link-type="idl" data-type="attribute" href="https://www.w3.org/TR/hr-time-3/#dom-performance-timeorigin"><code>timeOrigin</code></a>, and <a data-link-type="idl" data-lt="Performance" data-type="interface" href="https://www.w3.org/TR/hr-time-3/#dom-performance"><code>Performance</code></a>.<a data-link-type="idl" data-lt="now()" data-type="method" href="https://www.w3.org/TR/hr-time-3/#dom-performance-now"><code>now</code></a><code>()</code> are defined in [<cite><a class="bibref" data-link-type="biblio" href="#bib-highres-time" title="High Resolution Time">HIGHRES-TIME</a></cite>].
+    </p>
+    <p>
+      A <dfn id="dfn-timestamp" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">timestamp</dfn> is expressed with <a data-link-type="idl" data-lt="DOMHighResTimeStamp" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp"><code>DOMHighResTimeStamp</code></a>, and is defined as
+      <a data-link-type="idl" data-lt="Performance" data-type="interface" href="https://www.w3.org/TR/hr-time-3/#dom-performance"><code>Performance</code></a>.<a data-link-type="idl" data-type="attribute" href="https://www.w3.org/TR/hr-time-3/#dom-performance-timeorigin"><code>timeOrigin</code></a> + <a data-link-type="idl" data-lt="Performance" data-type="interface" href="https://www.w3.org/TR/hr-time-3/#dom-performance"><code>Performance</code></a>.<a data-link-type="idl" data-lt="now()" data-type="method" href="https://www.w3.org/TR/hr-time-3/#dom-performance-now"><code>now</code></a><code>()</code> at the time at which a past
+      event occurred or a future event will occur.
+    </p>
   </section>
 
 
@@ -365,22 +377,22 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           </p>
           <ol class="algorithm">
             <li>
-              Let <var>controller</var> be a newly created <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-5"><code>RTCIceController</code></a> object.
+              Let <var data-type="RTCIceController">controller</var> be a newly created <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-5"><code>RTCIceController</code></a> object.
             </li>
             <li>
-              Let <var>controller</var> have an <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-icerole" tabindex="0" aria-haspopup="dialog">[[IceRole]]</dfn> internal slot,
+              Let <var data-type="RTCIceController">controller</var> have an <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-icerole" tabindex="0" aria-haspopup="dialog">[[IceRole]]</dfn> internal slot,
               initialized to "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicerole-unknown"><code>unknown</code></a>".
             </li>
             <li>
-              Let <var>controller</var> have a <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-selectedcandidatepair" tabindex="0" aria-haspopup="dialog">[[SelectedCandidatePair]]</dfn>
+              Let <var data-type="RTCIceController">controller</var> have a <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-selectedcandidatepair" tabindex="0" aria-haspopup="dialog">[[SelectedCandidatePair]]</dfn>
               internal slot, initialized to <code>null</code>.
             </li>
             <li>
-              Let <var>controller</var> have a <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-peerconnection" tabindex="0" aria-haspopup="dialog">[[PeerConnection]]</dfn> internal
+              Let <var data-type="RTCIceController">controller</var> have a <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-peerconnection" tabindex="0" aria-haspopup="dialog">[[PeerConnection]]</dfn> internal
               slot, initialized to <code>null</code>.
             </li>
             <li>
-              Return <var>controller</var>.
+              Return <var data-type="RTCIceController">controller</var>.
             </li>
           </ol>
           <div>
@@ -551,8 +563,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
-                If <var>X</var> connectivity checks have been sent in the previous <var>Y</var> duration of time, reject
-                <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="QuotaExceededError" data-type="exception" href="https://webidl.spec.whatwg.org/#quotaexceedederror"><code>QuotaExceededError</code></a>.
+                If <code>X</code> connectivity checks have been sent in the previous <code>Y</code> duration of time,
+                reject <var>p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="QuotaExceededError" data-type="exception" href="https://webidl.spec.whatwg.org/#quotaexceedederror"><code>QuotaExceededError</code></a>.
               </p>
               <div class="note" role="note" id="issue-container-generatedID-0"><div role="heading" class="note-title marker" id="h-note-0" aria-level="4"><span>Note</span></div><div class="">
                 <p>
@@ -936,8 +948,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicecandidatepairreport-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> attribute, if present, represents the timestamp at which the last ping
-                  was sent for an ICE connectivity check on this candidate pair.
+                  The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicecandidatepairreport-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> attribute, if present, represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-1">timestamp</a> at which the last
+                  ping was sent for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -945,8 +957,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="lastPingResponseReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp-2"><code>lastPingResponseReceivedTimestamp</code></a> attribute, if present, represents the timestamp at which
-                  the last response was received to a ping for an ICE connectivity check on this candidate pair.
+                  The <a data-link-type="idl" data-lt="lastPingResponseReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingresponsereceivedtimestamp-2"><code>lastPingResponseReceivedTimestamp</code></a> attribute, if present, represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-2">timestamp</a> at
+                  which the last response was received to a ping for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -955,8 +967,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="lastPingReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpingreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingreceivedtimestamp-2"><code>lastPingReceivedTimestamp</code></a> attribute, if present, represents the timestamp at which the last
-                  ping was received from the peer for an ICE connectivity check on this candidate pair.
+                  The <a data-link-type="idl" data-lt="lastPingReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpingreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpingreceivedtimestamp-2"><code>lastPingReceivedTimestamp</code></a> attribute, if present, represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-3">timestamp</a> at which the
+                  last ping was received from the peer for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -965,8 +977,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="lastPacketReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp-2"><code>lastPacketReceivedTimestamp</code></a> attribute, if present, represents the timestamp at which the last
-                  packet was received on this candidate pair, excluding STUN packets.
+                  The <a data-link-type="idl" data-lt="lastPacketReceivedTimestamp" href="#dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-lastpacketreceivedtimestamp-2"><code>lastPacketReceivedTimestamp</code></a> attribute, if present, represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-4">timestamp</a> at which the
+                  last packet was received on this candidate pair, excluding STUN packets.
                 </p>
               </dd>
               <dt>
@@ -1040,8 +1052,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> member, if present, represents the timestamp at which the last ping was
-                  sent for an ICE connectivity check on this candidate pair.
+                  The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> member, if present, represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-5">timestamp</a> at which the last
+                  ping was sent for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -1049,8 +1061,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="lastPingResponseReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp-2"><code>lastPingResponseReceivedTimestamp</code></a> member, if present, represents the timestamp at which the
-                  last response was received to a ping for an ICE connectivity check on this candidate pair.
+                  The <a data-link-type="idl" data-lt="lastPingResponseReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingresponsereceivedtimestamp-2"><code>lastPingResponseReceivedTimestamp</code></a> member, if present, represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-6">timestamp</a> at which
+                  the last response was received to a ping for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -1058,8 +1070,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="lastPingReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp-2"><code>lastPingReceivedTimestamp</code></a> member, if present, represents the timestamp at which the last ping
-                  was received from the peer for an ICE connectivity check on this candidate pair.
+                  The <a data-link-type="idl" data-lt="lastPingReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpingreceivedtimestamp-2"><code>lastPingReceivedTimestamp</code></a> member, if present, represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-7">timestamp</a> at which the last
+                  ping was received from the peer for an ICE connectivity check on this candidate pair.
                 </p>
               </dd>
               <dt>
@@ -1067,8 +1079,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="lastPacketReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp-2"><code>lastPacketReceivedTimestamp</code></a> member, if present, represents the timestamp at which the last
-                  packet was received on this candidate pair, excluding STUN packets.
+                  The <a data-link-type="idl" data-lt="lastPacketReceivedTimestamp" href="#dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreportinit-lastpacketreceivedtimestamp-2"><code>lastPacketReceivedTimestamp</code></a> member, if present, represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-8">timestamp</a> at which the
+                  last packet was received on this candidate pair, excluding STUN packets.
                 </p>
               </dd>
               <dt>
@@ -1108,7 +1120,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="timestamp" href="#dom-rtcroundtriptimesample-timestamp" class="internalDFN" id="ref-for-dom-rtcroundtriptimesample-timestamp-2"><code>timestamp</code></a> member represents the time at which this round trip time sample was measured.
+                  The <a data-link-type="idl" href="#dom-rtcroundtriptimesample-timestamp" class="internalDFN" id="ref-for-dom-rtcroundtriptimesample-timestamp-2"><code>timestamp</code></a> member represents the time at which this round trip time
+                  sample was measured.
                 </p>
               </dd>
               <dt>
@@ -1251,8 +1264,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </dt>
             <dd>
               <p>
-                The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicepingproposalevent-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> attribute represents the timestamp at which the last connectivity check
-                ping was sent by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-20">ICE agent</a>.
+                The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicepingproposalevent-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> attribute represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-9">timestamp</a> at which the last connectivity
+                check ping was sent by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-20">ICE agent</a>.
               </p>
             </dd>
             <dt>
@@ -1261,8 +1274,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </dt>
             <dd>
               <p>
-                The <a data-link-type="idl" data-lt="earliestNextPingTimestamp" href="#dom-rtcicepingproposalevent-earliestnextpingtimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-earliestnextpingtimestamp-2"><code>earliestNextPingTimestamp</code></a> attribute represents the earliest time at which the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-21">ICE agent</a>
-                will select another candidate pair to ping for connectivity check.
+                The <a data-link-type="idl" data-lt="earliestNextPingTimestamp" href="#dom-rtcicepingproposalevent-earliestnextpingtimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-earliestnextpingtimestamp-2"><code>earliestNextPingTimestamp</code></a> attribute represents the earliest <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-10">timestamp</a> at which the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-21">ICE agent</a> will select another candidate pair to ping for connectivity check.
               </p>
             </dd>
           </dl>
@@ -1534,8 +1546,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               </dt>
               <dd>
                 <p>
-                  The <a data-link-type="idl" data-lt="earliestRecheckTimestamp" href="#dom-rtcicerecheck-earliestrechecktimestamp" class="internalDFN" id="ref-for-dom-rtcicerecheck-earliestrechecktimestamp-2"><code>earliestRecheckTimestamp</code></a> member indicates the earliest time at which the future check will be
-                  performed.
+                  The <a data-link-type="idl" data-lt="earliestRecheckTimestamp" href="#dom-rtcicerecheck-earliestrechecktimestamp" class="internalDFN" id="ref-for-dom-rtcicerecheck-earliestrechecktimestamp-2"><code>earliestRecheckTimestamp</code></a> member indicates the earliest <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-11">timestamp</a> at which the future
+                  check will be performed.
                 </p>
               </dd>
             </dl>
@@ -1921,7 +1933,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Anne van Kesteren.  WHATWG. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
     </dd><dt id="bib-ecmascript-6.0">[ECMASCRIPT-6.0]</dt><dd>
       <a href="http://www.ecma-international.org/ecma-262/6.0/index.html"><cite>ECMA-262 6th Edition, The ECMAScript 2015 Language Specification</cite></a>. Allen Wirfs-Brock.  Ecma International. June 2015. Standard. URL: <a href="http://www.ecma-international.org/ecma-262/6.0/index.html">http://www.ecma-international.org/ecma-262/6.0/index.html</a>
-    </dd><dt id="bib-hr-time">[hr-time]</dt><dd>
+    </dd><dt id="bib-highres-time">[HIGHRES-TIME]</dt><dd>
       <a href="https://www.w3.org/TR/hr-time-3/"><cite>High Resolution Time</cite></a>. Yoav Weiss.  W3C. 20 September 2022. W3C Working Draft. URL: <a href="https://www.w3.org/TR/hr-time-3/">https://www.w3.org/TR/hr-time-3/</a>
     </dd><dt id="bib-html">[HTML]</dt><dd>
       <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Anne van Kesteren; Domenic Denicola; Ian Hickson; Philip Jägenstedt; Simon Pieters.  WHATWG. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
@@ -2011,6 +2023,22 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <ul>
     <li>
     <a href="#ref-for-dfn-resolve-1" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-resolve-2" title="Reference 2">(2)</a> <a href="#ref-for-dfn-resolve-3" title="Reference 3">(3)</a> <a href="#ref-for-dfn-resolve-4" title="Reference 4">(4)</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-timestamp" aria-label="Links in this document to definition: timestamp">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-timestamp" aria-label="Permalink for definition: timestamp. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-timestamp-1" title="§ Attributes">§ Attributes</a> <a href="#ref-for-dfn-timestamp-2" title="Reference 2">(2)</a> <a href="#ref-for-dfn-timestamp-3" title="Reference 3">(3)</a> <a href="#ref-for-dfn-timestamp-4" title="Reference 4">(4)</a> <a href="#ref-for-dfn-timestamp-9" title="Reference 5">(5)</a> <a href="#ref-for-dfn-timestamp-10" title="Reference 6">(6)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-timestamp-5" title="§ Dictionary RTCIceCandidatePairReportInit Members">§ Dictionary RTCIceCandidatePairReportInit Members</a> <a href="#ref-for-dfn-timestamp-6" title="Reference 2">(2)</a> <a href="#ref-for-dfn-timestamp-7" title="Reference 3">(3)</a> <a href="#ref-for-dfn-timestamp-8" title="Reference 4">(4)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-timestamp-11" title="§ Dictionary RTCIceRecheck Members">§ Dictionary RTCIceRecheck Members</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller" aria-label="Links in this document to definition: RTCIceController">
