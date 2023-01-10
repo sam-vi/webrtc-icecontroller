@@ -273,35 +273,36 @@ interface RTCIceController : EventTarget {
           <ol class=algorithm>
             <li>
               <p>
-                Let <var>candidatePair</var> be the method's first argument.
+                Let |candidatePair:RTCIceCandidatePair| be the method's first argument.
               </p>
             </li>
             <li>
               <p>
-                Let <var>controller</var> be the {{RTCIceController}} object on which {{sendIcePing}} is invoked.
+                Let |controller:RTCIceController| be the {{RTCIceController}} object on which {{sendIcePing}} is
+                invoked.
               </p>
             </li>
             <li>
               <p>
-                Let <var>connection</var> be the {{RTCPeerConnection}} object stored in
-                <var>controller</var>.{{RTCIceController/[[PeerConnection]]}}.
+                Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object stored in
+                |controller|.{{RTCIceController/[[PeerConnection]]}}.
               </p>
             </li>
             <li>
               <p>
-                Let <var>p</var> be a new promise.
+                Let |p:Promise| be a new promise.
               </p>
             </li>
             <li>
               <p>
-                Run the steps described by the [= validate() algorithm =] to which <var>connection</var>, a new sequence
-                containing <var>candidatePair</var>, and <var>p</var> are supplied as arguments.
+                Run the steps described by the [= validate() algorithm =] to which |connection|, a new sequence
+                containing |candidatePair|, and |p| are supplied as arguments.
               </p>
             </li>
             <li>
               <p>
-                If either the local or remote candidate pair identified by <var>candidatePair</var> is [=
-                administratively prohibited =], [= resolve =] <var>p</var> with <code>undefined</code>.
+                If either the local or remote candidate pair identified by |candidatePair| is [=
+                administratively prohibited =], [= resolve =] |p| with <code>undefined</code>.
               </p>
               <div class="note">
                 <p>
@@ -315,13 +316,13 @@ interface RTCIceController : EventTarget {
               <p>
                 If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
                 {{RTCStatsIceCandidatePairState}} is {{RTCStatsIceCandidatePairState/"failed"}}, [= reject =]
-                <var>p</var> with a newly [= exception/created =] {{InvalidStateError}}.
+                |p| with a newly [= exception/created =] {{InvalidStateError}}.
               </p>
             </li>
             <li>
               <p>
                 If <code>X</code> connectivity checks have been sent in the previous <code>Y</code> duration of time,
-                reject <var>p</var> with a newly [= exception/created =] {{QuotaExceededError}}.
+                reject |p| with a newly [= exception/created =] {{QuotaExceededError}}.
               </p>
               <div class="note">
                 <p>
@@ -337,7 +338,7 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
-                [= Resolve =] <var>p</var> with <code>undefined</code>.
+                [= Resolve =] |p| with <code>undefined</code>.
               </p>
             </li>
           </ol>
@@ -353,36 +354,37 @@ interface RTCIceController : EventTarget {
           <ol class=algorithm>
             <li>
               <p>
-                Let <var>candidatePair</var> be the method's first argument.
+                Let |candidatePair:RTCIceCandidatePair| be the method's first argument.
               </p>
             </li>
             <li>
               <p>
-                Let <var>controller</var> be the {{RTCIceController}} object on which {{sendIcePing}} is invoked.
+                Let |controller:RTCIceController| be the {{RTCIceController}} object on which {{sendIcePing}} is
+                invoked.
               </p>
             </li>
             <li>
               <p>
-                Let <var>connection</var> be the {{RTCPeerConnection}} object stored in
-                <var>controller</var>.{{RTCIceController/[[PeerConnection]]}}.
+                Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object stored in
+                |controller|.{{RTCIceController/[[PeerConnection]]}}.
               </p>
             </li>
             <li>
               <p>
-                Let <var>p</var> be a new promise.
+                Let |p:Promise| be a new promise.
               </p>
             </li>
             <li>
               <p>
-                Run the steps described by the [= validate() algorithm =] to which <var>connection</var>, a new sequence
-                containing <var>candidatePair</var>, and <var>p</var> are supplied as arguments.
+                Run the steps described by the [= validate() algorithm =] to which |connection|, a new sequence
+                containing |candidatePair|, and |p| are supplied as arguments.
               </p>
             </li>
             <li>
               <p>
                 If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
                 {{RTCStatsIceCandidatePairState}} is not {{RTCStatsIceCandidatePairState/"succeeded"}}, reject
-                <var>p</var> with a newly [= exception/created =] {{InvalidStateError}}.
+                |p| with a newly [= exception/created =] {{InvalidStateError}}.
               </p>
               <div class="note">
                 <p>
@@ -395,12 +397,12 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
-                Instruct the [= ICE agent =] to change the selected candidate pair to <var>candidatePair</var>.
+                Instruct the [= ICE agent =] to change the selected candidate pair to |candidatePair|.
               </p>
             </li>
             <li>
               <p>
-                [= Resolve =] <var>p</var> with undefined.
+                [= Resolve =] |p| with undefined.
               </p>
             </li>
           </ol>
@@ -416,39 +418,40 @@ interface RTCIceController : EventTarget {
           <ol class=algorithm>
             <li>
               <p>
-                Let <var>candidatePairs</var> be the method's first argument.
+                Let |candidatePairs:sequence&lt;RTCIceCandidatePair&gt;| be the method's first argument.
               </p>
             </li>
             <li>
               <p>
-                Let <var>controller</var> be the {{RTCIceController}} object on which {{sendIcePing}} is invoked.
+                Let |controller:RTCIceController| be the {{RTCIceController}} object on which {{sendIcePing}} is
+                invoked.
               </p>
             </li>
             <li>
               <p>
-                Let <var>connection</var> be the {{RTCPeerConnection}} object stored in
-                <var>controller</var>.{{RTCIceController/[[PeerConnection]]}}.
+                Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object stored in
+                |controller|.{{RTCIceController/[[PeerConnection]]}}.
               </p>
             </li>
             <li>
               <p>
-                Let <var>p</var> be a new promise.
+                Let |p:Promise| be a new promise.
               </p>
             </li>
             <li>
               <p>
-                Run the steps described by the [= validate() algorithm =] to which <var>connection</var>,
-                <var>candidatePairs</var>, and <var>p</var> are supplied as arguments.
+                Run the steps described by the [= validate() algorithm =] to which |connection|,
+                |candidatePairs|, and |p| are supplied as arguments.
               </p>
             </li>
             <li>
               <p>
-                Instruct the [= ICE agent =] to prune the candidate pairs in <var>candidatePairs</var>.
+                Instruct the [= ICE agent =] to prune the candidate pairs in |candidatePairs|.
               </p>
             </li>
             <li>
               <p>
-                [= Resolve =] <var>p</var> with undefined.
+                [= Resolve =] |p| with undefined.
               </p>
             </li>
           </ol>
@@ -463,27 +466,27 @@ interface RTCIceController : EventTarget {
         <ol class="algorithm">
           <li>
             <p>
-              Let <var>connection</var> be the {{RTCPeerConnection}} object, <var>candidatePairs</var> be the sequence
-              of candidate pairs, and <var>p</var> be the Promise supplied to the algorithm.
+              Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object,
+              |candidatePairs:sequence&lt;RTCIceCandidatePair&gt;| be the sequence of candidate pairs, and |p:Promise|
+              be the Promise supplied to the algorithm.
             </p>
           </li>
           <li>
             <p>
-              If <var>connection</var> is <code>null</code>, [= reject =] <var>p</var> with a newly [= exception/created
-              =]
-              {{InvalidStateError}} and abort these steps.
+              If |connection| is <code>null</code>, [= reject =] |p| with a newly [= exception/created
+              =] {{InvalidStateError}} and abort these steps.
             </p>
           </li>
           <li>
             <p>
-              If <var>connection</var>.{{RTCPeerConnection/[[IsClosed]]}} is <code>true</code>, [= reject =]
-              <var>p</var> with a newly [= exception/created =] {{InvalidStateError}}.
+              If |connection|.{{RTCPeerConnection/[[IsClosed]]}} is <code>true</code>, [= reject =]
+              |p| with a newly [= exception/created =] {{InvalidStateError}}.
             </p>
           </li>
           <!-- TODO if possible to have no transport, add a check that rejects with invalid state. -->
           <li>
             <p>
-              Let <var>transport</var> be the sole {{RTCIceTransport}} object in use by <var>connection</var>.
+              Let |transport:RTCIceTransport| be the sole {{RTCIceTransport}} object in use by |connection|.
             </p>
             <div class="note">
               <p>
@@ -494,21 +497,21 @@ interface RTCIceController : EventTarget {
           </li>
           <li>
             <p>
-              If <var>transport</var>.{{RTCIceTransport/[[IceTransportState]]}} is either of
+              If |transport|.{{RTCIceTransport/[[IceTransportState]]}} is either of
               {{RTCIceTransportState/"new"}}, {{RTCIceTransportState/"failed"}} or {{RTCIceTransportState/"closed"}},
-              [= reject =] <var>p</var> with a newly [= exception/created =] {{InvalidStateError}}.
+              [= reject =] |p| with a newly [= exception/created =] {{InvalidStateError}}.
             </p>
           </li>
           <li>
             <p>
-              If <var>candidatePair</var> does not identify a valid candidate pair sent in
-              {{RTCIceController/oncandidatepairadded}}, [= reject =] <var>p</var> with a newly [= exception/created =]
+              If |candidatePair| does not identify a valid candidate pair sent in
+              {{RTCIceController/oncandidatepairadded}}, [= reject =] |p| with a newly [= exception/created =]
               {{NotFoundError}}.
             </p>
             <div class="note">
               <p>
-                A valid candidate pair will be composed of a local candidate gathered by <var>transport</var>, and a
-                remote candidate received by <var>transport</var> via {{RTCPeerConnection/addIceCandidate()}} or a
+                A valid candidate pair will be composed of a local candidate gathered by |transport|, and a
+                remote candidate received by |transport| via {{RTCPeerConnection/addIceCandidate()}} or a
                 peer reflexive candidate.
               </p>
             </div>
@@ -1465,12 +1468,12 @@ partial dictionary RTCConfiguration {
         <ol class=algorithm>
           <li>
             <p>
-              Let <var>connection</var> be the newly created {{RTCPeerConnection}} object.
+              Let |connection:RTCPeerConnection| be the newly created {{RTCPeerConnection}} object.
             </p>
           </li>
           <li>
             <p>
-              Let <var>connection</var> have an <dfn data-dfn-for="RTCPeerConnection">[[\IceController]]</dfn> internal
+              Let |connection| have an <dfn data-dfn-for="RTCPeerConnection">[[\IceController]]</dfn> internal
               slot, initialized to <code>null</code>.
             </p>
           </li>
@@ -1480,42 +1483,41 @@ partial dictionary RTCConfiguration {
         <h4>Set the configuration</h4>
         <p>
           To <dfn data-lt="set the configuration" id="set-pc-configuration">set a configuration</dfn> with
-          <var>configuration</var>, run the following additional steps:
+          |configuration:RTCConfiguration|, run the following additional steps:
         </p>
         <ol class=algorithm>
           <li>
             <p>
-              Let <var>connection</var> be the target {{RTCPeerConnection}} object.
+              Let |connection:RTCPeerConnection| be the target {{RTCPeerConnection}} object.
             </p>
           </li>
           <li>
             <p>
-              Let <var>oldConfig</var> be <var>connection</var>.<code>[[\Configuration]]</code>.
+              Let |oldConfig:RTCConfiguration| be |connection|.<code>[[\Configuration]]</code>.
             </p>
           </li>
           <li>
             <p>
-              If <var>oldConfig</var> is not <code>null</code>, and if the value of
-              <var>configuration</var>.{{RTCConfiguration/iceController}} differs from
-              <var>oldConfig</var>.{{RTCConfiguration/iceController}}, [=
-              exception/throw =] an {{InvalidModificationError}}.
+              If |oldConfig| is not <code>null</code>, and if the value of
+              |configuration|.{{RTCConfiguration/iceController}} differs from
+              |oldConfig|.{{RTCConfiguration/iceController}}, [= exception/throw =] an {{InvalidModificationError}}.
             </p>
           </li>
           <li>
             <p>
-              Otherwise, if <var>configuration</var>.{{RTCConfiguration/iceController}} is not <code>null</code>, run
+              Otherwise, if |configuration|.{{RTCConfiguration/iceController}} is not <code>null</code>, run
               the following steps:
             </p>
             <ol>
               <li>
                 <p>
-                  If <var>configuration</var>.{{RTCConfiguration/iceController}}.{{RTCIceController/[[PeerConnection]]}}
+                  If |configuration|.{{RTCConfiguration/iceController}}.{{RTCIceController/[[PeerConnection]]}}
                   is not null, [= exception/throw =] an {{InvalidModificationError}}.
                 </p>
               </li>
               <li>
                 <p>
-                  If the value of <var>configuration</var>.{{RTCConfiguration/bundlePolicy}} is not
+                  If the value of |configuration|.{{RTCConfiguration/bundlePolicy}} is not
                   {{RTCBundlePolicy/"max-bundle"}}, [= exception/throw =] a {{NotSupportedError}}.
                 </p>
                 <div class="note">
@@ -1533,7 +1535,7 @@ partial dictionary RTCConfiguration {
               </li>
               <li>
                 <p>
-                  If the value of <var>configuration</var>.{{RTCConfiguration/iceCandidatePoolSize}} is not
+                  If the value of |configuration|.{{RTCConfiguration/iceCandidatePoolSize}} is not
                   <code>0</code>, [= exception/throw =] a {{NotSupportedError}}.
                 </p>
                 <div class="note">
@@ -1547,14 +1549,14 @@ partial dictionary RTCConfiguration {
               </li>
               <li>
                 <p>
-                  Store <var>configuration</var>.{{RTCConfiguration/iceController}} in the
+                  Store |configuration|.{{RTCConfiguration/iceController}} in the
                   {{RTCPeerConnection/[[IceController]]}} internal slot.
                 </p>
               </li>
               <li>
                 <p>
-                  Store <var>connection</var> in {{RTCIceController/[[PeerConnection]]}} of
-                  <var>configuration</var>.{{RTCConfiguration/iceController}}.
+                  Store |connection| in {{RTCIceController/[[PeerConnection]]}} of
+                  |configuration|.{{RTCConfiguration/iceController}}.
                 </p>
               </li>
             </ol>
@@ -1570,24 +1572,24 @@ partial dictionary RTCConfiguration {
         <ol class="algorithm">
           <li>
             <p>
-              Let <var>connection</var> be the target {{RTCPeerConnection}} object.
+              Let |connection:RTCPeerConnection| be the target {{RTCPeerConnection}} object.
             </p>
           </li>
           <li>
             <p>
-              If <var>connection</var>.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
+              If |connection|.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
             </p>
           </li>
           <li>
             <p>
-              Let <var>controller</var> be the {{RTCIceController}} object stored in
-              <var>connection</var>.{{RTCPeerConnection/[[IceController]]}}.
+              Let |controller:RTCIceController| be the {{RTCIceController}} object stored in
+              |connection|.{{RTCPeerConnection/[[IceController]]}}.
             </p>
           </li>
           <li>
             <p>
               When setting the {{RTCIceTransport/[[IceRole]]}} of the relevant {{RTCIceTransport}} object according to
-              the rules of [[RFC8445]], also set <var>controller</var>.{{RTCIceController/[[IceRole]]}} to the same
+              the rules of [[RFC8445]], also set |controller|.{{RTCIceController/[[IceRole]]}} to the same
               value.
             </p>
           </li>
@@ -1622,29 +1624,29 @@ partial dictionary RTCConfiguration {
     <ol class="algorithm">
       <li>
         <p>
-          Let <var>connection</var> be the {{RTCPeerConnection}} object associated with this [= ICE agent =].
+          Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object associated with this [= ICE agent =].
         </p>
       </li>
       <li>
         <p>
-          If <var>connection</var>.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
+          If |connection|.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
         </p>
       </li>
       <li>
         <p>
-          Let <var>controller</var> be the {{RTCIceController}} object stored in
-          <var>connection</var>.{{RTCPeerConnection/[[IceController]]}}.
+          Let |controller:RTCIceController| be the {{RTCIceController}} object stored in
+          |connection|.{{RTCPeerConnection/[[IceController]]}}.
         </p>
       </li>
       <li>
         <p>
-          Let <var>newCandidatePair</var> be a newly created {{RTCIceCandidatePair}} representing the indicated pair if
-          one is selected, and <code>null</code> otherwise.
+          Let |newCandidatePair:RTCIceCandidatePair| be a newly created {{RTCIceCandidatePair}} representing the
+          indicated pair if one is selected, and <code>null</code> otherwise.
         </p>
       </li>
       <li>
         <p>
-          Set <var>controller</var>.{{RTCIceController/[[SelectedCandidatePair]]}} to <var>newCandidatePair</var>.
+          Set |controller|.{{RTCIceController/[[SelectedCandidatePair]]}} to |newCandidatePair|.
         </p>
       </li>
     </ol>
