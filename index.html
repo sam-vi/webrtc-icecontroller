@@ -432,7 +432,6 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-2">user agent</a> <em class="rfc2119">MAY</em> choose to batch together these events to reduce the volume and increase the
             efficiency of the updates.
           </p>
-          <p></p>
         </dd>
         <dt>
           <dfn data-export="" data-dfn-type="attribute" id="dom-rtcicecontroller-oncandidatepairswitched" data-idl="attribute" data-title="oncandidatepairswitched" data-dfn-for="RTCIceController" data-type="EventHandler" data-lt="oncandidatepairswitched" data-local-lt="RTCIceController.oncandidatepairswitched" tabindex="0" aria-haspopup="dialog"><code>oncandidatepairswitched</code></dfn> of type <span class="idlAttrType"><a data-link-type="idl" data-lt="EventHandler" data-type="typedef" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><code>EventHandler</code></a></span>
@@ -540,48 +539,62 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
-                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-1">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>, a new sequence
-                containing <var data-type="RTCIceCandidatePair">candidatePair</var>, and <var data-type="Promise">p</var> are supplied as arguments.
+                Run the following steps in parallel:
               </p>
+              <ol>
+                <li>
+                  <p>
+                    Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-1">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>, a new sequence
+                    containing <var data-type="RTCIceCandidatePair">candidatePair</var>, and <var data-type="Promise">p</var> are supplied as arguments.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If either the local or remote candidate pair identified by <var data-type="RTCIceCandidatePair">candidatePair</var> is <a data-link-type="dfn" href="#administratively-prohibited" class="internalDFN" id="ref-for-administratively-prohibited-1">administratively prohibited</a>, <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-1">resolve</a> <var data-type="Promise">p</var> with <code>undefined</code>.
+                  </p>
+                  <div class="note" role="note" id="issue-container-generatedID"><div role="heading" class="note-title marker" id="h-note" aria-level="4"><span>Note</span></div><div class="">
+                    <p>
+                      A candidate is <dfn id="administratively-prohibited" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">administratively prohibited</dfn> if the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-4">user agent</a> has decided not to allow connection attempts to this address, as described further in
+                      <a data-link-type="idl" data-lt="addIceCandidate()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-peerconnection-addicecandidate"><code>addIceCandidate</code></a><code>()</code>.
+                    </p>
+                  </div></div>
+                </li>
+                <li>
+                  <p>
+                    If the current <a data-link-type="idl" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-1"><code>state</code></a> of the candidate pair
+                    <a data-link-type="idl" data-lt="RTCStatsIceCandidatePairState" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate"><code>RTCStatsIceCandidatePairState</code></a> is "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-failed"><code>failed</code></a>", <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-1">reject</a>
+                    <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If <code>X</code> connectivity checks have been sent in the previous <code>Y</code> duration of
+                    time,
+                    reject <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="QuotaExceededError" data-type="exception" href="https://webidl.spec.whatwg.org/#quotaexceedederror"><code>QuotaExceededError</code></a>.
+                  </p>
+                  <div class="note" role="note" id="issue-container-generatedID-0"><div role="heading" class="note-title marker" id="h-note-0" aria-level="4"><span>Note</span></div><div class="">
+                    <p>
+                      The exact nature of this rate-limiting check is TBD.
+                    </p>
+                  </div></div>
+                </li>
+                <li>
+                  <p>
+                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-9">ICE agent</a> to construct and send a STUN check from the local candidate to the
+                    remote
+                    candidate.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-2">Resolve</a> <var data-type="Promise">p</var> with <code>undefined</code>.
+                  </p>
+                </li>
+              </ol>
             </li>
             <li>
               <p>
-                If either the local or remote candidate pair identified by <var data-type="RTCIceCandidatePair">candidatePair</var> is <a data-link-type="dfn" href="#administratively-prohibited" class="internalDFN" id="ref-for-administratively-prohibited-1">administratively prohibited</a>, <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-1">resolve</a> <var data-type="Promise">p</var> with <code>undefined</code>.
-              </p>
-              <div class="note" role="note" id="issue-container-generatedID"><div role="heading" class="note-title marker" id="h-note" aria-level="4"><span>Note</span></div><div class="">
-                <p>
-                  A candidate is <dfn id="administratively-prohibited" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">administratively prohibited</dfn> if the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-4">user agent</a> has decided not to allow connection attempts to this address, as described further in
-                  <a data-link-type="idl" data-lt="addIceCandidate()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-peerconnection-addicecandidate"><code>addIceCandidate</code></a><code>()</code>.
-                </p>
-              </div></div>
-            </li>
-            <li>
-              <p>
-                If the current <a data-link-type="idl" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-1"><code>state</code></a> of the candidate pair
-                <a data-link-type="idl" data-lt="RTCStatsIceCandidatePairState" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate"><code>RTCStatsIceCandidatePairState</code></a> is "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-failed"><code>failed</code></a>", <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-1">reject</a>
-                <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
-              </p>
-            </li>
-            <li>
-              <p>
-                If <code>X</code> connectivity checks have been sent in the previous <code>Y</code> duration of time,
-                reject <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="QuotaExceededError" data-type="exception" href="https://webidl.spec.whatwg.org/#quotaexceedederror"><code>QuotaExceededError</code></a>.
-              </p>
-              <div class="note" role="note" id="issue-container-generatedID-0"><div role="heading" class="note-title marker" id="h-note-0" aria-level="4"><span>Note</span></div><div class="">
-                <p>
-                  The exact nature of this rate-limiting check is TBD.
-                </p>
-              </div></div>
-            </li>
-            <li>
-              <p>
-                Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-9">ICE agent</a> to construct and send a STUN check from the local candidate to the remote
-                candidate.
-              </p>
-            </li>
-            <li>
-              <p>
-                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-2">Resolve</a> <var data-type="Promise">p</var> with <code>undefined</code>.
+                Return <var data-type="Promise">p</var>.
               </p>
             </li>
           </ol>
@@ -619,32 +632,45 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
-                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-2">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>, a new sequence
-                containing <var data-type="RTCIceCandidatePair">candidatePair</var>, and <var data-type="Promise">p</var> are supplied as arguments.
+                Run the following steps in parallel:
               </p>
+              <ol>
+                <li>
+                  <p>
+                    Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-2">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>, a new sequence
+                    containing <var data-type="RTCIceCandidatePair">candidatePair</var>, and <var data-type="Promise">p</var> are supplied as arguments.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    If the current <a data-link-type="idl" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-2"><code>state</code></a> of the candidate pair
+                    <a data-link-type="idl" data-lt="RTCStatsIceCandidatePairState" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate"><code>RTCStatsIceCandidatePairState</code></a> is not "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-succeeded"><code>succeeded</code></a>", reject
+                    <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+                  </p>
+                  <div class="note" role="note" id="issue-container-generatedID-1"><div role="heading" class="note-title marker" id="h-note-1" aria-level="4"><span>Note</span></div><div class="">
+                    <p>
+                      Attempting to switch to a candidate pair with either a local or remote candidate that is <a data-link-type="dfn" href="#administratively-prohibited" class="internalDFN" id="ref-for-administratively-prohibited-2">administratively prohibited</a> will also lead to an abort at this stage, because connectivity
+                      checks
+                      are prohibited on such a candidate pair, so it will never transition to the
+                      "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-succeeded"><code>succeeded</code></a>" state.
+                    </p>
+                  </div></div>
+                </li>
+                <li>
+                  <p>
+                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-10">ICE agent</a> to change the selected candidate pair to <var data-type="RTCIceCandidatePair">candidatePair</var>.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-3">Resolve</a> <var data-type="Promise">p</var> with undefined.
+                  </p>
+                </li>
+              </ol>
             </li>
             <li>
               <p>
-                If the current <a data-link-type="idl" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-2"><code>state</code></a> of the candidate pair
-                <a data-link-type="idl" data-lt="RTCStatsIceCandidatePairState" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate"><code>RTCStatsIceCandidatePairState</code></a> is not "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-succeeded"><code>succeeded</code></a>", reject
-                <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
-              </p>
-              <div class="note" role="note" id="issue-container-generatedID-1"><div role="heading" class="note-title marker" id="h-note-1" aria-level="4"><span>Note</span></div><div class="">
-                <p>
-                  Attempting to switch to a candidate pair with either a local or remote candidate that is <a data-link-type="dfn" href="#administratively-prohibited" class="internalDFN" id="ref-for-administratively-prohibited-2">administratively prohibited</a> will also lead to an abort at this stage, because connectivity checks
-                  are prohibited on such a candidate pair, so it will never transition to the
-                  "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-succeeded"><code>succeeded</code></a>" state.
-                </p>
-              </div></div>
-            </li>
-            <li>
-              <p>
-                Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-10">ICE agent</a> to change the selected candidate pair to <var data-type="RTCIceCandidatePair">candidatePair</var>.
-              </p>
-            </li>
-            <li>
-              <p>
-                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-3">Resolve</a> <var data-type="Promise">p</var> with undefined.
+                Return <var data-type="Promise">p</var>.
               </p>
             </li>
           </ol>
@@ -682,18 +708,30 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
-                Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-3">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>,
-                <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>, and <var data-type="Promise">p</var> are supplied as arguments.
+                Run the following steps in parallel:
               </p>
+              <ol>
+                <li>
+                  <p>
+                    Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-3">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>,
+                    <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>, and <var data-type="Promise">p</var> are supplied as arguments.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-11">ICE agent</a> to prune the candidate pairs in <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-4">Resolve</a> <var data-type="Promise">p</var> with undefined.
+                  </p>
+                </li>
+              </ol>
             </li>
             <li>
               <p>
-                Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-11">ICE agent</a> to prune the candidate pairs in <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>.
-              </p>
-            </li>
-            <li>
-              <p>
-                <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-4">Resolve</a> <var data-type="Promise">p</var> with undefined.
+                Return <var data-type="Promise">p</var>.
               </p>
             </li>
           </ol>
