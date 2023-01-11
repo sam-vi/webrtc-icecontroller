@@ -304,6 +304,12 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
+                Validate |candidatePair| by running the [= validate() algorithm =] to which |connection| and a new
+                sequence containing |candidatePair| are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
                 Let |p:Promise| be a new promise.
               </p>
             </li>
@@ -312,12 +318,6 @@ interface RTCIceController : EventTarget {
                 Run the following steps in parallel:
               </p>
               <ol>
-                <li>
-                  <p>
-                    Run the steps described by the [= validate() algorithm =] to which |connection|, a new sequence
-                    containing |candidatePair|, and |p| are supplied as arguments.
-                  </p>
-                </li>
                 <li>
                   <p>
                     If either the local or remote candidate pair identified by |candidatePair| is [=
@@ -400,6 +400,12 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
+                Validate |candidatePair| by running the [= validate() algorithm =] to which |connection| and a new
+                sequence containing |candidatePair| are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
                 Let |p:Promise| be a new promise.
               </p>
             </li>
@@ -408,12 +414,6 @@ interface RTCIceController : EventTarget {
                 Run the following steps in parallel:
               </p>
               <ol>
-                <li>
-                  <p>
-                    Run the steps described by the [= validate() algorithm =] to which |connection|, a new sequence
-                    containing |candidatePair|, and |p| are supplied as arguments.
-                  </p>
-                </li>
                 <li>
                   <p>
                     If the current {{RTCIceCandidatePairReport/state}} of the candidate pair
@@ -477,6 +477,12 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
+                Validate |candidatePairs| by running the [= validate() algorithm =] to which |connection| and
+                |candidatePairs| are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
                 Let |p:Promise| be a new promise.
               </p>
             </li>
@@ -485,12 +491,6 @@ interface RTCIceController : EventTarget {
                 Run the following steps in parallel:
               </p>
               <ol>
-                <li>
-                  <p>
-                    Run the steps described by the [= validate() algorithm =] to which |connection|,
-                    |candidatePairs|, and |p| are supplied as arguments.
-                  </p>
-                </li>
                 <li>
                   <p>
                     Instruct the [= ICE agent =] to prune the candidate pairs in |candidatePairs|.
@@ -513,28 +513,27 @@ interface RTCIceController : EventTarget {
       </dl>
       <div>
         <p>
-          The [= user agent =] MUST validate that the application is allowed to perform a requested operation. When this
-          validation is requested, the [= user agent =] MUST <dfn id="rtcicecontroller-validate"
-            data-lt="validate() algorithm">run the following steps</dfn>:
+          The [= user agent =] MUST validate that the application is allowed to perform a requested operation by <dfn
+            id="rtcicecontroller-validate" data-lt="validate() algorithm">running the following steps</dfn>:
         </p>
         <ol class="algorithm">
           <li>
             <p>
-              Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object,
-              |candidatePairs:sequence&lt;RTCIceCandidatePair&gt;| be the sequence of candidate pairs, and |p:Promise|
-              be the Promise supplied to the algorithm.
+              Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object and
+              |candidatePairs:sequence&lt;RTCIceCandidatePair&gt;| be the sequence of candidate pairs supplied to the
+              algorithm.
             </p>
           </li>
           <li>
             <p>
-              If |connection| is <code>null</code>, [= reject =] |p| with a newly [= exception/created
+              If |connection| is <code>null</code>, return a [= rejected =] promise with a newly [= exception/created
               =] {{InvalidStateError}} and abort these steps.
             </p>
           </li>
           <li>
             <p>
-              If |connection|.{{RTCPeerConnection/[[IsClosed]]}} is <code>true</code>, [= reject =]
-              |p| with a newly [= exception/created =] {{InvalidStateError}}.
+              If |connection|.{{RTCPeerConnection/[[IsClosed]]}} is <code>true</code>, return a [= rejected =] promise
+              with a newly [= exception/created =] {{InvalidStateError}}.
             </p>
           </li>
           <!-- TODO if possible to have no transport, add a check that rejects with invalid state. -->
@@ -553,14 +552,14 @@ interface RTCIceController : EventTarget {
             <p>
               If |transport|.{{RTCIceTransport/[[IceTransportState]]}} is either of
               {{RTCIceTransportState/"new"}}, {{RTCIceTransportState/"failed"}} or {{RTCIceTransportState/"closed"}},
-              [= reject =] |p| with a newly [= exception/created =] {{InvalidStateError}}.
+              return a [= rejected =] promise with a newly [= exception/created =] {{InvalidStateError}}.
             </p>
           </li>
           <li>
             <p>
               If |candidatePair| does not identify a valid candidate pair sent in
-              {{RTCIceController/oncandidatepairadded}}, [= reject =] |p| with a newly [= exception/created =]
-              {{NotFoundError}}.
+              {{RTCIceController/oncandidatepairadded}}, return a [= rejected =] promise with a newly [=
+              exception/created =] {{NotFoundError}}.
             </p>
             <div class="note">
               <p>
