@@ -182,20 +182,20 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
   "lint": {
     "no-unused-vars": true
   },
-  "publishISODate": "2023-01-10T00:00:00.000Z",
-  "generatedSubtitle": "Unofficial Draft 10 January 2023"
+  "publishISODate": "2023-01-11T00:00:00.000Z",
+  "generatedSubtitle": "Unofficial Draft 11 January 2023"
 }</script>
 <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD"></head>
 
 <body class="h-entry" data-cite="WEBIDL webrtc webrtc-stats html webidl dom hr-time"><div class="head">
     
     <h1 id="title" class="title">IceController Extensions for WebRTC</h1> 
-    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2023-01-10">10 January 2023</time></p>
+    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2023-01-11">11 January 2023</time></p>
     <details open="">
       <summary>More details about this document</summary>
       <dl>
         <dt>This version:</dt><dd>
-                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230110/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230110/</a>
+                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230111/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230111/</a>
               </dd>
         <dt>Latest published version:</dt><dd>
                 <a href="https://sam-vi.github.io/webrtc-icecontroller/">https://sam-vi.github.io/webrtc-icecontroller/</a>
@@ -550,6 +550,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
+                Validate <var data-type="RTCIceCandidatePair">candidatePair</var> by running the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-1">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var> and a new
+                sequence containing <var data-type="RTCIceCandidatePair">candidatePair</var> are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
                 Let <var data-type="Promise">p</var> be a new promise.
               </p>
             </li>
@@ -558,12 +564,6 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                 Run the following steps in parallel:
               </p>
               <ol>
-                <li>
-                  <p>
-                    Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-1">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>, a new sequence
-                    containing <var data-type="RTCIceCandidatePair">candidatePair</var>, and <var data-type="Promise">p</var> are supplied as arguments.
-                  </p>
-                </li>
                 <li>
                   <p>
                     If either the local or remote candidate pair identified by <var data-type="RTCIceCandidatePair">candidatePair</var> is <a data-link-type="dfn" href="#administratively-prohibited" class="internalDFN" id="ref-for-administratively-prohibited-1">administratively prohibited</a>, <a data-link-type="dfn" href="#dfn-resolve" class="internalDFN" id="ref-for-dfn-resolve-1">resolve</a> <var data-type="Promise">p</var> with <code>undefined</code>.
@@ -643,6 +643,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
+                Validate <var data-type="RTCIceCandidatePair">candidatePair</var> by running the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-2">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var> and a new
+                sequence containing <var data-type="RTCIceCandidatePair">candidatePair</var> are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
                 Let <var data-type="Promise">p</var> be a new promise.
               </p>
             </li>
@@ -651,12 +657,6 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                 Run the following steps in parallel:
               </p>
               <ol>
-                <li>
-                  <p>
-                    Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-2">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>, a new sequence
-                    containing <var data-type="RTCIceCandidatePair">candidatePair</var>, and <var data-type="Promise">p</var> are supplied as arguments.
-                  </p>
-                </li>
                 <li>
                   <p>
                     If the current <a data-link-type="idl" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-2"><code>state</code></a> of the candidate pair
@@ -719,6 +719,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
+                Validate <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var> by running the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-3">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var> and
+                <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var> are supplied as arguments.
+              </p>
+            </li>
+            <li>
+              <p>
                 Let <var data-type="Promise">p</var> be a new promise.
               </p>
             </li>
@@ -727,12 +733,6 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                 Run the following steps in parallel:
               </p>
               <ol>
-                <li>
-                  <p>
-                    Run the steps described by the <a data-link-type="dfn" href="#rtcicecontroller-validate" class="internalDFN" id="ref-for-rtcicecontroller-validate-3">validate() algorithm</a> to which <var data-type="RTCPeerConnection">connection</var>,
-                    <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>, and <var data-type="Promise">p</var> are supplied as arguments.
-                  </p>
-                </li>
                 <li>
                   <p>
                     Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-11">ICE agent</a> to prune the candidate pairs in <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>.
@@ -755,26 +755,25 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </dl>
       <div>
         <p>
-          The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-10">user agent</a> <em class="rfc2119">MUST</em> validate that the application is allowed to perform a requested operation. When this
-          validation is requested, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-11">user agent</a> <em class="rfc2119">MUST</em> <dfn id="rtcicecontroller-validate" data-lt="validate() algorithm|run the following steps" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">run the following steps</dfn>:
+          The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-10">user agent</a> <em class="rfc2119">MUST</em> validate that the application is allowed to perform a requested operation by <dfn id="rtcicecontroller-validate" data-lt="validate() algorithm|running the following steps" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">running the following steps</dfn>:
         </p>
         <ol class="algorithm">
           <li>
             <p>
-              Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object,
-              <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var> be the sequence of candidate pairs, and <var data-type="Promise">p</var>
-              be the Promise supplied to the algorithm.
+              Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object and
+              <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var> be the sequence of candidate pairs supplied to the
+              algorithm.
             </p>
           </li>
           <li>
             <p>
-              If <var data-type="RTCPeerConnection">connection</var> is <code>null</code>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-2">reject</a> <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a> and abort these steps.
+              If <var data-type="RTCPeerConnection">connection</var> is <code>null</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-2">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a> and abort these steps.
             </p>
           </li>
           <li>
             <p>
-              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IsClosed]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-isclosed"><code>[[IsClosed]]</code></a> is <code>true</code>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-3">reject</a>
-              <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IsClosed]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-isclosed"><code>[[IsClosed]]</code></a> is <code>true</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-3">rejected</a> promise
+              with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
             </p>
           </li>
           
@@ -793,14 +792,13 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <p>
               If <var data-type="RTCIceTransport">transport</var>.<a data-link-type="attribute" data-lt="[[IceTransportState]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-icetransportstate"><code>[[IceTransportState]]</code></a> is either of
               "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-new"><code>new</code></a>", "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-failed"><code>failed</code></a>" or "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-closed"><code>closed</code></a>",
-              <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-4">reject</a> <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+              return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-4">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
             </p>
           </li>
           <li>
             <p>
               If <var data-type="RTCIceCandidatePair">candidatePair</var> does not identify a valid candidate pair sent in
-              <a data-link-type="idl" href="#dom-rtcicecontroller-oncandidatepairadded" class="internalDFN" id="ref-for-dom-rtcicecontroller-oncandidatepairadded-2"><code>oncandidatepairadded</code></a>, <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-5">reject</a> <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a>
-              <a data-link-type="idl" data-lt="NotFoundError" data-type="exception" href="https://webidl.spec.whatwg.org/#notfounderror"><code>NotFoundError</code></a>.
+              <a data-link-type="idl" href="#dom-rtcicecontroller-oncandidatepairadded" class="internalDFN" id="ref-for-dom-rtcicecontroller-oncandidatepairadded-2"><code>oncandidatepairadded</code></a>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-5">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="NotFoundError" data-type="exception" href="https://webidl.spec.whatwg.org/#notfounderror"><code>NotFoundError</code></a>.
             </p>
             <div class="note" role="note" id="issue-container-generatedID-3"><div role="heading" class="note-title marker" id="h-note-3" aria-level="4"><span>Note</span></div><div class="">
               <p>
@@ -1279,12 +1277,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </p>
       <p>
         The <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute of the event is initialized to <code>true</code>. If the application sets
-        the canceled flag of the event by invoking <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-12">user agent</a> <em class="rfc2119">MUST</em>
-        not proceed with sending the proposed connectivity check. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-13">user agent</a> <em class="rfc2119">MAY</em> continue to propose further
+        the canceled flag of the event by invoking <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-11">user agent</a> <em class="rfc2119">MUST</em>
+        not proceed with sending the proposed connectivity check. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-12">user agent</a> <em class="rfc2119">MAY</em> continue to propose further
         connectivity checks in the future for the same or other candidate pairs.
       </p>
       <p>
-        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-14">user agent</a> <em class="rfc2119">SHOULD</em>
+        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-13">user agent</a> <em class="rfc2119">SHOULD</em>
         continue to send the proposed connectivity check, unless a change in circumstances has made the check infeasible
         or unnecessary.
       </p>
@@ -1394,11 +1392,11 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </p>
       <p>
         If the application sets the canceled flag of the event by invoking <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event,
-        the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-15">user agent</a> <em class="rfc2119">MUST</em> not proceed with the switch to the proposed candidate pair. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-16">user agent</a> <em class="rfc2119">MAY</em>
+        the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-14">user agent</a> <em class="rfc2119">MUST</em> not proceed with the switch to the proposed candidate pair. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-15">user agent</a> <em class="rfc2119">MAY</em>
         continue to propose further switches in the future to the same or other candidate pairs.
       </p>
       <p>
-        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-17">user agent</a> <em class="rfc2119">SHOULD</em>
+        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-16">user agent</a> <em class="rfc2119">SHOULD</em>
         continue to switch the transport to the proposed candidate pair, unless a change in circumstances has made the
         switch infeasible or unnecessary.
       </p>
@@ -1524,7 +1522,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                 <td>
                   <dfn data-export="" data-dfn-type="enum-value" id="dom-rtciceswitchreason-network-preference-change" data-idl="enum-value" data-title="network-preference-change" data-dfn-for="RTCIceSwitchReason" tabindex="0" aria-haspopup="dialog"><code>network-preference-change</code></dfn>
                 </td>
-                <td>The preferred network type changed for the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-18">user agent</a> .</td>
+                <td>The preferred network type changed for the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-17">user agent</a> .</td>
               </tr>
               <tr>
                 <td>
@@ -1554,7 +1552,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                 <td>
                   <dfn data-export="" data-dfn-type="enum-value" id="dom-rtciceswitchreason-data-received" data-idl="enum-value" data-title="data-received" data-dfn-for="RTCIceSwitchReason" tabindex="0" aria-haspopup="dialog"><code>data-received</code></dfn>
                 </td>
-                <td>The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-19">user agent</a> received data on a candidate pair.</td>
+                <td>The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-18">user agent</a> received data on a candidate pair.</td>
               </tr>
               <tr>
                 <td>
@@ -1622,12 +1620,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </p>
       <p>
         The <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute of the event is initialized to <code>true</code>. If the application sets the
-        canceled flag of the event by invoking <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-20">user agent</a> <em class="rfc2119">MUST</em> not
-        proceed with pruning the proposed candidate pairs. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-21">user agent</a> <em class="rfc2119">MAY</em> continue to propose pruning of the
+        canceled flag of the event by invoking <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-19">user agent</a> <em class="rfc2119">MUST</em> not
+        proceed with pruning the proposed candidate pairs. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-20">user agent</a> <em class="rfc2119">MAY</em> continue to propose pruning of the
         same or other candidate pairs in the future.
       </p>
       <p>
-        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-22">user agent</a> <em class="rfc2119">SHOULD</em>
+        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-21">user agent</a> <em class="rfc2119">SHOULD</em>
         continue with pruning the proposed candidate pairs, unless a change in circumstances has made the pruning
         infeasible or unnecessary.
       </p>
@@ -1873,7 +1871,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     </p>
     <p>
       When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-30">ICE agent</a> signals that the ICE role for an <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> has changed due to an ICE binding
-      request with a role collision per [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8445" title="Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal">RFC8445</a></cite>] section 7.3.1.1, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-23">user agent</a> will <a data-link-type="dfn" data-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task">queue a task</a> on the
+      request with a role collision per [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8445" title="Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal">RFC8445</a></cite>] section 7.3.1.1, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-22">user agent</a> will <a data-link-type="dfn" data-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task">queue a task</a> on the
       <a data-link-type="dfn" data-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#networking-task-source">networking task source</a> to set the value of <a data-link-type="attribute" data-lt="[[IceRole]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-icerole"><code>[[IceRole]]</code></a> for the <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> to
       the new value. The task will also set the value of <a data-link-type="attribute" data-lt="[[IceRole]]" href="#dfn-icerole" class="internalDFN" id="ref-for-dfn-icerole-3"><code>[[IceRole]]</code></a> for the
       <a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-4"><code>[[IceController]]</code></a> of the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-31">ICE agent</a>
@@ -2041,17 +2039,17 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dfn-user-agent-2" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dfn-user-agent-3" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-4" title="Reference 3">(3)</a> <a href="#ref-for-dfn-user-agent-5" title="Reference 4">(4)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-6" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-user-agent-7" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-8" title="Reference 3">(3)</a> <a href="#ref-for-dfn-user-agent-9" title="Reference 4">(4)</a> <a href="#ref-for-dfn-user-agent-10" title="Reference 5">(5)</a> <a href="#ref-for-dfn-user-agent-11" title="Reference 6">(6)</a> 
+    <a href="#ref-for-dfn-user-agent-6" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-user-agent-7" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-8" title="Reference 3">(3)</a> <a href="#ref-for-dfn-user-agent-9" title="Reference 4">(4)</a> <a href="#ref-for-dfn-user-agent-10" title="Reference 5">(5)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-12" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dfn-user-agent-13" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-14" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dfn-user-agent-11" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dfn-user-agent-12" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-13" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-15" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dfn-user-agent-16" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-17" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dfn-user-agent-14" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dfn-user-agent-15" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-16" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-18" title="§ 6.2.1 RTCIceSwitchReason Enum">§ 6.2.1 RTCIceSwitchReason Enum</a> <a href="#ref-for-dfn-user-agent-19" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dfn-user-agent-17" title="§ 6.2.1 RTCIceSwitchReason Enum">§ 6.2.1 RTCIceSwitchReason Enum</a> <a href="#ref-for-dfn-user-agent-18" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-20" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dfn-user-agent-21" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-22" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dfn-user-agent-19" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dfn-user-agent-20" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-21" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-23" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> 
+    <a href="#ref-for-dfn-user-agent-22" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-generation" aria-label="Links in this document to definition: generation">
@@ -2416,10 +2414,10 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-4" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-5" title="Reference 2">(2)</a> 
   </li>
   </ul>
-    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-validate" aria-label="Links in this document to definition: run the following steps">
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-validate" aria-label="Links in this document to definition: running the following steps">
       <span class="caret"></span>
       <div>
-        <a class="self-link" href="#rtcicecontroller-validate" aria-label="Permalink for definition: run the following steps. Activate to close this dialog.">Permalink</a>
+        <a class="self-link" href="#rtcicecontroller-validate" aria-label="Permalink for definition: running the following steps. Activate to close this dialog.">Permalink</a>
          
       </div>
       <p><b>Referenced in:</b></p>
