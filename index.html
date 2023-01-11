@@ -78,8 +78,7 @@
     </p>
     <p>
       A <dfn>timestamp</dfn> is expressed with {{DOMHighResTimeStamp}}, and is defined as
-      {{Performance}}.{{Performance/timeOrigin}} + {{Performance}}.{{Performance/now()}} at the time at which a past
-      event occurred or a future event will occur.
+      {{Performance}}.{{Performance/timeOrigin}} + {{Performance}}.{{Performance/now()}} at any instant.
     </p>
   </section>
 
@@ -143,6 +142,10 @@ interface RTCIceController : EventTarget {
               slot, initialized to <code>null</code>.
             </li>
             <li>
+              Let |controller| have a <dfn data-dfn-for="RTCIceController">[[\ProposalPending]]</dfn> internal slot,
+              initialized to <code>false</code>.
+            </li>
+            <li>
               Return |controller|.
             </li>
           </ol>
@@ -203,8 +206,8 @@ interface RTCIceController : EventTarget {
           </p>
           <p>
             This event is fired when the [= ICE agent =] indicates that the selected candidate pair for the transport
-            has changed through the running of the [= candidatepairchange() algorithm =]. The change may have been a
-            consequence of the application invoking {{RTCIceController/switchToCandidatePair()}}.
+            has changed, causing {{RTCIceTransport}} to [= update the selected candidate pair =]. The change may have
+            been a consequence of the application invoking {{RTCIceController/switchToCandidatePair()}}.
           </p>
         </dd>
         <dt>
@@ -226,12 +229,16 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            The event type of this event handler is {{icepingproposed}}. MUST be fired when the [=ICE agent =]
-            has selected a candidate pair to ping for a connectivity check, but before the ping has actually been sent.
+            The event type of this event handler is {{icepingproposed}}.
+          </p>
+          <p>
+            When the [= ICE agent =] has selected a candidate pair to ping for a connectivity check, but before the ping
+            has actually been sent, the [= user agent =] MUST [= propose an ICE ping =].
           </p>
           <p>
             This event handler MUST not be fired when the application has requested a connectivity check by invoking
-            {{RTCIceController/sendIcePing()}}.
+            {{RTCIceController/sendIcePing()}}, which does not cause the [= ICE agent =] to select a candidate pair for
+            a connectivity check.
           </p>
         </dd>
         <dt>
@@ -239,12 +246,16 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            The event type of this event handler is {{iceswitchproposed}}. MUST be fired when the [=ICE agent
-            =] has selected a candidate pair to switch the transport to, but before the switch has actually occurred.
+            The event type of this event handler is {{iceswitchproposed}}.
+          </p>
+          <p>
+            When the [=ICE agent =] has selected a candidate pair to switch the transport to, but before the switch has
+            actually occurred, the [= user agent =] MUST [= propose an ICE switch =].
           </p>
           <p>
             This event handler MUST not be fired when the application has requested a candidate pair switch by invoking
-            {{RTCIceController/switchToCandidatePair()}}.
+            {{RTCIceController/switchToCandidatePair()}}, which does not cause the [= ICE agent =] to select a candidate
+            pair to switch to.
           </p>
         </dd>
         <dt>
@@ -252,12 +263,16 @@ interface RTCIceController : EventTarget {
         </dt>
         <dd>
           <p>
-            The event type of this event handler is {{icepruneproposed}}. MUST be fired when the [=ICE agent =]
-            has selected one or more candidate pairs to prune, but before the pruning has actually occurred.
+            The event type of this event handler is {{icepruneproposed}}.
+          </p>
+          <p>
+            When the [=ICE agent =] has selected one or more candidate pairs to prune, but before the pruning has
+            actually occurred, the [= user agent =] MUST [= propose an ICE pruning =].
           </p>
           <p>
             This event handler MUST not be fired when the application has requested to prune candidate pairs by invoking
-            {{RTCIceController/pruneCandidatePairs()}}.
+            {{RTCIceController/pruneCandidatePairs()}}, which does not cause the [= ICE agent =] to select candidate
+            pairs to prune.
           </p>
         </dd>
       </dl>
@@ -298,6 +313,12 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
+                If |controller|.{{RTCIceController/[[ProposalPending]]}} is <code>true</code>, return a [= rejected =]
+                promise with a newly [= exception/created =] {{InvalidStateError}}.
+              </p>
+            </li>
+            <li>
+              <p>
                 Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object stored in
                 |controller|.{{RTCIceController/[[PeerConnection]]}}.
               </p>
@@ -326,9 +347,8 @@ interface RTCIceController : EventTarget {
                   <div class="note">
                     <p>
                       A candidate is <dfn id="administratively-prohibited">administratively prohibited</dfn> if the [=
-                      user
-                      agent =] has decided not to allow connection attempts to this address, as described further in
-                      {{RTCPeerConnection/addIceCandidate()}}.
+                      user agent =] has decided not to allow connection attempts to this address, as described further
+                      in {{RTCPeerConnection/addIceCandidate()}}.
                     </p>
                   </div>
                 </li>
@@ -353,9 +373,8 @@ interface RTCIceController : EventTarget {
                 </li>
                 <li>
                   <p>
-                    Instruct the [= ICE agent=] to construct and send a STUN check from the local candidate to the
-                    remote
-                    candidate.
+                    Instruct the [= ICE agent=] to construct and send a STUN check from
+                    |candidatePair|.{{RTCIceCandidatePair/local}} to |candidatePair|.{{RTCIceCandidatePair/remote}}.
                   </p>
                 </li>
                 <li>
@@ -388,8 +407,14 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
-                Let |controller:RTCIceController| be the {{RTCIceController}} object on which {{sendIcePing}} is
-                invoked.
+                Let |controller:RTCIceController| be the {{RTCIceController}} object on which {{switchToCandidatePair}}
+                is invoked.
+              </p>
+            </li>
+            <li>
+              <p>
+                If |controller|.{{RTCIceController/[[ProposalPending]]}} is <code>true</code>, return a [= rejected =]
+                promise with a newly [= exception/created =] {{InvalidStateError}}.
               </p>
             </li>
             <li>
@@ -424,8 +449,7 @@ interface RTCIceController : EventTarget {
                     <p>
                       Attempting to switch to a candidate pair with either a local or remote candidate that is [=
                       administratively prohibited =] will also lead to an abort at this stage, because connectivity
-                      checks
-                      are prohibited on such a candidate pair, so it will never transition to the
+                      checks are prohibited on such a candidate pair, so it will never transition to the
                       {{RTCStatsIceCandidatePairState/"succeeded"}} state.
                     </p>
                   </div>
@@ -465,8 +489,14 @@ interface RTCIceController : EventTarget {
             </li>
             <li>
               <p>
-                Let |controller:RTCIceController| be the {{RTCIceController}} object on which {{sendIcePing}} is
+                Let |controller:RTCIceController| be the {{RTCIceController}} object on which {{pruneCandidatePairs}} is
                 invoked.
+              </p>
+            </li>
+            <li>
+              <p>
+                If |controller|.{{RTCIceController/[[ProposalPending]]}} is <code>true</code>, return a [= rejected =]
+                promise with a newly [= exception/created =] {{InvalidStateError}}.
               </p>
             </li>
             <li>
@@ -1049,20 +1079,73 @@ enum RTCIceCandidatePairWriteState {
     <section id="rtcicepingproposalevent">
       <h3><dfn>RTCIcePingProposalEvent</dfn></h3>
       <p>
-        The {{RTCIceController/icepingproposed}} event uses the {{RTCIcePingProposalEvent}} interface. The
-        {{RTCIceController/icepingproposed}} event is fired when the [= ICE agent =] has selected a candidate pair to
-        ping for connectivity check, but the ping has not yet been sent.
+        The {{RTCIceController/icepingproposed}} event uses the {{RTCIcePingProposalEvent}} interface.
       </p>
+      <div>
+        <p>
+          When the [= ICE agent =] has selected a candidate pair to ping for connectivity check, the [= user agent =]
+          MUST [= queue a task =] to <dfn id="rtcicecontroller-propose-ping">propose an ICE ping</dfn>:
+        </p>
+        <ol class="algorithm">
+          <li>
+            <p>
+              Let |candidatePair:RTCIceCandidatePair| be the candidate pair for which a ping is being proposed.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object associated with this [= ICE agent
+              =].
+            </p>
+          </li>
+          <li>
+            <p>
+              If |connection|.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |controller:RTCIceController| be the {{RTCIceController}} object stored in
+              |connection|.{{RTCPeerConnection/[[IceController]]}}.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set |controller|.{{RTCIceController/[[ProposalPending]]}} to <code>true</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |accepted:boolean| be the result of [= fire an event | firing an event =] named
+              {{RTCIceController/icepingproposed}} at |controller|, using {{RTCIcePingProposalEvent}}, with the
+              {{Event/cancelable}} attribute initialized to <code>true</code>, the
+              {{RTCIcePingProposalEventInit/candidatePair}} attribute initialized to |candidatePair|, and the
+              {{RTCIcePingProposalEventInit/lastPingSentTimestamp}} and
+              {{RTCIcePingProposalEventInit/earliestNextPingTimestamp}}
+              attributes initialized to the relevant values for the [= ICE agent =].
+            </p>
+          </li>
+          <li>
+            <p>
+              Set |controller|.{{RTCIceController/[[ProposalPending]]}} to <code>false</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If |accepted| is <code>false</code>, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Otherwise, instruct the [= ICE agent =] to construct and send a STUN check from
+              |candidatePair|.{{RTCIceCandidatePair/local}} to |candidatePair|.{{RTCIceCandidatePair/remote}}.
+            </p>
+          </li>
+        </ol>
+      </div>
       <p>
-        The {{Event/cancelable}} attribute of the event is initialized to <code>true</code>. If the application sets
-        the canceled flag of the event by invoking {{Event/preventDefault()}} with the event, the [= user agent =] MUST
-        not proceed with sending the proposed connectivity check. The [= user agent =] MAY continue to propose further
-        connectivity checks in the future for the same or other candidate pairs.
-      </p>
-      <p>
-        If the application does not invoke {{Event/preventDefault()}} with the event, the [= user agent =] SHOULD
-        continue to send the proposed connectivity check, unless a change in circumstances has made the check infeasible
-        or unnecessary.
+        The [= user agent =] MAY continue to propose further connectivity checks in the future for the same or other
+        candidate pairs.
       </p>
       <div>
         <pre class="idl">
@@ -1161,26 +1244,79 @@ dictionary RTCIcePingProposalEventInit : EventInit {
     <section id="rtciceswitchproposalevent">
       <h3><dfn>RTCIceSwitchProposalEvent</dfn></h3>
       <p>
-        The {{RTCIceController/iceswitchproposed}} event uses the {{RTCIceSwitchProposalEvent}} interface. The
-        {{RTCIceController/iceswitchproposed}} event is fired when the [= ICE agent =] has selected a candidate pair to
-        switch the transport to, but the switch has not yet occurred.
+        The {{RTCIceController/iceswitchproposed}} event uses the {{RTCIceSwitchProposalEvent}} interface.
       </p>
+      <div>
+        <p>
+          When the [= ICE agent =] has selected a candidate pair to switch the transport to, the [= user agent =] MUST
+          [= queue a task =] to <dfn id="rtcicecontroller-propose-switch">propose an ICE switch</dfn>:
+        </p>
+        <ol class="algorithm">
+          <li>
+            <p>
+              Let |candidatePair:RTCIceCandidatePair| be the candidate pair to which a switch is being proposed.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object associated with this [= ICE agent
+              =].
+            </p>
+          </li>
+          <li>
+            <p>
+              If |connection|.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |controller:RTCIceController| be the {{RTCIceController}} object stored in
+              |connection|.{{RTCPeerConnection/[[IceController]]}}.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |canCancel:boolean| be <code>false</code> if the [= ICE agent =]'s reason for the switch is one of
+              {{RTCIceSwitchReason/"data-received"}}, {{RTCIceSwitchReason/"nomination-on-controlled-side"}}, or
+              {{RTCIceSwitchReason/"selected-connection-destroyed"}}, indicating that such a switch may not be prevented
+              by the application, and <code>true</code> otherwise.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set |controller|.{{RTCIceController/[[ProposalPending]]}} to <code>true</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |accepted:boolean| be the result of [= fire an event | firing an event =] named
+              {{RTCIceController/iceswitchproposed}} at |controller|, using {{RTCIceSwitchProposalEvent}}, with the
+              {{Event/cancelable}} attribute initialized to |canCancel|, the
+              {{RTCIceSwitchProposalEventInit/candidatePair}} attribute initialized to |candidatePair|, and the
+              {{RTCIceSwitchProposalEventInit/reason}} and {{RTCIceSwitchProposalEventInit/recheck}} attributes
+              initialized to the relevant values from the [= ICE agent =].
+            </p>
+          </li>
+          <li>
+            <p>
+              Set |controller|.{{RTCIceController/[[ProposalPending]]}} to <code>false</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If |accepted| is <code>false</code>, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Otherwise, instruct the [= ICE agent =] to change the selected candidate pair to |candidatePair|.
+            </p>
+          </li>
+        </ol>
+      </div>
       <p>
-        The {{Event/cancelable}} attribute of the event is initialized to <code>false</code> if the
-        {{RTCIceSwitchProposalEvent/reason}} for the event is one of {{RTCIceSwitchReason/"data-received"}},
-        {{RTCIceSwitchReason/"nomination-on-controlled-side"}}, or
-        {{RTCIceSwitchReason/"selected-connection-destroyed"}}, indicating that such a switch may not be prevented by
-        the application. Otherwise, the {{Event/cancelable}} attribute is initialized to <code>true</code>.
-      </p>
-      <p>
-        If the application sets the canceled flag of the event by invoking {{Event/preventDefault()}} with the event,
-        the [= user agent =] MUST not proceed with the switch to the proposed candidate pair. The [= user agent =] MAY
-        continue to propose further switches in the future to the same or other candidate pairs.
-      </p>
-      <p>
-        If the application does not invoke {{Event/preventDefault()}} with the event, the [= user agent =] SHOULD
-        continue to switch the transport to the proposed candidate pair, unless a change in circumstances has made the
-        switch infeasible or unnecessary.
+        The [= user agent =] MAY continue to propose further switches in the future to the same or other candidate
+        pairs.
       </p>
       <div>
         <pre class="idl">
@@ -1401,21 +1537,77 @@ dictionary RTCIceRecheck {
     <section id="rtcicepruneproposalevent">
       <h3><dfn>RTCIcePruneProposalEvent</dfn></h3>
       <p>
-        The {{RTCIceController/icepruneproposed}} event uses the {{RTCIcePruneProposalEvent}} interface. The
-        {{RTCIceController/icepruneproposed}} event is fired when the [= ICE agent =] has selected some candidate pairs
-        to prune, but the pruning has not yet happened.
+        The {{RTCIceController/icepruneproposed}} event uses the {{RTCIcePruneProposalEvent}} interface.
       </p>
+      <div>
+        <p>
+          When the [= ICE agent =] has selected some candidate pairs to prune, the [= user agent =] MUST [= queue a task
+          =] to <dfn id="rtcicecontroller-propose-prune">propose an ICE pruning</dfn>:
+        </p>
+        <ol class="algorithm">
+          <li>
+            <p>
+              Let |candidatePairs:sequence&lt;RTCIceCandidatePair&gt;| be the candidate pairs which are being proposed
+              for pruning.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |connection:RTCPeerConnection| be the {{RTCPeerConnection}} object associated with this [= ICE agent
+              =].
+            </p>
+          </li>
+          <li>
+            <p>
+              If |connection|.{{RTCPeerConnection/[[IceController]]}} is null, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |controller:RTCIceController| be the {{RTCIceController}} object stored in
+              |connection|.{{RTCPeerConnection/[[IceController]]}}.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set |controller|.{{RTCIceController/[[ProposalPending]]}} to <code>true</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let |accepted:boolean| be the result of [= fire an event | firing an event =] named
+              {{RTCIceController/icepruneproposed}} at |controller|, using {{RTCIcePruneProposalEvent}}, with the
+              {{Event/cancelable}} attribute initialized to true, the {{RTCIcePruneProposalEventInit/candidatePairs}}
+              attribute initialized to |candidatePairs|.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set |controller|.{{RTCIceController/[[ProposalPending]]}} to <code>false</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If |accepted| is <code>false</code>, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Otherwise, instruct the [= ICE agent =] to prune the candidate pairs in |candidatePairs|.
+            </p>
+          </li>
+        </ol>
+      </div>
       <p>
-        The {{Event/cancelable}} attribute of the event is initialized to <code>true</code>. If the application sets the
-        canceled flag of the event by invoking {{Event/preventDefault()}} with the event, the [= user agent =] MUST not
-        proceed with pruning the proposed candidate pairs. The [= user agent =] MAY continue to propose pruning of the
-        same or other candidate pairs in the future.
+        The [= user agent =] MAY continue to propose pruning of the same or other candidate pairs in the future.
       </p>
-      <p>
-        If the application does not invoke {{Event/preventDefault()}} with the event, the [= user agent =] SHOULD
-        continue with pruning the proposed candidate pairs, unless a change in circumstances has made the pruning
-        infeasible or unnecessary.
-      </p>
+      <div class="note">
+        <p>
+          While the application cannot respond to pruning of individual candidate pairs in a prune proposal, the
+          application can subsequently invoke {{RTCIceController/pruneCandidatePairs()}} with any subset of candidate
+          pairs in the proposal.
+        </p>
+      </div>
       <div>
         <pre class="idl">
 [Exposed=Window]
@@ -1671,9 +1863,8 @@ partial dictionary RTCConfiguration {
       to the new value.
     </p>
     <p>
-      When the [= ICE agent =] indicates that an {{RTCIceTransport}} has changed the selected candidate pair, run the
-      <dfn id="rtcicetransport-candidatepairchange" data-lt="candidatepairchange() algorithm">following additional
-        steps</dfn>:
+      When the [= ICE agent =] indicates that an {{RTCIceTransport}} has changed the selected candidate pair, run these
+      additional steps to <dfn id="rtcicetransport-candidatepairchange">update the selected candidate pair</dfn>:
     </p>
     <ol class="algorithm">
       <li>
