@@ -275,7 +275,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
   </section>
 
   <section id="conformance"><div class="header-wrapper"><h2 id="x2-conformance"><bdi class="secno">2. </bdi>Conformance</h2><a class="self-link" href="#conformance" aria-label="Permalink for Section 2."></a></div><p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.</p><p>
-        The key words <em class="rfc2119">MAY</em>, <em class="rfc2119">MUST</em>, and <em class="rfc2119">SHOULD</em> in this document
+        The key words <em class="rfc2119">MAY</em> and <em class="rfc2119">MUST</em> in this document
         are to be interpreted as described in
         <a href="https://datatracker.ietf.org/doc/html/bcp14">BCP 14</a>
         [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">RFC2119</a></cite>] [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8174" title="Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words">RFC8174</a></cite>]
@@ -329,8 +329,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
     </p>
     <p>
       A <dfn id="dfn-timestamp" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">timestamp</dfn> is expressed with <a data-link-type="idl" data-lt="DOMHighResTimeStamp" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp"><code>DOMHighResTimeStamp</code></a>, and is defined as
-      <a data-link-type="idl" data-lt="Performance" data-type="interface" href="https://www.w3.org/TR/hr-time-3/#dom-performance"><code>Performance</code></a>.<a data-link-type="idl" data-type="attribute" href="https://www.w3.org/TR/hr-time-3/#dom-performance-timeorigin"><code>timeOrigin</code></a> + <a data-link-type="idl" data-lt="Performance" data-type="interface" href="https://www.w3.org/TR/hr-time-3/#dom-performance"><code>Performance</code></a>.<a data-link-type="idl" data-lt="now()" data-type="method" href="https://www.w3.org/TR/hr-time-3/#dom-performance-now"><code>now</code></a><code>()</code> at the time at which a past
-      event occurred or a future event will occur.
+      <a data-link-type="idl" data-lt="Performance" data-type="interface" href="https://www.w3.org/TR/hr-time-3/#dom-performance"><code>Performance</code></a>.<a data-link-type="idl" data-type="attribute" href="https://www.w3.org/TR/hr-time-3/#dom-performance-timeorigin"><code>timeOrigin</code></a> + <a data-link-type="idl" data-lt="Performance" data-type="interface" href="https://www.w3.org/TR/hr-time-3/#dom-performance"><code>Performance</code></a>.<a data-link-type="idl" data-lt="now()" data-type="method" href="https://www.w3.org/TR/hr-time-3/#dom-performance-now"><code>now</code></a><code>()</code> at any instant.
     </p>
   </section>
 
@@ -392,6 +391,10 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               slot, initialized to <code>null</code>.
             </li>
             <li>
+              Let <var data-type="RTCIceController">controller</var> have a <dfn data-dfn-for="RTCIceController" data-idl="" data-noexport="" data-dfn-type="attribute" id="dfn-proposalpending" tabindex="0" aria-haspopup="dialog">[[ProposalPending]]</dfn> internal slot,
+              initialized to <code>false</code>.
+            </li>
+            <li>
               Return <var data-type="RTCIceController">controller</var>.
             </li>
           </ol>
@@ -451,8 +454,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           </p>
           <p>
             This event is fired when the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-4">ICE agent</a> indicates that the selected candidate pair for the transport
-            has changed through the running of the <a data-link-type="dfn" href="#rtcicetransport-candidatepairchange" class="internalDFN" id="ref-for-rtcicetransport-candidatepairchange-1">candidatepairchange() algorithm</a>. The change may have been a
-            consequence of the application invoking <a data-link-type="idl" data-lt="switchToCandidatePair()" href="#dom-rtcicecontroller-switchtocandidatepair" class="internalDFN" id="ref-for-dom-rtcicecontroller-switchtocandidatepair-2"><code>switchToCandidatePair</code></a><code>()</code>.
+            has changed, causing <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> to <a data-link-type="dfn" href="#rtcicetransport-candidatepairchange" class="internalDFN" id="ref-for-rtcicetransport-candidatepairchange-1">update the selected candidate pair</a>. The change may have
+            been a consequence of the application invoking <a data-link-type="idl" data-lt="switchToCandidatePair()" href="#dom-rtcicecontroller-switchtocandidatepair" class="internalDFN" id="ref-for-dom-rtcicecontroller-switchtocandidatepair-2"><code>switchToCandidatePair</code></a><code>()</code>.
           </p>
         </dd>
         <dt>
@@ -473,12 +476,16 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         </dt>
         <dd>
           <p>
-            The event type of this event handler is <a data-link-type="idl" data-lt="icepingproposed" href="#dfn-icepingproposed" class="internalDFN" id="ref-for-dfn-icepingproposed-1"><code>icepingproposed</code></a>. <em class="rfc2119">MUST</em> be fired when the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-6">ICE agent</a>
-            has selected a candidate pair to ping for a connectivity check, but before the ping has actually been sent.
+            The event type of this event handler is <a data-link-type="idl" data-lt="icepingproposed" href="#dfn-icepingproposed" class="internalDFN" id="ref-for-dfn-icepingproposed-1"><code>icepingproposed</code></a>.
+          </p>
+          <p>
+            When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-6">ICE agent</a> has selected a candidate pair to ping for a connectivity check, but before the ping
+            has actually been sent, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-6">user agent</a> <em class="rfc2119">MUST</em> <a data-link-type="dfn" href="#rtcicecontroller-propose-ping" class="internalDFN" id="ref-for-rtcicecontroller-propose-ping-1">propose an ICE ping</a>.
           </p>
           <p>
             This event handler <em class="rfc2119">MUST</em> not be fired when the application has requested a connectivity check by invoking
-            <a data-link-type="idl" data-lt="sendIcePing()" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-3"><code>sendIcePing</code></a><code>()</code>.
+            <a data-link-type="idl" data-lt="sendIcePing()" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-3"><code>sendIcePing</code></a><code>()</code>, which does not cause the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-7">ICE agent</a> to select a candidate pair for
+            a connectivity check.
           </p>
         </dd>
         <dt>
@@ -486,11 +493,16 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         </dt>
         <dd>
           <p>
-            The event type of this event handler is <a data-link-type="idl" data-lt="iceswitchproposed" href="#dfn-iceswitchproposed" class="internalDFN" id="ref-for-dfn-iceswitchproposed-1"><code>iceswitchproposed</code></a>. <em class="rfc2119">MUST</em> be fired when the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-7">ICE agent</a> has selected a candidate pair to switch the transport to, but before the switch has actually occurred.
+            The event type of this event handler is <a data-link-type="idl" data-lt="iceswitchproposed" href="#dfn-iceswitchproposed" class="internalDFN" id="ref-for-dfn-iceswitchproposed-1"><code>iceswitchproposed</code></a>.
+          </p>
+          <p>
+            When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-8">ICE agent</a> has selected a candidate pair to switch the transport to, but before the switch has
+            actually occurred, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-7">user agent</a> <em class="rfc2119">MUST</em> <a data-link-type="dfn" href="#rtcicecontroller-propose-switch" class="internalDFN" id="ref-for-rtcicecontroller-propose-switch-1">propose an ICE switch</a>.
           </p>
           <p>
             This event handler <em class="rfc2119">MUST</em> not be fired when the application has requested a candidate pair switch by invoking
-            <a data-link-type="idl" data-lt="switchToCandidatePair()" href="#dom-rtcicecontroller-switchtocandidatepair" class="internalDFN" id="ref-for-dom-rtcicecontroller-switchtocandidatepair-3"><code>switchToCandidatePair</code></a><code>()</code>.
+            <a data-link-type="idl" data-lt="switchToCandidatePair()" href="#dom-rtcicecontroller-switchtocandidatepair" class="internalDFN" id="ref-for-dom-rtcicecontroller-switchtocandidatepair-3"><code>switchToCandidatePair</code></a><code>()</code>, which does not cause the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-9">ICE agent</a> to select a candidate
+            pair to switch to.
           </p>
         </dd>
         <dt>
@@ -498,12 +510,16 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         </dt>
         <dd>
           <p>
-            The event type of this event handler is <a data-link-type="idl" data-lt="icepruneproposed" href="#dfn-icepruneproposed" class="internalDFN" id="ref-for-dfn-icepruneproposed-1"><code>icepruneproposed</code></a>. <em class="rfc2119">MUST</em> be fired when the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-8">ICE agent</a>
-            has selected one or more candidate pairs to prune, but before the pruning has actually occurred.
+            The event type of this event handler is <a data-link-type="idl" data-lt="icepruneproposed" href="#dfn-icepruneproposed" class="internalDFN" id="ref-for-dfn-icepruneproposed-1"><code>icepruneproposed</code></a>.
+          </p>
+          <p>
+            When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-10">ICE agent</a> has selected one or more candidate pairs to prune, but before the pruning has
+            actually occurred, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-8">user agent</a> <em class="rfc2119">MUST</em> <a data-link-type="dfn" href="#rtcicecontroller-propose-prune" class="internalDFN" id="ref-for-rtcicecontroller-propose-prune-1">propose an ICE pruning</a>.
           </p>
           <p>
             This event handler <em class="rfc2119">MUST</em> not be fired when the application has requested to prune candidate pairs by invoking
-            <a data-link-type="idl" data-lt="pruneCandidatePairs()" href="#dom-rtcicecontroller-prunecandidatepairs" class="internalDFN" id="ref-for-dom-rtcicecontroller-prunecandidatepairs-3"><code>pruneCandidatePairs</code></a><code>()</code>.
+            <a data-link-type="idl" data-lt="pruneCandidatePairs()" href="#dom-rtcicecontroller-prunecandidatepairs" class="internalDFN" id="ref-for-dom-rtcicecontroller-prunecandidatepairs-3"><code>pruneCandidatePairs</code></a><code>()</code>, which does not cause the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-11">ICE agent</a> to select candidate
+            pairs to prune.
           </p>
         </dd>
       </dl>
@@ -528,7 +544,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         <dd>
           <p>
             The <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-4"><code>sendIcePing</code></a> method attempts to send an ICE connectivity check on the provided candidate pair. When
-            the <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-5"><code>sendIcePing</code></a> method is invoked, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-6">user agent</a> <em class="rfc2119">MUST</em> run the following steps:
+            the <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-5"><code>sendIcePing</code></a> method is invoked, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-9">user agent</a> <em class="rfc2119">MUST</em> run the following steps:
           </p>
           <ol class="algorithm">
             <li>
@@ -540,6 +556,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               <p>
                 Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-6"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-6"><code>sendIcePing</code></a> is
                 invoked.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-1"><code>[[ProposalPending]]</code></a> is <code>true</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-1">rejected</a>
+                promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
               </p>
             </li>
             <li>
@@ -570,15 +592,15 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                   </p>
                   <div class="note" role="note" id="issue-container-generatedID"><div role="heading" class="note-title marker" id="h-note" aria-level="4"><span>Note</span></div><div class="">
                     <p>
-                      A candidate is <dfn id="administratively-prohibited" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">administratively prohibited</dfn> if the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-7">user agent</a> has decided not to allow connection attempts to this address, as described further in
-                      <a data-link-type="idl" data-lt="addIceCandidate()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-peerconnection-addicecandidate"><code>addIceCandidate</code></a><code>()</code>.
+                      A candidate is <dfn id="administratively-prohibited" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">administratively prohibited</dfn> if the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-10">user agent</a> has decided not to allow connection attempts to this address, as described further
+                      in <a data-link-type="idl" data-lt="addIceCandidate()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-peerconnection-addicecandidate"><code>addIceCandidate</code></a><code>()</code>.
                     </p>
                   </div></div>
                 </li>
                 <li>
                   <p>
                     If the current <a data-link-type="idl" href="#dom-rtcicecandidatepairreport-state" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-state-1"><code>state</code></a> of the candidate pair
-                    <a data-link-type="idl" data-lt="RTCStatsIceCandidatePairState" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate"><code>RTCStatsIceCandidatePairState</code></a> is "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-failed"><code>failed</code></a>", <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-1">reject</a>
+                    <a data-link-type="idl" data-lt="RTCStatsIceCandidatePairState" data-type="enum" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate"><code>RTCStatsIceCandidatePairState</code></a> is "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-failed"><code>failed</code></a>", <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-2">reject</a>
                     <var data-type="Promise">p</var> with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
                   </p>
                 </li>
@@ -596,9 +618,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                 </li>
                 <li>
                   <p>
-                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-9">ICE agent</a> to construct and send a STUN check from the local candidate to the
-                    remote
-                    candidate.
+                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-12">ICE agent</a> to construct and send a STUN check from
+                    <var data-type="RTCIceCandidatePair">candidatePair</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair-local"><code>local</code></a> to <var data-type="RTCIceCandidatePair">candidatePair</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair-remote"><code>remote</code></a>.
                   </p>
                 </li>
                 <li>
@@ -621,7 +642,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         <dd>
           <p>
             The <a data-link-type="idl" data-lt="switchToCandidatePair" href="#dom-rtcicecontroller-switchtocandidatepair" class="internalDFN" id="ref-for-dom-rtcicecontroller-switchtocandidatepair-4"><code>switchToCandidatePair</code></a> method attempts to switch the transport to the provided candidate pair. When
-            the <a data-link-type="idl" data-lt="switchToCandidatePair" href="#dom-rtcicecontroller-switchtocandidatepair" class="internalDFN" id="ref-for-dom-rtcicecontroller-switchtocandidatepair-5"><code>switchToCandidatePair</code></a> method is invoked, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-8">user agent</a> <em class="rfc2119">MUST</em> run the following steps:
+            the <a data-link-type="idl" data-lt="switchToCandidatePair" href="#dom-rtcicecontroller-switchtocandidatepair" class="internalDFN" id="ref-for-dom-rtcicecontroller-switchtocandidatepair-5"><code>switchToCandidatePair</code></a> method is invoked, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-11">user agent</a> <em class="rfc2119">MUST</em> run the following steps:
           </p>
           <ol class="algorithm">
             <li>
@@ -631,8 +652,14 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
-                Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-7"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-7"><code>sendIcePing</code></a> is
-                invoked.
+                Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-7"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="switchToCandidatePair" href="#dom-rtcicecontroller-switchtocandidatepair" class="internalDFN" id="ref-for-dom-rtcicecontroller-switchtocandidatepair-6"><code>switchToCandidatePair</code></a>
+                is invoked.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-2"><code>[[ProposalPending]]</code></a> is <code>true</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-3">rejected</a>
+                promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
               </p>
             </li>
             <li>
@@ -666,15 +693,14 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                   <div class="note" role="note" id="issue-container-generatedID-1"><div role="heading" class="note-title marker" id="h-note-1" aria-level="4"><span>Note</span></div><div class="">
                     <p>
                       Attempting to switch to a candidate pair with either a local or remote candidate that is <a data-link-type="dfn" href="#administratively-prohibited" class="internalDFN" id="ref-for-administratively-prohibited-2">administratively prohibited</a> will also lead to an abort at this stage, because connectivity
-                      checks
-                      are prohibited on such a candidate pair, so it will never transition to the
+                      checks are prohibited on such a candidate pair, so it will never transition to the
                       "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsicecandidatepairstate-succeeded"><code>succeeded</code></a>" state.
                     </p>
                   </div></div>
                 </li>
                 <li>
                   <p>
-                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-10">ICE agent</a> to change the selected candidate pair to <var data-type="RTCIceCandidatePair">candidatePair</var>.
+                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-13">ICE agent</a> to change the selected candidate pair to <var data-type="RTCIceCandidatePair">candidatePair</var>.
                   </p>
                 </li>
                 <li>
@@ -697,7 +723,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         <dd>
           <p>
             The <a data-link-type="idl" data-lt="pruneCandidatePairs" href="#dom-rtcicecontroller-prunecandidatepairs" class="internalDFN" id="ref-for-dom-rtcicecontroller-prunecandidatepairs-4"><code>pruneCandidatePairs</code></a> method attempts to prune the provided candidate pairs. When the
-            <a data-link-type="idl" data-lt="pruneCandidatePairs" href="#dom-rtcicecontroller-prunecandidatepairs" class="internalDFN" id="ref-for-dom-rtcicecontroller-prunecandidatepairs-5"><code>pruneCandidatePairs</code></a> method is invoked, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-9">user agent</a> <em class="rfc2119">MUST</em> run the following steps:
+            <a data-link-type="idl" data-lt="pruneCandidatePairs" href="#dom-rtcicecontroller-prunecandidatepairs" class="internalDFN" id="ref-for-dom-rtcicecontroller-prunecandidatepairs-5"><code>pruneCandidatePairs</code></a> method is invoked, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-12">user agent</a> <em class="rfc2119">MUST</em> run the following steps:
           </p>
           <ol class="algorithm">
             <li>
@@ -707,8 +733,14 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </li>
             <li>
               <p>
-                Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-8"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="sendIcePing" href="#dom-rtcicecontroller-sendiceping" class="internalDFN" id="ref-for-dom-rtcicecontroller-sendiceping-8"><code>sendIcePing</code></a> is
+                Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-8"><code>RTCIceController</code></a> object on which <a data-link-type="idl" data-lt="pruneCandidatePairs" href="#dom-rtcicecontroller-prunecandidatepairs" class="internalDFN" id="ref-for-dom-rtcicecontroller-prunecandidatepairs-6"><code>pruneCandidatePairs</code></a> is
                 invoked.
+              </p>
+            </li>
+            <li>
+              <p>
+                If <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-3"><code>[[ProposalPending]]</code></a> is <code>true</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-4">rejected</a>
+                promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
               </p>
             </li>
             <li>
@@ -735,7 +767,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               <ol>
                 <li>
                   <p>
-                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-11">ICE agent</a> to prune the candidate pairs in <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>.
+                    Instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-14">ICE agent</a> to prune the candidate pairs in <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>.
                   </p>
                 </li>
                 <li>
@@ -755,7 +787,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </dl>
       <div>
         <p>
-          The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-10">user agent</a> <em class="rfc2119">MUST</em> validate that the application is allowed to perform a requested operation by <dfn id="rtcicecontroller-validate" data-lt="validate() algorithm|running the following steps" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">running the following steps</dfn>:
+          The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-13">user agent</a> <em class="rfc2119">MUST</em> validate that the application is allowed to perform a requested operation by <dfn id="rtcicecontroller-validate" data-lt="validate() algorithm|running the following steps" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">running the following steps</dfn>:
         </p>
         <ol class="algorithm">
           <li>
@@ -767,12 +799,12 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           </li>
           <li>
             <p>
-              If <var data-type="RTCPeerConnection">connection</var> is <code>null</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-2">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a> and abort these steps.
+              If <var data-type="RTCPeerConnection">connection</var> is <code>null</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-5">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a> and abort these steps.
             </p>
           </li>
           <li>
             <p>
-              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IsClosed]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-isclosed"><code>[[IsClosed]]</code></a> is <code>true</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-3">rejected</a> promise
+              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IsClosed]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-isclosed"><code>[[IsClosed]]</code></a> is <code>true</code>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-6">rejected</a> promise
               with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
             </p>
           </li>
@@ -792,13 +824,13 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <p>
               If <var data-type="RTCIceTransport">transport</var>.<a data-link-type="attribute" data-lt="[[IceTransportState]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-icetransportstate"><code>[[IceTransportState]]</code></a> is either of
               "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-new"><code>new</code></a>", "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-failed"><code>failed</code></a>" or "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-closed"><code>closed</code></a>",
-              return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-4">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
+              return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-7">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="InvalidStateError" data-type="exception" href="https://webidl.spec.whatwg.org/#invalidstateerror"><code>InvalidStateError</code></a>.
             </p>
           </li>
           <li>
             <p>
               If <var data-type="RTCIceCandidatePair">candidatePair</var> does not identify a valid candidate pair sent in
-              <a data-link-type="idl" href="#dom-rtcicecontroller-oncandidatepairadded" class="internalDFN" id="ref-for-dom-rtcicecontroller-oncandidatepairadded-2"><code>oncandidatepairadded</code></a>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-5">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="NotFoundError" data-type="exception" href="https://webidl.spec.whatwg.org/#notfounderror"><code>NotFoundError</code></a>.
+              <a data-link-type="idl" href="#dom-rtcicecontroller-oncandidatepairadded" class="internalDFN" id="ref-for-dom-rtcicecontroller-oncandidatepairadded-2"><code>oncandidatepairadded</code></a>, return a <a data-link-type="dfn" href="#dfn-reject" class="internalDFN" id="ref-for-dfn-reject-8">rejected</a> promise with a newly <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-exception">created</a> <a data-link-type="idl" data-lt="NotFoundError" data-type="exception" href="https://webidl.spec.whatwg.org/#notfounderror"><code>NotFoundError</code></a>.
             </p>
             <div class="note" role="note" id="issue-container-generatedID-3"><div role="heading" class="note-title marker" id="h-note-3" aria-level="4"><span>Note</span></div><div class="">
               <p>
@@ -818,7 +850,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     
     <p>
       These events convey information about some action that has already taken place, and allow the application to have
-      an up-to-date view of the relevant internal state of the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-12">ICE agent</a>.
+      an up-to-date view of the relevant internal state of the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-15">ICE agent</a>.
     </p>
 
     <section id="rtcicecandidatepairevent"><div class="header-wrapper"><h3 id="x5-1-rtcicecandidatepairevent"><bdi class="secno">5.1 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtcicecandidatepairevent" data-idl="interface" data-title="RTCIceCandidatePairEvent" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairEvent</code></dfn></h3><a class="self-link" href="#rtcicecandidatepairevent" aria-label="Permalink for Section 5.1"></a></div>
@@ -848,7 +880,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 The <a data-link-type="idl" data-lt="candidatePair" href="#dom-rtcicecandidatepairevent-candidatepair" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-candidatepair-4"><code>candidatePair</code></a> attribute is the <a data-link-type="idl" data-lt="RTCIceCandidatePair" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair"><code>RTCIceCandidatePair</code></a> object with the new ICE candidate pair
-                that was gathered by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-13">ICE agent</a>.
+                that was gathered by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-16">ICE agent</a>.
               </p>
             </dd>
           </dl>
@@ -912,7 +944,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 The <a data-link-type="idl" data-lt="report" href="#dom-rtcicecandidatepairupdateevent-report" class="internalDFN" id="ref-for-dom-rtcicecandidatepairupdateevent-report-2"><code>report</code></a> attribute is the <a data-link-type="idl" data-lt="RTCIceCandidatePairReport" href="#dom-rtcicecandidatepairreport" class="internalDFN" id="ref-for-dom-rtcicecandidatepairreport-3"><code>RTCIceCandidatePairReport</code></a> object containing the information that
-                the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-14">ICE agent</a> has gathered about a candidate pair through ICE connectivity checks.
+                the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-17">ICE agent</a> has gathered about a candidate pair through ICE connectivity checks.
               </p>
             </dd>
           </dl>
@@ -1195,7 +1227,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         
         <p>
           The <a data-link-type="idl" data-lt="RTCIceCandidatePairWriteState" href="#dom-rtcicecandidatepairwritestate" class="internalDFN" id="ref-for-dom-rtcicecandidatepairwritestate-3"><code>RTCIceCandidatePairWriteState</code></a> represents the write state of the ICE candidate pair as determined by
-          the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-15">ICE agent</a>. The exact criteria for determining the write state, i.e. the number of failures or the
+          the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-18">ICE agent</a>. The exact criteria for determining the write state, i.e. the number of failures or the
           timeout period, is left up to the browser
           implementation.
         </p>
@@ -1262,33 +1294,85 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   <section id="proposal-events"><div class="header-wrapper"><h2 id="x6-proposal-events"><bdi class="secno">6. </bdi>Proposal events</h2><a class="self-link" href="#proposal-events" aria-label="Permalink for Section 6."></a></div>
     
     <p>
-      These events represent some action that the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-16">ICE agent</a> is proposing to take with regards to ICE connectivity
+      These events represent some action that the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-19">ICE agent</a> is proposing to take with regards to ICE connectivity
       checks, changing the candidate pair used for the transport, or maintainence of the candidate pairs. The
-      application can affect the operation of the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-17">ICE agent</a> by rejecting any of the proposed actions, and
+      application can affect the operation of the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-20">ICE agent</a> by rejecting any of the proposed actions, and
       initiating its own actions instead through <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-10"><code>RTCIceController</code></a> methods.
     </p>
 
     <section id="rtcicepingproposalevent"><div class="header-wrapper"><h3 id="x6-1-rtcicepingproposalevent"><bdi class="secno">6.1 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtcicepingproposalevent" data-idl="interface" data-title="RTCIcePingProposalEvent" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIcePingProposalEvent</code></dfn></h3><a class="self-link" href="#rtcicepingproposalevent" aria-label="Permalink for Section 6.1"></a></div>
       
       <p>
-        The <a data-link-type="idl" href="#dfn-icepingproposed" class="internalDFN" id="ref-for-dfn-icepingproposed-2"><code>icepingproposed</code></a> event uses the <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-1"><code>RTCIcePingProposalEvent</code></a> interface. The
-        <a data-link-type="idl" href="#dfn-icepingproposed" class="internalDFN" id="ref-for-dfn-icepingproposed-3"><code>icepingproposed</code></a> event is fired when the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-18">ICE agent</a> has selected a candidate pair to
-        ping for connectivity check, but the ping has not yet been sent.
+        The <a data-link-type="idl" href="#dfn-icepingproposed" class="internalDFN" id="ref-for-dfn-icepingproposed-2"><code>icepingproposed</code></a> event uses the <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-1"><code>RTCIcePingProposalEvent</code></a> interface.
       </p>
+      <div>
+        <p>
+          When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-21">ICE agent</a> has selected a candidate pair to ping for connectivity check, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-14">user agent</a>
+          <em class="rfc2119">MUST</em> <a data-link-type="dfn" data-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task">queue a task</a> to <dfn id="rtcicecontroller-propose-ping" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">propose an ICE ping</dfn>:
+        </p>
+        <ol class="algorithm">
+          <li>
+            <p>
+              Let <var data-type="RTCIceCandidatePair">candidatePair</var> be the candidate pair for which a ping is being proposed.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-22">ICE agent</a>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-1"><code>[[IceController]]</code></a> is null, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-11"><code>RTCIceController</code></a> object stored in
+              <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-2"><code>[[IceController]]</code></a>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-4"><code>[[ProposalPending]]</code></a> to <code>true</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="boolean">accepted</var> be the result of <a data-link-type="dfn" data-lt="fire an event" data-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire">firing an event</a> named
+              <a data-link-type="idl" href="#dfn-icepingproposed" class="internalDFN" id="ref-for-dfn-icepingproposed-3"><code>icepingproposed</code></a> at <var data-type="RTCIceController">controller</var>, using <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-2"><code>RTCIcePingProposalEvent</code></a>, with the
+              <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute initialized to <code>true</code>, the
+              <a data-link-type="idl" href="#dom-rtcicepingproposaleventinit-candidatepair" class="internalDFN" id="ref-for-dom-rtcicepingproposaleventinit-candidatepair-1"><code>candidatePair</code></a> attribute initialized to <var data-type="RTCIceCandidatePair">candidatePair</var>, and the
+              <a data-link-type="idl" href="#dom-rtcicepingproposaleventinit-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposaleventinit-lastpingsenttimestamp-1"><code>lastPingSentTimestamp</code></a> and
+              <a data-link-type="idl" href="#dom-rtcicepingproposaleventinit-earliestnextpingtimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposaleventinit-earliestnextpingtimestamp-1"><code>earliestNextPingTimestamp</code></a>
+              attributes initialized to the relevant values for the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-23">ICE agent</a>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-5"><code>[[ProposalPending]]</code></a> to <code>false</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var data-type="boolean">accepted</var> is <code>false</code>, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Otherwise, instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-24">ICE agent</a> to construct and send a STUN check from
+              <var data-type="RTCIceCandidatePair">candidatePair</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair-local"><code>local</code></a> to <var data-type="RTCIceCandidatePair">candidatePair</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair-remote"><code>remote</code></a>.
+            </p>
+          </li>
+        </ol>
+      </div>
       <p>
-        The <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute of the event is initialized to <code>true</code>. If the application sets
-        the canceled flag of the event by invoking <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-11">user agent</a> <em class="rfc2119">MUST</em>
-        not proceed with sending the proposed connectivity check. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-12">user agent</a> <em class="rfc2119">MAY</em> continue to propose further
-        connectivity checks in the future for the same or other candidate pairs.
-      </p>
-      <p>
-        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-13">user agent</a> <em class="rfc2119">SHOULD</em>
-        continue to send the proposed connectivity check, unless a change in circumstances has made the check infeasible
-        or unnecessary.
+        The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-15">user agent</a> <em class="rfc2119">MAY</em> continue to propose further connectivity checks in the future for the same or other
+        candidate pairs.
       </p>
       <div>
         <pre class="idl def" id="webidl-727307893"><span class="idlHeader"><a class="self-link" href="#webidl-727307893">WebIDL</a></span><code><span data-idl="" class="idlInterface" id="idl-def-rtcicepingproposalevent" data-title="RTCIcePingProposalEvent">[<span class="extAttr"><a data-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed">Exposed</a>=Window</span>]
-interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtcicepingproposalevent" id="ref-for-dom-rtcicepingproposalevent-2"><code>RTCIcePingProposalEvent</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="interface" href="https://dom.spec.whatwg.org/#event">Event</a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtcicepingproposalevent-constructor-type-eventinitdict" data-title="constructor" data-dfn-for="RTCIcePingProposalEvent">
+interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtcicepingproposalevent" id="ref-for-dom-rtcicepingproposalevent-3"><code>RTCIcePingProposalEvent</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="interface" href="https://dom.spec.whatwg.org/#event">Event</a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtcicepingproposalevent-constructor-type-eventinitdict" data-title="constructor" data-dfn-for="RTCIcePingProposalEvent">
   <a class="internalDFN" data-link-type="constructor" href="#dom-rtcicepingproposalevent-constructor" id="ref-for-dom-rtcicepingproposalevent-constructor-1"><code>constructor</code></a>(<span class="idlType"><a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString">DOMString</a></span> <span class="idlParamName">type</span>,<span class="idlType"> <a data-link-type="idl" href="#dom-rtcicepingproposaleventinit" class="internalDFN" id="ref-for-dom-rtcicepingproposaleventinit-1"><code>RTCIcePingProposalEventInit</code></a></span> <span class="idlParamName">eventInitDict</span>);</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicepingproposalevent-candidatepair" data-title="candidatePair" data-dfn-for="RTCIcePingProposalEvent">
   readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicepingproposalevent-candidatepair" id="ref-for-dom-rtcicepingproposalevent-candidatepair-1"><code>candidatePair</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicepingproposalevent-lastpingsenttimestamp" data-title="lastPingSentTimestamp" data-dfn-for="RTCIcePingProposalEvent">
   readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a>?</span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtcicepingproposalevent-lastpingsenttimestamp" id="ref-for-dom-rtcicepingproposalevent-lastpingsenttimestamp-1"><code>lastPingSentTimestamp</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtcicepingproposalevent-earliestnextpingtimestamp" data-title="earliestNextPingTimestamp" data-dfn-for="RTCIcePingProposalEvent">
@@ -1310,7 +1394,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 The <a data-link-type="idl" data-lt="candidatePair" href="#dom-rtcicepingproposalevent-candidatepair" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-candidatepair-2"><code>candidatePair</code></a> attribute is the <a data-link-type="idl" data-lt="RTCIceCandidatePair" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair"><code>RTCIceCandidatePair</code></a> object that represents the candidate
-                pair that the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-19">ICE agent</a> has selected to ping for a connectivity check.
+                pair that the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-25">ICE agent</a> has selected to ping for a connectivity check.
               </p>
             </dd>
             <dt>
@@ -1320,7 +1404,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 The <a data-link-type="idl" data-lt="lastPingSentTimestamp" href="#dom-rtcicepingproposalevent-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a> attribute represents the <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-9">timestamp</a> at which the last connectivity
-                check ping was sent by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-20">ICE agent</a>.
+                check ping was sent by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-26">ICE agent</a>.
               </p>
             </dd>
             <dt>
@@ -1329,7 +1413,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </dt>
             <dd>
               <p>
-                The <a data-link-type="idl" data-lt="earliestNextPingTimestamp" href="#dom-rtcicepingproposalevent-earliestnextpingtimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-earliestnextpingtimestamp-2"><code>earliestNextPingTimestamp</code></a> attribute represents the earliest <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-10">timestamp</a> at which the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-21">ICE agent</a> will select another candidate pair to ping for connectivity check.
+                The <a data-link-type="idl" data-lt="earliestNextPingTimestamp" href="#dom-rtcicepingproposalevent-earliestnextpingtimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-earliestnextpingtimestamp-2"><code>earliestNextPingTimestamp</code></a> attribute represents the earliest <a data-link-type="dfn" href="#dfn-timestamp" class="internalDFN" id="ref-for-dfn-timestamp-10">timestamp</a> at which the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-27">ICE agent</a> will select another candidate pair to ping for connectivity check.
               </p>
             </dd>
           </dl>
@@ -1337,9 +1421,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </div>
       <div>
         <pre class="idl def" id="webidl-156335831"><span class="idlHeader"><a class="self-link" href="#webidl-156335831">WebIDL</a></span><code><span data-idl="" class="idlDictionary" id="idl-def-rtcicepingproposaleventinit" data-title="RTCIcePingProposalEventInit">dictionary <a class="internalDFN idlID" data-link-type="dictionary" href="#dom-rtcicepingproposaleventinit" id="ref-for-dom-rtcicepingproposaleventinit-2"><code>RTCIcePingProposalEventInit</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="dictionary" href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a></span> {<span data-idl="" class="idlMember" id="idl-def-rtcicepingproposaleventinit-candidatepair" data-title="candidatePair" data-dfn-for="RTCIcePingProposalEventInit">
-  required<span class="idlType"> <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicepingproposaleventinit-candidatepair" id="ref-for-dom-rtcicepingproposaleventinit-candidatepair-1"><code>candidatePair</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicepingproposaleventinit-lastpingsenttimestamp" data-title="lastPingSentTimestamp" data-dfn-for="RTCIcePingProposalEventInit"><span class="idlType">
-  <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicepingproposaleventinit-lastpingsenttimestamp" id="ref-for-dom-rtcicepingproposaleventinit-lastpingsenttimestamp-1"><code>lastPingSentTimestamp</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicepingproposaleventinit-earliestnextpingtimestamp" data-title="earliestNextPingTimestamp" data-dfn-for="RTCIcePingProposalEventInit"><span class="idlType">
-  <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicepingproposaleventinit-earliestnextpingtimestamp" id="ref-for-dom-rtcicepingproposaleventinit-earliestnextpingtimestamp-1"><code>earliestNextPingTimestamp</code></a>;</span>
+  required<span class="idlType"> <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicepingproposaleventinit-candidatepair" id="ref-for-dom-rtcicepingproposaleventinit-candidatepair-2"><code>candidatePair</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicepingproposaleventinit-lastpingsenttimestamp" data-title="lastPingSentTimestamp" data-dfn-for="RTCIcePingProposalEventInit"><span class="idlType">
+  <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicepingproposaleventinit-lastpingsenttimestamp" id="ref-for-dom-rtcicepingproposaleventinit-lastpingsenttimestamp-2"><code>lastPingSentTimestamp</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtcicepingproposaleventinit-earliestnextpingtimestamp" data-title="earliestNextPingTimestamp" data-dfn-for="RTCIcePingProposalEventInit"><span class="idlType">
+  <a data-link-type="idl" data-type="typedef" href="https://www.w3.org/TR/hr-time-3/#dom-domhighrestimestamp">DOMHighResTimeStamp</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicepingproposaleventinit-earliestnextpingtimestamp" id="ref-for-dom-rtcicepingproposaleventinit-earliestnextpingtimestamp-2"><code>earliestNextPingTimestamp</code></a>;</span>
 };</span></code></pre>
         <section id="rtcicepingproposaleventinit">
           <div class="header-wrapper"><h4 id="dictionary-rtcicepingproposaleventinit-members">Dictionary <dfn data-export="" data-dfn-type="dictionary" id="dom-rtcicepingproposaleventinit" data-idl="dictionary" data-title="RTCIcePingProposalEventInit" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIcePingProposalEventInit</code></dfn> Members</h4><a class="self-link" href="#rtcicepingproposaleventinit" aria-label="Permalink for this Section"></a></div>
@@ -1350,7 +1434,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 See the <a data-link-type="idl" href="#dom-rtcicepingproposalevent-candidatepair" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-candidatepair-3"><code>candidatePair</code></a> attribute of the
-                <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-3"><code>RTCIcePingProposalEvent</code></a> interface.
+                <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-4"><code>RTCIcePingProposalEvent</code></a> interface.
               </p>
             </dd>
             <dt>
@@ -1359,7 +1443,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 See the <a data-link-type="idl" href="#dom-rtcicepingproposalevent-lastpingsenttimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-lastpingsenttimestamp-3"><code>lastPingSentTimestamp</code></a> attribute of the
-                <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-4"><code>RTCIcePingProposalEvent</code></a> interface.
+                <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-5"><code>RTCIcePingProposalEvent</code></a> interface.
               </p>
             </dd>
             <dt>
@@ -1368,7 +1452,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 See the <a data-link-type="idl" href="#dom-rtcicepingproposalevent-earliestnextpingtimestamp" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-earliestnextpingtimestamp-3"><code>earliestNextPingTimestamp</code></a> attribute of the
-                <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-5"><code>RTCIcePingProposalEvent</code></a> interface.
+                <a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-6"><code>RTCIcePingProposalEvent</code></a> interface.
               </p>
             </dd>
           </dl>
@@ -1379,33 +1463,85 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <section id="rtciceswitchproposalevent"><div class="header-wrapper"><h3 id="x6-2-rtciceswitchproposalevent"><bdi class="secno">6.2 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtciceswitchproposalevent" data-idl="interface" data-title="RTCIceSwitchProposalEvent" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceSwitchProposalEvent</code></dfn></h3><a class="self-link" href="#rtciceswitchproposalevent" aria-label="Permalink for Section 6.2"></a></div>
       
       <p>
-        The <a data-link-type="idl" href="#dfn-iceswitchproposed" class="internalDFN" id="ref-for-dfn-iceswitchproposed-2"><code>iceswitchproposed</code></a> event uses the <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-1"><code>RTCIceSwitchProposalEvent</code></a> interface. The
-        <a data-link-type="idl" href="#dfn-iceswitchproposed" class="internalDFN" id="ref-for-dfn-iceswitchproposed-3"><code>iceswitchproposed</code></a> event is fired when the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-22">ICE agent</a> has selected a candidate pair to
-        switch the transport to, but the switch has not yet occurred.
+        The <a data-link-type="idl" href="#dfn-iceswitchproposed" class="internalDFN" id="ref-for-dfn-iceswitchproposed-2"><code>iceswitchproposed</code></a> event uses the <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-1"><code>RTCIceSwitchProposalEvent</code></a> interface.
       </p>
+      <div>
+        <p>
+          When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-28">ICE agent</a> has selected a candidate pair to switch the transport to, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-16">user agent</a> <em class="rfc2119">MUST</em>
+          <a data-link-type="dfn" data-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task">queue a task</a> to <dfn id="rtcicecontroller-propose-switch" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">propose an ICE switch</dfn>:
+        </p>
+        <ol class="algorithm">
+          <li>
+            <p>
+              Let <var data-type="RTCIceCandidatePair">candidatePair</var> be the candidate pair to which a switch is being proposed.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-29">ICE agent</a>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-3"><code>[[IceController]]</code></a> is null, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-12"><code>RTCIceController</code></a> object stored in
+              <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-4"><code>[[IceController]]</code></a>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="boolean">canCancel</var> be <code>false</code> if the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-30">ICE agent</a>'s reason for the switch is one of
+              "<a data-link-type="idl" href="#dom-rtciceswitchreason-data-received" class="internalDFN" id="ref-for-dom-rtciceswitchreason-data-received-1"><code>data-received</code></a>", "<a data-link-type="idl" href="#dom-rtciceswitchreason-nomination-on-controlled-side" class="internalDFN" id="ref-for-dom-rtciceswitchreason-nomination-on-controlled-side-1"><code>nomination-on-controlled-side</code></a>", or
+              "<a data-link-type="idl" href="#dom-rtciceswitchreason-selected-connection-destroyed" class="internalDFN" id="ref-for-dom-rtciceswitchreason-selected-connection-destroyed-1"><code>selected-connection-destroyed</code></a>", indicating that such a switch may not be prevented
+              by the application, and <code>true</code> otherwise.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-6"><code>[[ProposalPending]]</code></a> to <code>true</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="boolean">accepted</var> be the result of <a data-link-type="dfn" data-lt="fire an event" data-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire">firing an event</a> named
+              <a data-link-type="idl" href="#dfn-iceswitchproposed" class="internalDFN" id="ref-for-dfn-iceswitchproposed-3"><code>iceswitchproposed</code></a> at <var data-type="RTCIceController">controller</var>, using <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-2"><code>RTCIceSwitchProposalEvent</code></a>, with the
+              <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute initialized to <var data-type="boolean">canCancel</var>, the
+              <a data-link-type="idl" href="#dom-rtciceswitchproposaleventinit-candidatepair" class="internalDFN" id="ref-for-dom-rtciceswitchproposaleventinit-candidatepair-1"><code>candidatePair</code></a> attribute initialized to <var data-type="RTCIceCandidatePair">candidatePair</var>, and the
+              <a data-link-type="idl" href="#dom-rtciceswitchproposaleventinit-reason" class="internalDFN" id="ref-for-dom-rtciceswitchproposaleventinit-reason-1"><code>reason</code></a> and <a data-link-type="idl" href="#dom-rtciceswitchproposaleventinit-recheck" class="internalDFN" id="ref-for-dom-rtciceswitchproposaleventinit-recheck-1"><code>recheck</code></a> attributes
+              initialized to the relevant values from the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-31">ICE agent</a>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-7"><code>[[ProposalPending]]</code></a> to <code>false</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var data-type="boolean">accepted</var> is <code>false</code>, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Otherwise, instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-32">ICE agent</a> to change the selected candidate pair to <var data-type="RTCIceCandidatePair">candidatePair</var>.
+            </p>
+          </li>
+        </ol>
+      </div>
       <p>
-        The <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute of the event is initialized to <code>false</code> if the
-        <a data-link-type="idl" href="#dom-rtciceswitchproposalevent-reason" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-reason-1"><code>reason</code></a> for the event is one of "<a data-link-type="idl" href="#dom-rtciceswitchreason-data-received" class="internalDFN" id="ref-for-dom-rtciceswitchreason-data-received-1"><code>data-received</code></a>",
-        "<a data-link-type="idl" href="#dom-rtciceswitchreason-nomination-on-controlled-side" class="internalDFN" id="ref-for-dom-rtciceswitchreason-nomination-on-controlled-side-1"><code>nomination-on-controlled-side</code></a>", or
-        "<a data-link-type="idl" href="#dom-rtciceswitchreason-selected-connection-destroyed" class="internalDFN" id="ref-for-dom-rtciceswitchreason-selected-connection-destroyed-1"><code>selected-connection-destroyed</code></a>", indicating that such a switch may not be prevented by
-        the application. Otherwise, the <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute is initialized to <code>true</code>.
-      </p>
-      <p>
-        If the application sets the canceled flag of the event by invoking <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event,
-        the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-14">user agent</a> <em class="rfc2119">MUST</em> not proceed with the switch to the proposed candidate pair. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-15">user agent</a> <em class="rfc2119">MAY</em>
-        continue to propose further switches in the future to the same or other candidate pairs.
-      </p>
-      <p>
-        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-16">user agent</a> <em class="rfc2119">SHOULD</em>
-        continue to switch the transport to the proposed candidate pair, unless a change in circumstances has made the
-        switch infeasible or unnecessary.
+        The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-17">user agent</a> <em class="rfc2119">MAY</em> continue to propose further switches in the future to the same or other candidate
+        pairs.
       </p>
       <div>
         <pre class="idl def" id="webidl-2119429408"><span class="idlHeader"><a class="self-link" href="#webidl-2119429408">WebIDL</a></span><code><span data-idl="" class="idlInterface" id="idl-def-rtciceswitchproposalevent" data-title="RTCIceSwitchProposalEvent">[<span class="extAttr"><a data-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed">Exposed</a>=Window</span>]
-interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtciceswitchproposalevent" id="ref-for-dom-rtciceswitchproposalevent-2"><code>RTCIceSwitchProposalEvent</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="interface" href="https://dom.spec.whatwg.org/#event">Event</a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtciceswitchproposalevent-constructor-type-eventinitdict" data-title="constructor" data-dfn-for="RTCIceSwitchProposalEvent">
+interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtciceswitchproposalevent" id="ref-for-dom-rtciceswitchproposalevent-3"><code>RTCIceSwitchProposalEvent</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="interface" href="https://dom.spec.whatwg.org/#event">Event</a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtciceswitchproposalevent-constructor-type-eventinitdict" data-title="constructor" data-dfn-for="RTCIceSwitchProposalEvent">
   <a class="internalDFN" data-link-type="constructor" href="#dom-rtciceswitchproposalevent-constructor" id="ref-for-dom-rtciceswitchproposalevent-constructor-1"><code>constructor</code></a>(<span class="idlType"><a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString">DOMString</a></span> <span class="idlParamName">type</span>,<span class="idlType"> <a data-link-type="idl" href="#dom-rtciceswitchproposaleventinit" class="internalDFN" id="ref-for-dom-rtciceswitchproposaleventinit-1"><code>RTCIceSwitchProposalEventInit</code></a></span> <span class="idlParamName">eventInitDict</span>);</span><span data-idl="" class="idlAttribute" id="idl-def-rtciceswitchproposalevent-candidatepair" data-title="candidatePair" data-dfn-for="RTCIceSwitchProposalEvent">
   readonly attribute<span class="idlType"> <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtciceswitchproposalevent-candidatepair" id="ref-for-dom-rtciceswitchproposalevent-candidatepair-1"><code>candidatePair</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtciceswitchproposalevent-reason" data-title="reason" data-dfn-for="RTCIceSwitchProposalEvent">
-  readonly attribute<span class="idlType"> <a data-link-type="idl" href="#dom-rtciceswitchreason" class="internalDFN" id="ref-for-dom-rtciceswitchreason-1"><code>RTCIceSwitchReason</code></a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtciceswitchproposalevent-reason" id="ref-for-dom-rtciceswitchproposalevent-reason-2"><code>reason</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtciceswitchproposalevent-recheck" data-title="recheck" data-dfn-for="RTCIceSwitchProposalEvent">
+  readonly attribute<span class="idlType"> <a data-link-type="idl" href="#dom-rtciceswitchreason" class="internalDFN" id="ref-for-dom-rtciceswitchreason-1"><code>RTCIceSwitchReason</code></a></span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtciceswitchproposalevent-reason" id="ref-for-dom-rtciceswitchproposalevent-reason-1"><code>reason</code></a>;</span><span data-idl="" class="idlAttribute" id="idl-def-rtciceswitchproposalevent-recheck" data-title="recheck" data-dfn-for="RTCIceSwitchProposalEvent">
   readonly attribute<span class="idlType"> <a data-link-type="idl" href="#dom-rtcicerecheck" class="internalDFN" id="ref-for-dom-rtcicerecheck-1"><code>RTCIceRecheck</code></a>?</span> <a class="internalDFN idlName" data-link-type="attribute" href="#dom-rtciceswitchproposalevent-recheck" id="ref-for-dom-rtciceswitchproposalevent-recheck-1"><code>recheck</code></a>;</span>
 };</span></code></pre>
         <section>
@@ -1424,7 +1560,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 The <a data-link-type="idl" data-lt="candidatePair" href="#dom-rtciceswitchproposalevent-candidatepair" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-candidatepair-2"><code>candidatePair</code></a> attribute is the <a data-link-type="idl" data-lt="RTCIceCandidatePair" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair"><code>RTCIceCandidatePair</code></a> object that represents the candidate
-                pair that the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-23">ICE agent</a> has selected to switch to using for the transport.
+                pair that the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-33">ICE agent</a> has selected to switch to using for the transport.
               </p>
             </dd>
             <dt>
@@ -1432,7 +1568,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </dt>
             <dd>
               <p>
-                The <a data-link-type="idl" data-lt="reason" href="#dom-rtciceswitchproposalevent-reason" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-reason-3"><code>reason</code></a> attribute represents the reason that triggered the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-24">ICE agent</a> to search for a
+                The <a data-link-type="idl" data-lt="reason" href="#dom-rtciceswitchproposalevent-reason" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-reason-2"><code>reason</code></a> attribute represents the reason that triggered the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-34">ICE agent</a> to search for a
                 different candidate pair to switch the transport to.
               </p>
             </dd>
@@ -1442,7 +1578,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </dt>
             <dd>
               <p>
-                The <a data-link-type="idl" data-lt="recheck" href="#dom-rtciceswitchproposalevent-recheck" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-recheck-2"><code>recheck</code></a> attribute represent a future trigger for the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-25">ICE agent</a> to search for a different
+                The <a data-link-type="idl" data-lt="recheck" href="#dom-rtciceswitchproposalevent-recheck" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-recheck-2"><code>recheck</code></a> attribute represent a future trigger for the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-35">ICE agent</a> to search for a different
                 candidate pair to switch the transport to.
               </p>
             </dd>
@@ -1451,9 +1587,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </div>
       <div>
         <pre class="idl def" id="webidl-153331128"><span class="idlHeader"><a class="self-link" href="#webidl-153331128">WebIDL</a></span><code><span data-idl="" class="idlDictionary" id="idl-def-rtciceswitchproposaleventinit" data-title="RTCIceSwitchProposalEventInit">dictionary <a class="internalDFN idlID" data-link-type="dictionary" href="#dom-rtciceswitchproposaleventinit" id="ref-for-dom-rtciceswitchproposaleventinit-2"><code>RTCIceSwitchProposalEventInit</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="dictionary" href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a></span> {<span data-idl="" class="idlMember" id="idl-def-rtciceswitchproposaleventinit-candidatepair" data-title="candidatePair" data-dfn-for="RTCIceSwitchProposalEventInit">
-  required<span class="idlType"> <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtciceswitchproposaleventinit-candidatepair" id="ref-for-dom-rtciceswitchproposaleventinit-candidatepair-1"><code>candidatePair</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtciceswitchproposaleventinit-reason" data-title="reason" data-dfn-for="RTCIceSwitchProposalEventInit">
-  required<span class="idlType"> <a data-link-type="idl" href="#dom-rtciceswitchreason" class="internalDFN" id="ref-for-dom-rtciceswitchreason-3"><code>RTCIceSwitchReason</code></a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtciceswitchproposaleventinit-reason" id="ref-for-dom-rtciceswitchproposaleventinit-reason-1"><code>reason</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtciceswitchproposaleventinit-recheck" data-title="recheck" data-dfn-for="RTCIceSwitchProposalEventInit"><span class="idlType">
-  <a data-link-type="idl" href="#dom-rtcicerecheck" class="internalDFN" id="ref-for-dom-rtcicerecheck-3"><code>RTCIceRecheck</code></a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtciceswitchproposaleventinit-recheck" id="ref-for-dom-rtciceswitchproposaleventinit-recheck-1"><code>recheck</code></a>;</span>
+  required<span class="idlType"> <a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtciceswitchproposaleventinit-candidatepair" id="ref-for-dom-rtciceswitchproposaleventinit-candidatepair-2"><code>candidatePair</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtciceswitchproposaleventinit-reason" data-title="reason" data-dfn-for="RTCIceSwitchProposalEventInit">
+  required<span class="idlType"> <a data-link-type="idl" href="#dom-rtciceswitchreason" class="internalDFN" id="ref-for-dom-rtciceswitchreason-3"><code>RTCIceSwitchReason</code></a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtciceswitchproposaleventinit-reason" id="ref-for-dom-rtciceswitchproposaleventinit-reason-2"><code>reason</code></a>;</span><span data-idl="" class="idlMember" id="idl-def-rtciceswitchproposaleventinit-recheck" data-title="recheck" data-dfn-for="RTCIceSwitchProposalEventInit"><span class="idlType">
+  <a data-link-type="idl" href="#dom-rtcicerecheck" class="internalDFN" id="ref-for-dom-rtcicerecheck-3"><code>RTCIceRecheck</code></a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtciceswitchproposaleventinit-recheck" id="ref-for-dom-rtciceswitchproposaleventinit-recheck-2"><code>recheck</code></a>;</span>
 };</span></code></pre>
         <section id="rtciceswitchproposaleventinit">
           <div class="header-wrapper"><h4 id="dictionary-rtciceswitchproposaleventinit-members">Dictionary <dfn data-export="" data-dfn-type="dictionary" id="dom-rtciceswitchproposaleventinit" data-idl="dictionary" data-title="RTCIceSwitchProposalEventInit" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceSwitchProposalEventInit</code></dfn> Members</h4><a class="self-link" href="#rtciceswitchproposaleventinit" aria-label="Permalink for this Section"></a></div>
@@ -1464,7 +1600,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 See the <a data-link-type="idl" href="#dom-rtciceswitchproposalevent-candidatepair" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-candidatepair-3"><code>candidatePair</code></a> attribute of the
-                <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-3"><code>RTCIceSwitchProposalEvent</code></a> interface.
+                <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-4"><code>RTCIceSwitchProposalEvent</code></a> interface.
               </p>
             </dd>
             <dt>
@@ -1472,8 +1608,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </dt>
             <dd>
               <p>
-                See the <a data-link-type="idl" href="#dom-rtciceswitchproposalevent-reason" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-reason-4"><code>reason</code></a> attribute of the
-                <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-4"><code>RTCIceSwitchProposalEvent</code></a> interface.
+                See the <a data-link-type="idl" href="#dom-rtciceswitchproposalevent-reason" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-reason-3"><code>reason</code></a> attribute of the
+                <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-5"><code>RTCIceSwitchProposalEvent</code></a> interface.
               </p>
             </dd>
             <dt>
@@ -1482,7 +1618,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             <dd>
               <p>
                 See the <a data-link-type="idl" href="#dom-rtciceswitchproposalevent-recheck" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-recheck-3"><code>recheck</code></a> attribute of the
-                <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-5"><code>RTCIceSwitchProposalEvent</code></a> interface.
+                <a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-6"><code>RTCIceSwitchProposalEvent</code></a> interface.
               </p>
             </dd>
           </dl>
@@ -1522,7 +1658,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                 <td>
                   <dfn data-export="" data-dfn-type="enum-value" id="dom-rtciceswitchreason-network-preference-change" data-idl="enum-value" data-title="network-preference-change" data-dfn-for="RTCIceSwitchReason" tabindex="0" aria-haspopup="dialog"><code>network-preference-change</code></dfn>
                 </td>
-                <td>The preferred network type changed for the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-17">user agent</a> .</td>
+                <td>The preferred network type changed for the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-18">user agent</a> .</td>
               </tr>
               <tr>
                 <td>
@@ -1552,7 +1688,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                 <td>
                   <dfn data-export="" data-dfn-type="enum-value" id="dom-rtciceswitchreason-data-received" data-idl="enum-value" data-title="data-received" data-dfn-for="RTCIceSwitchReason" tabindex="0" aria-haspopup="dialog"><code>data-received</code></dfn>
                 </td>
-                <td>The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-18">user agent</a> received data on a candidate pair.</td>
+                <td>The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-19">user agent</a> received data on a candidate pair.</td>
               </tr>
               <tr>
                 <td>
@@ -1614,24 +1750,78 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <section id="rtcicepruneproposalevent"><div class="header-wrapper"><h3 id="x6-3-rtcicepruneproposalevent"><bdi class="secno">6.3 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtcicepruneproposalevent" data-idl="interface" data-title="RTCIcePruneProposalEvent" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIcePruneProposalEvent</code></dfn></h3><a class="self-link" href="#rtcicepruneproposalevent" aria-label="Permalink for Section 6.3"></a></div>
       
       <p>
-        The <a data-link-type="idl" href="#dfn-icepruneproposed" class="internalDFN" id="ref-for-dfn-icepruneproposed-2"><code>icepruneproposed</code></a> event uses the <a data-link-type="idl" data-lt="RTCIcePruneProposalEvent" href="#dom-rtcicepruneproposalevent" class="internalDFN" id="ref-for-dom-rtcicepruneproposalevent-1"><code>RTCIcePruneProposalEvent</code></a> interface. The
-        <a data-link-type="idl" href="#dfn-icepruneproposed" class="internalDFN" id="ref-for-dfn-icepruneproposed-3"><code>icepruneproposed</code></a> event is fired when the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-26">ICE agent</a> has selected some candidate pairs
-        to prune, but the pruning has not yet happened.
-      </p>
-      <p>
-        The <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute of the event is initialized to <code>true</code>. If the application sets the
-        canceled flag of the event by invoking <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-19">user agent</a> <em class="rfc2119">MUST</em> not
-        proceed with pruning the proposed candidate pairs. The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-20">user agent</a> <em class="rfc2119">MAY</em> continue to propose pruning of the
-        same or other candidate pairs in the future.
-      </p>
-      <p>
-        If the application does not invoke <a data-link-type="idl" data-lt="preventDefault()" data-type="method" href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault</code></a><code>()</code> with the event, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-21">user agent</a> <em class="rfc2119">SHOULD</em>
-        continue with pruning the proposed candidate pairs, unless a change in circumstances has made the pruning
-        infeasible or unnecessary.
+        The <a data-link-type="idl" href="#dfn-icepruneproposed" class="internalDFN" id="ref-for-dfn-icepruneproposed-2"><code>icepruneproposed</code></a> event uses the <a data-link-type="idl" data-lt="RTCIcePruneProposalEvent" href="#dom-rtcicepruneproposalevent" class="internalDFN" id="ref-for-dom-rtcicepruneproposalevent-1"><code>RTCIcePruneProposalEvent</code></a> interface.
       </p>
       <div>
+        <p>
+          When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-36">ICE agent</a> has selected some candidate pairs to prune, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-20">user agent</a> <em class="rfc2119">MUST</em> <a data-link-type="dfn" data-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task">queue a task</a> to <dfn id="rtcicecontroller-propose-prune" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">propose an ICE pruning</dfn>:
+        </p>
+        <ol class="algorithm">
+          <li>
+            <p>
+              Let <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var> be the candidate pairs which are being proposed
+              for pruning.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-37">ICE agent</a>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-5"><code>[[IceController]]</code></a> is null, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-13"><code>RTCIceController</code></a> object stored in
+              <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-6"><code>[[IceController]]</code></a>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-8"><code>[[ProposalPending]]</code></a> to <code>true</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Let <var data-type="boolean">accepted</var> be the result of <a data-link-type="dfn" data-lt="fire an event" data-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire">firing an event</a> named
+              <a data-link-type="idl" href="#dfn-icepruneproposed" class="internalDFN" id="ref-for-dfn-icepruneproposed-3"><code>icepruneproposed</code></a> at <var data-type="RTCIceController">controller</var>, using <a data-link-type="idl" data-lt="RTCIcePruneProposalEvent" href="#dom-rtcicepruneproposalevent" class="internalDFN" id="ref-for-dom-rtcicepruneproposalevent-2"><code>RTCIcePruneProposalEvent</code></a>, with the
+              <a data-link-type="idl" data-type="attribute" href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></a> attribute initialized to true, the <a data-link-type="idl" href="#dom-rtcicepruneproposaleventinit-candidatepairs" class="internalDFN" id="ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-1"><code>candidatePairs</code></a>
+              attribute initialized to <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Set <var data-type="RTCIceController">controller</var>.<a data-link-type="attribute" data-lt="[[ProposalPending]]" href="#dfn-proposalpending" class="internalDFN" id="ref-for-dfn-proposalpending-9"><code>[[ProposalPending]]</code></a> to <code>false</code>.
+            </p>
+          </li>
+          <li>
+            <p>
+              If <var data-type="boolean">accepted</var> is <code>false</code>, abort these steps.
+            </p>
+          </li>
+          <li>
+            <p>
+              Otherwise, instruct the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-38">ICE agent</a> to prune the candidate pairs in <var data-type="sequence<RTCIceCandidatePair>">candidatePairs</var>.
+            </p>
+          </li>
+        </ol>
+      </div>
+      <p>
+        The <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-21">user agent</a> <em class="rfc2119">MAY</em> continue to propose pruning of the same or other candidate pairs in the future.
+      </p>
+      <div class="note" role="note" id="issue-container-generatedID-4"><div role="heading" class="note-title marker" id="h-note-4" aria-level="4"><span>Note</span></div><div class="">
+        <p>
+          While the application cannot respond to pruning of individual candidate pairs in a prune proposal, the
+          application can subsequently invoke <a data-link-type="idl" data-lt="pruneCandidatePairs()" href="#dom-rtcicecontroller-prunecandidatepairs" class="internalDFN" id="ref-for-dom-rtcicecontroller-prunecandidatepairs-7"><code>pruneCandidatePairs</code></a><code>()</code> with any subset of candidate
+          pairs in the proposal.
+        </p>
+      </div></div>
+      <div>
         <pre class="idl def" id="webidl-344769184"><span class="idlHeader"><a class="self-link" href="#webidl-344769184">WebIDL</a></span><code><span data-idl="" class="idlInterface" id="idl-def-rtcicepruneproposalevent" data-title="RTCIcePruneProposalEvent">[<span class="extAttr"><a data-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed">Exposed</a>=Window</span>]
-interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtcicepruneproposalevent" id="ref-for-dom-rtcicepruneproposalevent-2"><code>RTCIcePruneProposalEvent</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="interface" href="https://dom.spec.whatwg.org/#event">Event</a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtcicepruneproposalevent-constructor-type-eventinitdict" data-title="constructor" data-dfn-for="RTCIcePruneProposalEvent">
+interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtcicepruneproposalevent" id="ref-for-dom-rtcicepruneproposalevent-3"><code>RTCIcePruneProposalEvent</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="interface" href="https://dom.spec.whatwg.org/#event">Event</a></span> {<span data-idl="" class="idlConstructor" id="idl-def-rtcicepruneproposalevent-constructor-type-eventinitdict" data-title="constructor" data-dfn-for="RTCIcePruneProposalEvent">
   <a class="internalDFN" data-link-type="constructor" href="#dom-rtcicepruneproposalevent-constructor" id="ref-for-dom-rtcicepruneproposalevent-constructor-1"><code>constructor</code></a>(<span class="idlType"><a data-link-type="idl" data-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString">DOMString</a></span> <span class="idlParamName">type</span>,<span class="idlType"> <a data-link-type="idl" href="#dom-rtcicepruneproposaleventinit" class="internalDFN" id="ref-for-dom-rtcicepruneproposaleventinit-1"><code>RTCIcePruneProposalEventInit</code></a></span> <span class="idlParamName">eventInitDict</span>);</span><span data-idl="" class="idlMethod" id="idl-def-rtcicepruneproposalevent-getcandidatepairs" data-title="getCandidatePairs" data-dfn-for="RTCIcePruneProposalEvent"><span class="idlType">
   <a data-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence">sequence</a>&lt;<a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a>&gt;</span> <a class="internalDFN idlName" data-link-type="method" href="#dom-rtcicepruneproposalevent-getcandidatepairs" id="ref-for-dom-rtcicepruneproposalevent-getcandidatepairs-1"><code>getCandidatePairs</code></a>();</span>
 };</span></code></pre>
@@ -1650,7 +1840,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </dt>
             <dd>
               <p>
-                The <a data-link-type="idl" data-lt="getCandidatePairs" href="#dom-rtcicepruneproposalevent-getcandidatepairs" class="internalDFN" id="ref-for-dom-rtcicepruneproposalevent-getcandidatepairs-2"><code>getCandidatePairs</code></a> method returns the candidate pairs selected by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-27">ICE agent</a> for pruning
+                The <a data-link-type="idl" data-lt="getCandidatePairs" href="#dom-rtcicepruneproposalevent-getcandidatepairs" class="internalDFN" id="ref-for-dom-rtcicepruneproposalevent-getcandidatepairs-2"><code>getCandidatePairs</code></a> method returns the candidate pairs selected by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-39">ICE agent</a> for pruning
                 at this time.
               </p>
             </dd>
@@ -1659,7 +1849,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </div>
       <div>
         <pre class="idl def" id="webidl-1130399851"><span class="idlHeader"><a class="self-link" href="#webidl-1130399851">WebIDL</a></span><code><span data-idl="" class="idlDictionary" id="idl-def-rtcicepruneproposaleventinit" data-title="RTCIcePruneProposalEventInit">dictionary <a class="internalDFN idlID" data-link-type="dictionary" href="#dom-rtcicepruneproposaleventinit" id="ref-for-dom-rtcicepruneproposaleventinit-2"><code>RTCIcePruneProposalEventInit</code></a> : <span class="idlSuperclass"><a data-link-type="idl" data-type="dictionary" href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a></span> {<span data-idl="" class="idlMember" id="idl-def-rtcicepruneproposaleventinit-candidatepairs" data-title="candidatePairs" data-dfn-for="RTCIcePruneProposalEventInit">
-  required<span class="idlType"> <a data-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence">sequence</a>&lt;<a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a>&gt;</span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicepruneproposaleventinit-candidatepairs" id="ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-1"><code>candidatePairs</code></a>;</span>
+  required<span class="idlType"> <a data-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence">sequence</a>&lt;<a data-link-type="idl" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatepair">RTCIceCandidatePair</a>&gt;</span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcicepruneproposaleventinit-candidatepairs" id="ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-2"><code>candidatePairs</code></a>;</span>
 };</span></code></pre>
         <section id="rtcicepruneproposaleventinit">
           <div class="header-wrapper"><h4 id="dictionary-rtcicepruneproposaleventinit-members">Dictionary <dfn data-export="" data-dfn-type="dictionary" id="dom-rtcicepruneproposaleventinit" data-idl="dictionary" data-title="RTCIcePruneProposalEventInit" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIcePruneProposalEventInit</code></dfn> Members</h4><a class="self-link" href="#rtcicepruneproposaleventinit" aria-label="Permalink for this Section"></a></div>
@@ -1669,7 +1859,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
             </dt>
             <dd>
               <p>
-                The <a data-link-type="idl" data-lt="candidatePairs" href="#dom-rtcicepruneproposaleventinit-candidatepairs" class="internalDFN" id="ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-2"><code>candidatePairs</code></a> member represents the candidate pairs selected by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-28">ICE agent</a> for
+                The <a data-link-type="idl" data-lt="candidatePairs" href="#dom-rtcicepruneproposaleventinit-candidatepairs" class="internalDFN" id="ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-3"><code>candidatePairs</code></a> member represents the candidate pairs selected by the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-40">ICE agent</a> for
                 pruning at this time.
               </p>
             </dd>
@@ -1683,9 +1873,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   <section id="rtcpeerconnection"><div class="header-wrapper"><h2 id="x7-rtcpeerconnection-extensions"><bdi class="secno">7. </bdi><a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> Extensions</h2><a class="self-link" href="#rtcpeerconnection" aria-label="Permalink for Section 7."></a></div>
     
     <p>
-      The <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> extension allows associating an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-11"><code>RTCIceController</code></a> with an <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>
+      The <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> extension allows associating an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-14"><code>RTCIceController</code></a> with an <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>
       object at the time of its construction or through <a data-link-type="idl" data-lt="setConfiguration()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-setconfiguration"><code>setConfiguration</code></a><code>()</code>. An application can
-      test for support of this specification by checking for the presence of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-12"><code>RTCIceController</code></a> prototype object.
+      test for support of this specification by checking for the presence of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-15"><code>RTCIceController</code></a> prototype object.
     </p>
 
     <section id="rtcconfiguration"><div class="header-wrapper"><h3 id="x7-1-rtcconfiguration-extensions"><bdi class="secno">7.1 </bdi><a data-link-type="idl" data-lt="RTCConfiguration" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration"><code>RTCConfiguration</code></a> Extensions</h3><a class="self-link" href="#rtcconfiguration" aria-label="Permalink for Section 7.1"></a></div>
@@ -1695,18 +1885,18 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </p>
       <div>
         <pre class="idl def" id="webidl-1236188651"><span class="idlHeader"><a class="self-link" href="#webidl-1236188651">WebIDL</a></span><code><span data-idl="" class="idlDictionary" id="idl-def-rtcconfiguration-partial-1" data-title="RTCConfiguration">partial dictionary <a data-idl="partial" data-link-type="dictionary" data-title="RTCConfiguration" class="idlID" data-dfn-for="RTCConfiguration" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration">RTCConfiguration</a> {<span data-idl="" class="idlMember" id="idl-def-rtcconfiguration-icecontroller" data-title="iceController" data-dfn-for="RTCConfiguration"><span class="idlType">
-  <a data-link-type="idl" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-13"><code>RTCIceController</code></a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcconfiguration-icecontroller" id="ref-for-dom-rtcconfiguration-icecontroller-2"><code>iceController</code></a>;</span>
+  <a data-link-type="idl" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-16"><code>RTCIceController</code></a></span> <a class="internalDFN idlName" data-link-type="dict-member" href="#dom-rtcconfiguration-icecontroller" id="ref-for-dom-rtcconfiguration-icecontroller-2"><code>iceController</code></a>;</span>
 };</span></code></pre>
         <section>
           <div class="header-wrapper"><h4 id="dictionary-rtcconfiguration-members">Dictionary <a data-link-type="idl" data-lt="RTCConfiguration" data-type="dictionary" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration"><code>RTCConfiguration</code></a> Members</h4><a class="self-link" href="#dictionary-rtcconfiguration-members" aria-label="Permalink for this Section"></a></div>
           <dl data-link-for="RTCConfiguration" data-dfn-for="RTCConfiguration" class="dictionary-members">
             <dt>
-              <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcconfiguration-icecontroller" data-idl="field" data-title="iceController" data-dfn-for="RTCConfiguration" data-type="RTCIceController" tabindex="0" aria-haspopup="dialog"><code>iceController</code></dfn> of type <span class="idlMemberType"><a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-14"><code>RTCIceController</code></a></span>
+              <dfn data-export="" data-dfn-type="dict-member" id="dom-rtcconfiguration-icecontroller" data-idl="field" data-title="iceController" data-dfn-for="RTCConfiguration" data-type="RTCIceController" tabindex="0" aria-haspopup="dialog"><code>iceController</code></dfn> of type <span class="idlMemberType"><a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-17"><code>RTCIceController</code></a></span>
             </dt>
             <dd>
               <p>
-                The <a data-link-type="idl" data-lt="iceController" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-3"><code>iceController</code></a> member represents the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-15"><code>RTCIceController</code></a> object to associate with the
-                <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>. Proposals from its <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-29">ICE agent</a> will result in events firing on
+                The <a data-link-type="idl" data-lt="iceController" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-3"><code>iceController</code></a> member represents the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-18"><code>RTCIceController</code></a> object to associate with the
+                <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>. Proposals from its <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-41">ICE agent</a> will result in events firing on
                 <a data-link-type="idl" data-lt="iceController" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-4"><code>iceController</code></a> while it is associated with the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>.
               </p>
             </dd>
@@ -1719,7 +1909,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       
       <p>
         Certain additional steps need to be performed during the construction of an <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> and when
-        <a data-link-type="idl" data-lt="setConfiguration()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-setconfiguration"><code>setConfiguration</code></a><code>()</code> is invoked to establish its association with an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-16"><code>RTCIceController</code></a>,
+        <a data-link-type="idl" data-lt="setConfiguration()" data-type="method" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-setconfiguration"><code>setConfiguration</code></a><code>()</code> is invoked to establish its association with an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-19"><code>RTCIceController</code></a>,
         if supplied. Both operations achieve this through an extension to <a data-link-type="dfn" href="#set-pc-configuration" class="internalDFN" id="ref-for-set-pc-configuration-1">Set the configuration</a> operation.
       </p>
       <section id="constructor-0"><div class="header-wrapper"><h4 id="x7-2-1-constructor"><bdi class="secno">7.2.1 </bdi>Constructor</h4><a class="self-link" href="#constructor-0" aria-label="Permalink for Section 7.2.1"></a></div>
@@ -1781,16 +1971,16 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                   If the value of <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-bundlepolicy"><code>bundlePolicy</code></a> is not
                   "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcbundlepolicy-max-bundle"><code>max-bundle</code></a>", <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw">throw</a> a <a data-link-type="idl" data-lt="NotSupportedError" data-type="exception" href="https://webidl.spec.whatwg.org/#notsupportederror"><code>NotSupportedError</code></a>.
                 </p>
-                <div class="note" role="note" id="issue-container-generatedID-4"><div role="heading" class="note-title marker" id="h-note-4" aria-level="5"><span>Note</span></div><div class="">
+                <div class="note" role="note" id="issue-container-generatedID-5"><div role="heading" class="note-title marker" id="h-note-5" aria-level="5"><span>Note</span></div><div class="">
                   <p>
-                    The use of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-17"><code>RTCIceController</code></a> is currently only supported when <a data-link-type="idl" data-lt="RTCBundlePolicy" data-type="enum" href="https://www.w3.org/TR/webrtc/#dom-rtcbundlepolicy"><code>RTCBundlePolicy</code></a> is set to
+                    The use of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-20"><code>RTCIceController</code></a> is currently only supported when <a data-link-type="idl" data-lt="RTCBundlePolicy" data-type="enum" href="https://www.w3.org/TR/webrtc/#dom-rtcbundlepolicy"><code>RTCBundlePolicy</code></a> is set to
                     "<a data-link-type="idl" data-type="enum-value" href="https://www.w3.org/TR/webrtc/#dom-rtcbundlepolicy-max-bundle"><code>max-bundle</code></a>", and thus only one media track is negotiated and a single
                     <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> is used.
                   </p>
                   <p>
                     A future extension to the specification is possible either by allowing to associate an
-                    <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-18"><code>RTCIceController</code></a> with each individual <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> or by multiplexing of several
-                    <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> events and actions to a single <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-19"><code>RTCIceController</code></a>.
+                    <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-21"><code>RTCIceController</code></a> with each individual <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> or by multiplexing of several
+                    <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> events and actions to a single <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-22"><code>RTCIceController</code></a>.
                   </p>
                 </div></div>
               </li>
@@ -1799,9 +1989,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
                   If the value of <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" data-type="dict-member" href="https://www.w3.org/TR/webrtc/#dom-rtcconfiguration-icecandidatepoolsize"><code>iceCandidatePoolSize</code></a> is not
                   <code>0</code>, <a data-link-type="dfn" data-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw">throw</a> a <a data-link-type="idl" data-lt="NotSupportedError" data-type="exception" href="https://webidl.spec.whatwg.org/#notsupportederror"><code>NotSupportedError</code></a>.
                 </p>
-                <div class="note" role="note" id="issue-container-generatedID-5"><div role="heading" class="note-title marker" id="h-note-5" aria-level="5"><span>Note</span></div><div class="">
+                <div class="note" role="note" id="issue-container-generatedID-6"><div role="heading" class="note-title marker" id="h-note-6" aria-level="5"><span>Note</span></div><div class="">
                   <p>
-                    For simplicity, the use of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-20"><code>RTCIceController</code></a> is currently only supported when the application
+                    For simplicity, the use of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-23"><code>RTCIceController</code></a> is currently only supported when the application
                     does not use a prefetched ICE pool as defined in [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8829" title="JavaScript Session Establishment Protocol (JSEP)">RFC8829</a></cite>] (section <a href="https://datatracker.ietf.org/doc/html/rfc8829#section-3.5.4">3.5.4</a> and section
                     <a href="https://datatracker.ietf.org/doc/html/rfc8829#section-4.1.1">4.1.1</a>).
                   </p>
@@ -1810,7 +2000,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
               <li>
                 <p>
                   Store <var data-type="RTCConfiguration">configuration</var>.<a data-link-type="idl" href="#dom-rtcconfiguration-icecontroller" class="internalDFN" id="ref-for-dom-rtcconfiguration-icecontroller-9"><code>iceController</code></a> in the
-                  <a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-1"><code>[[IceController]]</code></a> internal slot.
+                  <a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-7"><code>[[IceController]]</code></a> internal slot.
                 </p>
               </li>
               <li>
@@ -1837,13 +2027,13 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
           </li>
           <li>
             <p>
-              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-2"><code>[[IceController]]</code></a> is null, abort these steps.
+              If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-8"><code>[[IceController]]</code></a> is null, abort these steps.
             </p>
           </li>
           <li>
             <p>
-              Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-21"><code>RTCIceController</code></a> object stored in
-              <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-3"><code>[[IceController]]</code></a>.
+              Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-24"><code>RTCIceController</code></a> object stored in
+              <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-9"><code>[[IceController]]</code></a>.
             </p>
           </li>
           <li>
@@ -1863,40 +2053,39 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     
     <p>
       The <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> extensions allow accessing a small subset of the attributes of an <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a>
-      object through an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-22"><code>RTCIceController</code></a> object to make it easy for an application to refer to this information.
+      object through an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-25"><code>RTCIceController</code></a> object to make it easy for an application to refer to this information.
     </p>
     <p>
       The <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> extensions do not change the interface of <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> or its associated types.
       Rather, they specify certain additional steps to be performed during the course of <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> operations.
     </p>
     <p>
-      When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-30">ICE agent</a> signals that the ICE role for an <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> has changed due to an ICE binding
+      When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-42">ICE agent</a> signals that the ICE role for an <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> has changed due to an ICE binding
       request with a role collision per [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8445" title="Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal">RFC8445</a></cite>] section 7.3.1.1, the <a data-link-type="dfn" href="#dfn-user-agent" class="internalDFN" id="ref-for-dfn-user-agent-22">user agent</a> will <a data-link-type="dfn" data-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task">queue a task</a> on the
       <a data-link-type="dfn" data-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#networking-task-source">networking task source</a> to set the value of <a data-link-type="attribute" data-lt="[[IceRole]]" data-type="attribute" href="https://www.w3.org/TR/webrtc/#dfn-icerole"><code>[[IceRole]]</code></a> for the <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> to
       the new value. The task will also set the value of <a data-link-type="attribute" data-lt="[[IceRole]]" href="#dfn-icerole" class="internalDFN" id="ref-for-dfn-icerole-3"><code>[[IceRole]]</code></a> for the
-      <a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-4"><code>[[IceController]]</code></a> of the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-31">ICE agent</a>
+      <a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-10"><code>[[IceController]]</code></a> of the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-43">ICE agent</a>
       to the new value.
     </p>
     <p>
-      When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-32">ICE agent</a> indicates that an <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> has changed the selected candidate pair, run the
-      <dfn id="rtcicetransport-candidatepairchange" data-lt="candidatepairchange() algorithm|following additional steps" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">following additional
-        steps</dfn>:
+      When the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-44">ICE agent</a> indicates that an <a data-link-type="idl" data-lt="RTCIceTransport" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport"><code>RTCIceTransport</code></a> has changed the selected candidate pair, run these
+      additional steps to <dfn id="rtcicetransport-candidatepairchange" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">update the selected candidate pair</dfn>:
     </p>
     <ol class="algorithm">
       <li>
         <p>
-          Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-33">ICE agent</a>.
+          Let <var data-type="RTCPeerConnection">connection</var> be the <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a> object associated with this <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-45">ICE agent</a>.
         </p>
       </li>
       <li>
         <p>
-          If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-5"><code>[[IceController]]</code></a> is null, abort these steps.
+          If <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-11"><code>[[IceController]]</code></a> is null, abort these steps.
         </p>
       </li>
       <li>
         <p>
-          Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-23"><code>RTCIceController</code></a> object stored in
-          <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-6"><code>[[IceController]]</code></a>.
+          Let <var data-type="RTCIceController">controller</var> be the <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-26"><code>RTCIceController</code></a> object stored in
+          <var data-type="RTCPeerConnection">connection</var>.<a data-link-type="attribute" data-lt="[[IceController]]" href="#dfn-icecontroller" class="internalDFN" id="ref-for-dfn-icecontroller-12"><code>[[IceController]]</code></a>.
         </p>
       </li>
       <li>
@@ -1923,7 +2112,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   <section class="informative" id="event-summary"><div class="header-wrapper"><h2 id="x9-event-summary"><bdi class="secno">9. </bdi>Event summary</h2><a class="self-link" href="#event-summary" aria-label="Permalink for Section 9."></a></div><p><em>This section is non-normative.</em></p>
     
     <p>
-      The following events fire on <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-24"><code>RTCIceController</code></a> objects:</p>
+      The following events fire on <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-27"><code>RTCIceController</code></a> objects:</p>
     <table class="simple">
       <thead>
         <tr>
@@ -1936,42 +2125,42 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         <tr>
           <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-candidatepairadded" tabindex="0" aria-haspopup="dialog" data-export="">candidatepairadded</dfn></th>
           <td><a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-7"><code>RTCIceCandidatePairEvent</code></a></td>
-          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-34">ICE agent</a> has gathered a candidate pair and is making it available to the script.</td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-46">ICE agent</a> has gathered a candidate pair and is making it available to the script.</td>
         </tr>
         <tr>
           <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-candidatepairupdated" tabindex="0" aria-haspopup="dialog" data-export="">candidatepairupdated</dfn></th>
           <td><a data-link-type="idl" data-lt="RTCIceCandidatePairUpdateEvent" href="#dom-rtcicecandidatepairupdateevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairupdateevent-6"><code>RTCIceCandidatePairUpdateEvent</code></a></td>
-          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-35">ICE agent</a> has updated the information it knows about a candidate pair (eg. the round trip time
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-47">ICE agent</a> has updated the information it knows about a candidate pair (eg. the round trip time
             estimate).</td>
         </tr>
         <tr>
           <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-candidatepairswitched" tabindex="0" aria-haspopup="dialog" data-export="">candidatepairswitched</dfn></th>
           <td><a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-8"><code>RTCIceCandidatePairEvent</code></a></td>
-          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-36">ICE agent</a> has switched the transport to a different candidate pair.</td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-48">ICE agent</a> has switched the transport to a different candidate pair.</td>
         </tr>
         <tr>
           <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-candidatepairdestroyed" tabindex="0" aria-haspopup="dialog" data-export="">candidatepairdestroyed</dfn></th>
           <td><a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-9"><code>RTCIceCandidatePairEvent</code></a></td>
-          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-37">ICE agent</a> has destroyed a candidate pair.</td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-49">ICE agent</a> has destroyed a candidate pair.</td>
         </tr>
         <tr>
           <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-icepingproposed" tabindex="0" aria-haspopup="dialog" data-export="">icepingproposed</dfn></th>
-          <td><a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-6"><code>RTCIcePingProposalEvent</code></a></td>
-          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-38">ICE agent</a> has selected a candidate pair to ping for a connectivity check, but the ping has not
+          <td><a data-link-type="idl" data-lt="RTCIcePingProposalEvent" href="#dom-rtcicepingproposalevent" class="internalDFN" id="ref-for-dom-rtcicepingproposalevent-7"><code>RTCIcePingProposalEvent</code></a></td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-50">ICE agent</a> has selected a candidate pair to ping for a connectivity check, but the ping has not
             yet been sent.
           </td>
         </tr>
         <tr>
           <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-iceswitchproposed" tabindex="0" aria-haspopup="dialog" data-export="">iceswitchproposed</dfn></th>
-          <td><a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-6"><code>RTCIceSwitchProposalEvent</code></a></td>
-          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-39">ICE agent</a> has selected a candidate pair to switch the transport to, but the switch has not yet
+          <td><a data-link-type="idl" data-lt="RTCIceSwitchProposalEvent" href="#dom-rtciceswitchproposalevent" class="internalDFN" id="ref-for-dom-rtciceswitchproposalevent-7"><code>RTCIceSwitchProposalEvent</code></a></td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-51">ICE agent</a> has selected a candidate pair to switch the transport to, but the switch has not yet
             occurred.
           </td>
         </tr>
         <tr>
           <th scope="row"><dfn data-dfn-for="RTCIceController" data-dfn-type="event" id="dfn-icepruneproposed" tabindex="0" aria-haspopup="dialog" data-export="">icepruneproposed</dfn></th>
-          <td><a data-link-type="idl" data-lt="RTCIcePruneProposalEvent" href="#dom-rtcicepruneproposalevent" class="internalDFN" id="ref-for-dom-rtcicepruneproposalevent-3"><code>RTCIcePruneProposalEvent</code></a></td>
-          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-40">ICE agent</a> has selected one or more candidate pairs to prune, but the pruning has not yet
+          <td><a data-link-type="idl" data-lt="RTCIcePruneProposalEvent" href="#dom-rtcicepruneproposalevent" class="internalDFN" id="ref-for-dom-rtcicepruneproposalevent-4"><code>RTCIcePruneProposalEvent</code></a></td>
+          <td>The <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-52">ICE agent</a> has selected one or more candidate pairs to prune, but the pruning has not yet
             occurred.
           </td>
         </tr>
@@ -2037,17 +2226,17 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <li>
     <a href="#ref-for-dfn-user-agent-1" title="§ 4.2 Constructor">§ 4.2 Constructor</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-2" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dfn-user-agent-3" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-4" title="Reference 3">(3)</a> <a href="#ref-for-dfn-user-agent-5" title="Reference 4">(4)</a> 
+    <a href="#ref-for-dfn-user-agent-2" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dfn-user-agent-3" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-4" title="Reference 3">(3)</a> <a href="#ref-for-dfn-user-agent-5" title="Reference 4">(4)</a> <a href="#ref-for-dfn-user-agent-6" title="Reference 5">(5)</a> <a href="#ref-for-dfn-user-agent-7" title="Reference 6">(6)</a> <a href="#ref-for-dfn-user-agent-8" title="Reference 7">(7)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-6" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-user-agent-7" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-8" title="Reference 3">(3)</a> <a href="#ref-for-dfn-user-agent-9" title="Reference 4">(4)</a> <a href="#ref-for-dfn-user-agent-10" title="Reference 5">(5)</a> 
+    <a href="#ref-for-dfn-user-agent-9" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-user-agent-10" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-11" title="Reference 3">(3)</a> <a href="#ref-for-dfn-user-agent-12" title="Reference 4">(4)</a> <a href="#ref-for-dfn-user-agent-13" title="Reference 5">(5)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-11" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dfn-user-agent-12" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-13" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dfn-user-agent-14" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dfn-user-agent-15" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-14" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dfn-user-agent-15" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-16" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dfn-user-agent-16" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dfn-user-agent-17" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-17" title="§ 6.2.1 RTCIceSwitchReason Enum">§ 6.2.1 RTCIceSwitchReason Enum</a> <a href="#ref-for-dfn-user-agent-18" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dfn-user-agent-18" title="§ 6.2.1 RTCIceSwitchReason Enum">§ 6.2.1 RTCIceSwitchReason Enum</a> <a href="#ref-for-dfn-user-agent-19" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dfn-user-agent-19" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dfn-user-agent-20" title="Reference 2">(2)</a> <a href="#ref-for-dfn-user-agent-21" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dfn-user-agent-20" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dfn-user-agent-21" title="Reference 2">(2)</a> 
   </li><li>
     <a href="#ref-for-dfn-user-agent-22" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> 
   </li>
@@ -2073,7 +2262,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dfn-reject-1" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-reject-2" title="Reference 2">(2)</a> <a href="#ref-for-dfn-reject-3" title="Reference 3">(3)</a> <a href="#ref-for-dfn-reject-4" title="Reference 4">(4)</a> <a href="#ref-for-dfn-reject-5" title="Reference 5">(5)</a> 
+    <a href="#ref-for-dfn-reject-1" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-reject-2" title="Reference 2">(2)</a> <a href="#ref-for-dfn-reject-3" title="Reference 3">(3)</a> <a href="#ref-for-dfn-reject-4" title="Reference 4">(4)</a> <a href="#ref-for-dfn-reject-5" title="Reference 5">(5)</a> <a href="#ref-for-dfn-reject-6" title="Reference 6">(6)</a> <a href="#ref-for-dfn-reject-7" title="Reference 7">(7)</a> <a href="#ref-for-dfn-reject-8" title="Reference 8">(8)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-resolve" aria-label="Links in this document to definition: resolved">
@@ -2127,21 +2316,27 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecontroller-10" title="§ 6. Proposal events">§ 6. Proposal events</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-11" title="§ 7. RTCPeerConnection Extensions">§ 7. RTCPeerConnection Extensions</a> <a href="#ref-for-dom-rtcicecontroller-12" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-11" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-13" title="§ 7.1 RTCConfiguration Extensions">§ 7.1 RTCConfiguration Extensions</a> 
+    <a href="#ref-for-dom-rtcicecontroller-12" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-14" title="§ Dictionary RTCConfiguration Members">§ Dictionary RTCConfiguration Members</a> <a href="#ref-for-dom-rtcicecontroller-15" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-13" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-16" title="§ 7.2 Operation">§ 7.2 Operation</a> 
+    <a href="#ref-for-dom-rtcicecontroller-14" title="§ 7. RTCPeerConnection Extensions">§ 7. RTCPeerConnection Extensions</a> <a href="#ref-for-dom-rtcicecontroller-15" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-17" title="§ 7.2.2 Set the configuration">§ 7.2.2 Set the configuration</a> <a href="#ref-for-dom-rtcicecontroller-18" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-19" title="Reference 3">(3)</a> <a href="#ref-for-dom-rtcicecontroller-20" title="Reference 4">(4)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-16" title="§ 7.1 RTCConfiguration Extensions">§ 7.1 RTCConfiguration Extensions</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-21" title="§ 7.2.3 Set the session description">§ 7.2.3 Set the session description</a> 
+    <a href="#ref-for-dom-rtcicecontroller-17" title="§ Dictionary RTCConfiguration Members">§ Dictionary RTCConfiguration Members</a> <a href="#ref-for-dom-rtcicecontroller-18" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-22" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dom-rtcicecontroller-23" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-19" title="§ 7.2 Operation">§ 7.2 Operation</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-24" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtcicecontroller-20" title="§ 7.2.2 Set the configuration">§ 7.2.2 Set the configuration</a> <a href="#ref-for-dom-rtcicecontroller-21" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-22" title="Reference 3">(3)</a> <a href="#ref-for-dom-rtcicecontroller-23" title="Reference 4">(4)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-24" title="§ 7.2.3 Set the session description">§ 7.2.3 Set the session description</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-25" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dom-rtcicecontroller-26" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-27" title="§ 9. Event summary">§ 9. Event summary</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-ice-agent" aria-label="Links in this document to definition: ICE agent">
@@ -2155,33 +2350,33 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <li>
     <a href="#ref-for-dfn-ice-agent-1" title="§ 4. RTCIceController Interface">§ 4. RTCIceController Interface</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-2" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dfn-ice-agent-3" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-4" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-5" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-6" title="Reference 5">(5)</a> <a href="#ref-for-dfn-ice-agent-7" title="Reference 6">(6)</a> <a href="#ref-for-dfn-ice-agent-8" title="Reference 7">(7)</a> 
+    <a href="#ref-for-dfn-ice-agent-2" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dfn-ice-agent-3" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-4" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-5" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-6" title="Reference 5">(5)</a> <a href="#ref-for-dfn-ice-agent-7" title="Reference 6">(6)</a> <a href="#ref-for-dfn-ice-agent-8" title="Reference 7">(7)</a> <a href="#ref-for-dfn-ice-agent-9" title="Reference 8">(8)</a> <a href="#ref-for-dfn-ice-agent-10" title="Reference 9">(9)</a> <a href="#ref-for-dfn-ice-agent-11" title="Reference 10">(10)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-9" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-ice-agent-10" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-11" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dfn-ice-agent-12" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-ice-agent-13" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-14" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-12" title="§ 5. Informational events">§ 5. Informational events</a> 
+    <a href="#ref-for-dfn-ice-agent-15" title="§ 5. Informational events">§ 5. Informational events</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-13" title="§ Attributes">§ Attributes</a> <a href="#ref-for-dfn-ice-agent-14" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-19" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-20" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-21" title="Reference 5">(5)</a> <a href="#ref-for-dfn-ice-agent-23" title="Reference 6">(6)</a> <a href="#ref-for-dfn-ice-agent-24" title="Reference 7">(7)</a> <a href="#ref-for-dfn-ice-agent-25" title="Reference 8">(8)</a> 
+    <a href="#ref-for-dfn-ice-agent-16" title="§ Attributes">§ Attributes</a> <a href="#ref-for-dfn-ice-agent-17" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-25" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-26" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-27" title="Reference 5">(5)</a> <a href="#ref-for-dfn-ice-agent-33" title="Reference 6">(6)</a> <a href="#ref-for-dfn-ice-agent-34" title="Reference 7">(7)</a> <a href="#ref-for-dfn-ice-agent-35" title="Reference 8">(8)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-15" title="§ 5.2.3 RTCIceCandidatePairWriteState Enum">§ 5.2.3 RTCIceCandidatePairWriteState Enum</a> 
+    <a href="#ref-for-dfn-ice-agent-18" title="§ 5.2.3 RTCIceCandidatePairWriteState Enum">§ 5.2.3 RTCIceCandidatePairWriteState Enum</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-16" title="§ 6. Proposal events">§ 6. Proposal events</a> <a href="#ref-for-dfn-ice-agent-17" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dfn-ice-agent-19" title="§ 6. Proposal events">§ 6. Proposal events</a> <a href="#ref-for-dfn-ice-agent-20" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-18" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> 
+    <a href="#ref-for-dfn-ice-agent-21" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dfn-ice-agent-22" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-23" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-24" title="Reference 4">(4)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-22" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> 
+    <a href="#ref-for-dfn-ice-agent-28" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dfn-ice-agent-29" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-30" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-31" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-32" title="Reference 5">(5)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-26" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> 
+    <a href="#ref-for-dfn-ice-agent-36" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dfn-ice-agent-37" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-38" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-27" title="§ Methods">§ Methods</a> 
+    <a href="#ref-for-dfn-ice-agent-39" title="§ Methods">§ Methods</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-28" title="§ Dictionary RTCIcePruneProposalEventInit Members">§ Dictionary RTCIcePruneProposalEventInit Members</a> 
+    <a href="#ref-for-dfn-ice-agent-40" title="§ Dictionary RTCIcePruneProposalEventInit Members">§ Dictionary RTCIcePruneProposalEventInit Members</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-29" title="§ Dictionary RTCConfiguration Members">§ Dictionary RTCConfiguration Members</a> 
+    <a href="#ref-for-dfn-ice-agent-41" title="§ Dictionary RTCConfiguration Members">§ Dictionary RTCConfiguration Members</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-30" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dfn-ice-agent-31" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-32" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-33" title="Reference 4">(4)</a> 
+    <a href="#ref-for-dfn-ice-agent-42" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dfn-ice-agent-43" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-44" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-45" title="Reference 4">(4)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-34" title="§ 9. Event summary">§ 9. Event summary</a> <a href="#ref-for-dfn-ice-agent-35" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-36" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-37" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-38" title="Reference 5">(5)</a> <a href="#ref-for-dfn-ice-agent-39" title="Reference 6">(6)</a> <a href="#ref-for-dfn-ice-agent-40" title="Reference 7">(7)</a> 
+    <a href="#ref-for-dfn-ice-agent-46" title="§ 9. Event summary">§ 9. Event summary</a> <a href="#ref-for-dfn-ice-agent-47" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-48" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-49" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-50" title="Reference 5">(5)</a> <a href="#ref-for-dfn-ice-agent-51" title="Reference 6">(6)</a> <a href="#ref-for-dfn-ice-agent-52" title="Reference 7">(7)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-constructor" aria-label="Links in this document to definition: constructor()">
@@ -2238,6 +2433,24 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <a href="#ref-for-dfn-peerconnection-1" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-peerconnection-2" title="Reference 2">(2)</a> <a href="#ref-for-dfn-peerconnection-3" title="Reference 3">(3)</a> 
   </li><li>
     <a href="#ref-for-dfn-peerconnection-4" title="§ 7.2.2 Set the configuration">§ 7.2.2 Set the configuration</a> <a href="#ref-for-dfn-peerconnection-5" title="Reference 2">(2)</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-proposalpending" aria-label="Links in this document to definition: [[ProposalPending]]">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-proposalpending" aria-label="Permalink for definition: [[ProposalPending]]. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-dfn-proposalpending-1" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dfn-proposalpending-2" title="Reference 2">(2)</a> <a href="#ref-for-dfn-proposalpending-3" title="Reference 3">(3)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-proposalpending-4" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dfn-proposalpending-5" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-proposalpending-6" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dfn-proposalpending-7" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-proposalpending-8" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dfn-proposalpending-9" title="Reference 2">(2)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-role" aria-label="Links in this document to definition: role">
@@ -2367,7 +2580,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecontroller-sendiceping-2" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-3" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-sendiceping-4" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-6" title="Reference 3">(3)</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-7" title="Reference 4">(4)</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-8" title="Reference 5">(5)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-sendiceping-4" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-6" title="Reference 3">(3)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-administratively-prohibited" aria-label="Links in this document to definition: administratively prohibited">
@@ -2395,7 +2608,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecontroller-switchtocandidatepair-2" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dom-rtcicecontroller-switchtocandidatepair-3" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-switchtocandidatepair-4" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dom-rtcicecontroller-switchtocandidatepair-5" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-switchtocandidatepair-4" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dom-rtcicecontroller-switchtocandidatepair-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-switchtocandidatepair-6" title="Reference 3">(3)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-prunecandidatepairs" aria-label="Links in this document to definition: pruneCandidatePairs">
@@ -2411,7 +2624,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-2" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-3" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-4" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-5" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-4" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-6" title="Reference 3">(3)</a> 
+  </li><li>
+    <a href="#ref-for-dom-rtcicecontroller-prunecandidatepairs-7" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-validate" aria-label="Links in this document to definition: running the following steps">
@@ -3013,11 +3228,23 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtcicepingproposalevent-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dom-rtcicepingproposalevent-2" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtcicepingproposalevent-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dom-rtcicepingproposalevent-2" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicepingproposalevent-3" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicepingproposalevent-3" title="§ Dictionary RTCIcePingProposalEventInit Members">§ Dictionary RTCIcePingProposalEventInit Members</a> <a href="#ref-for-dom-rtcicepingproposalevent-4" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicepingproposalevent-5" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dom-rtcicepingproposalevent-4" title="§ Dictionary RTCIcePingProposalEventInit Members">§ Dictionary RTCIcePingProposalEventInit Members</a> <a href="#ref-for-dom-rtcicepingproposalevent-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicepingproposalevent-6" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicepingproposalevent-6" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtcicepingproposalevent-7" title="§ 9. Event summary">§ 9. Event summary</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-propose-ping" aria-label="Links in this document to definition: propose an ICE ping">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#rtcicecontroller-propose-ping" aria-label="Permalink for definition: propose an ICE ping. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-rtcicecontroller-propose-ping-1" title="§ 4.3 Attributes">§ 4.3 Attributes</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicepingproposalevent-constructor" aria-label="Links in this document to definition: RTCIcePingProposalEvent.constructor()">
@@ -3101,7 +3328,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtcicepingproposaleventinit-candidatepair-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> 
+    <a href="#ref-for-dom-rtcicepingproposaleventinit-candidatepair-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dom-rtcicepingproposaleventinit-candidatepair-2" title="Reference 2">(2)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicepingproposaleventinit-lastpingsenttimestamp" aria-label="Links in this document to definition: lastPingSentTimestamp">
@@ -3113,7 +3340,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtcicepingproposaleventinit-lastpingsenttimestamp-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> 
+    <a href="#ref-for-dom-rtcicepingproposaleventinit-lastpingsenttimestamp-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dom-rtcicepingproposaleventinit-lastpingsenttimestamp-2" title="Reference 2">(2)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicepingproposaleventinit-earliestnextpingtimestamp" aria-label="Links in this document to definition: earliestNextPingTimestamp">
@@ -3125,7 +3352,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtcicepingproposaleventinit-earliestnextpingtimestamp-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> 
+    <a href="#ref-for-dom-rtcicepingproposaleventinit-earliestnextpingtimestamp-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dom-rtcicepingproposaleventinit-earliestnextpingtimestamp-2" title="Reference 2">(2)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtciceswitchproposalevent" aria-label="Links in this document to definition: RTCIceSwitchProposalEvent">
@@ -3137,11 +3364,23 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtciceswitchproposalevent-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dom-rtciceswitchproposalevent-2" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtciceswitchproposalevent-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dom-rtciceswitchproposalevent-2" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtciceswitchproposalevent-3" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtciceswitchproposalevent-3" title="§ Dictionary RTCIceSwitchProposalEventInit Members">§ Dictionary RTCIceSwitchProposalEventInit Members</a> <a href="#ref-for-dom-rtciceswitchproposalevent-4" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtciceswitchproposalevent-5" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dom-rtciceswitchproposalevent-4" title="§ Dictionary RTCIceSwitchProposalEventInit Members">§ Dictionary RTCIceSwitchProposalEventInit Members</a> <a href="#ref-for-dom-rtciceswitchproposalevent-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtciceswitchproposalevent-6" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtciceswitchproposalevent-6" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtciceswitchproposalevent-7" title="§ 9. Event summary">§ 9. Event summary</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-propose-switch" aria-label="Links in this document to definition: propose an ICE switch">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#rtcicecontroller-propose-switch" aria-label="Permalink for definition: propose an ICE switch. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-rtcicecontroller-propose-switch-1" title="§ 4.3 Attributes">§ 4.3 Attributes</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtciceswitchproposalevent-constructor" aria-label="Links in this document to definition: RTCIceSwitchProposalEvent.constructor()">
@@ -3181,11 +3420,11 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtciceswitchproposalevent-reason-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dom-rtciceswitchproposalevent-reason-2" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtciceswitchproposalevent-reason-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> 
   </li><li>
-    <a href="#ref-for-dom-rtciceswitchproposalevent-reason-3" title="§ Attributes">§ Attributes</a> 
+    <a href="#ref-for-dom-rtciceswitchproposalevent-reason-2" title="§ Attributes">§ Attributes</a> 
   </li><li>
-    <a href="#ref-for-dom-rtciceswitchproposalevent-reason-4" title="§ Dictionary RTCIceSwitchProposalEventInit Members">§ Dictionary RTCIceSwitchProposalEventInit Members</a> 
+    <a href="#ref-for-dom-rtciceswitchproposalevent-reason-3" title="§ Dictionary RTCIceSwitchProposalEventInit Members">§ Dictionary RTCIceSwitchProposalEventInit Members</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtciceswitchproposalevent-recheck" aria-label="Links in this document to definition: recheck">
@@ -3225,7 +3464,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtciceswitchproposaleventinit-candidatepair-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> 
+    <a href="#ref-for-dom-rtciceswitchproposaleventinit-candidatepair-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dom-rtciceswitchproposaleventinit-candidatepair-2" title="Reference 2">(2)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtciceswitchproposaleventinit-reason" aria-label="Links in this document to definition: reason">
@@ -3237,7 +3476,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtciceswitchproposaleventinit-reason-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> 
+    <a href="#ref-for-dom-rtciceswitchproposaleventinit-reason-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dom-rtciceswitchproposaleventinit-reason-2" title="Reference 2">(2)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtciceswitchproposaleventinit-recheck" aria-label="Links in this document to definition: recheck">
@@ -3249,7 +3488,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtciceswitchproposaleventinit-recheck-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> 
+    <a href="#ref-for-dom-rtciceswitchproposaleventinit-recheck-1" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dom-rtciceswitchproposaleventinit-recheck-2" title="Reference 2">(2)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtciceswitchreason" aria-label="Links in this document to definition: RTCIceSwitchReason">
@@ -3455,9 +3694,21 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtcicepruneproposalevent-1" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dom-rtcicepruneproposalevent-2" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dom-rtcicepruneproposalevent-1" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dom-rtcicepruneproposalevent-2" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicepruneproposalevent-3" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicepruneproposalevent-3" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtcicepruneproposalevent-4" title="§ 9. Event summary">§ 9. Event summary</a> 
+  </li>
+  </ul>
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-propose-prune" aria-label="Links in this document to definition: propose an ICE pruning">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#rtcicecontroller-propose-prune" aria-label="Permalink for definition: propose an ICE pruning. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+    <a href="#ref-for-rtcicecontroller-propose-prune-1" title="§ 4.3 Attributes">§ 4.3 Attributes</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicepruneproposalevent-constructor" aria-label="Links in this document to definition: RTCIcePruneProposalEvent.constructor()">
@@ -3507,9 +3758,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-1" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> 
+    <a href="#ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-1" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-2" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-2" title="§ Dictionary RTCIcePruneProposalEventInit Members">§ Dictionary RTCIcePruneProposalEventInit Members</a> 
+    <a href="#ref-for-dom-rtcicepruneproposaleventinit-candidatepairs-3" title="§ Dictionary RTCIcePruneProposalEventInit Members">§ Dictionary RTCIcePruneProposalEventInit Members</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcconfiguration-icecontroller" aria-label="Links in this document to definition: iceController">
@@ -3537,11 +3788,17 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <p><b>Referenced in:</b></p>
       <ul>
     <li>
-    <a href="#ref-for-dfn-icecontroller-1" title="§ 7.2.2 Set the configuration">§ 7.2.2 Set the configuration</a> 
+    <a href="#ref-for-dfn-icecontroller-1" title="§ 6.1 RTCIcePingProposalEvent">§ 6.1 RTCIcePingProposalEvent</a> <a href="#ref-for-dfn-icecontroller-2" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dfn-icecontroller-2" title="§ 7.2.3 Set the session description">§ 7.2.3 Set the session description</a> <a href="#ref-for-dfn-icecontroller-3" title="Reference 2">(2)</a> 
+    <a href="#ref-for-dfn-icecontroller-3" title="§ 6.2 RTCIceSwitchProposalEvent">§ 6.2 RTCIceSwitchProposalEvent</a> <a href="#ref-for-dfn-icecontroller-4" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dfn-icecontroller-4" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dfn-icecontroller-5" title="Reference 2">(2)</a> <a href="#ref-for-dfn-icecontroller-6" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dfn-icecontroller-5" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dfn-icecontroller-6" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-icecontroller-7" title="§ 7.2.2 Set the configuration">§ 7.2.2 Set the configuration</a> 
+  </li><li>
+    <a href="#ref-for-dfn-icecontroller-8" title="§ 7.2.3 Set the session description">§ 7.2.3 Set the session description</a> <a href="#ref-for-dfn-icecontroller-9" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-icecontroller-10" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dfn-icecontroller-11" title="Reference 2">(2)</a> <a href="#ref-for-dfn-icecontroller-12" title="Reference 3">(3)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-set-pc-configuration" aria-label="Links in this document to definition: set a configuration">
@@ -3556,10 +3813,10 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <a href="#ref-for-set-pc-configuration-1" title="§ 7.2 Operation">§ 7.2 Operation</a> 
   </li>
   </ul>
-    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicetransport-candidatepairchange" aria-label="Links in this document to definition: following additional steps">
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicetransport-candidatepairchange" aria-label="Links in this document to definition: update the selected candidate pair">
       <span class="caret"></span>
       <div>
-        <a class="self-link" href="#rtcicetransport-candidatepairchange" aria-label="Permalink for definition: following additional steps. Activate to close this dialog.">Permalink</a>
+        <a class="self-link" href="#rtcicetransport-candidatepairchange" aria-label="Permalink for definition: update the selected candidate pair. Activate to close this dialog.">Permalink</a>
          
       </div>
       <p><b>Referenced in:</b></p>
