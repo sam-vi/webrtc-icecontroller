@@ -174,7 +174,8 @@ interface RTCIceController : EventTarget {
           <p>
             The event type of this event handler is {{candidatepairadded}}.
           </p>
-          <p>When the [= ICE agent =] has found a candidate pair, the [= user agent =] MUST queue a task to [= fire an
+          <p>
+            When the [= ICE agent =] has found a candidate pair, the [= user agent =] MUST queue a task to [= fire an
             event =] named {{candidatepairadded}} using the {{RTCIceCandidatePairEvent}} interface with the
             {{RTCIceCandidatePairEvent/candidatePair}} attribute set to the found candidate pair.
           </p>
@@ -1920,47 +1921,81 @@ partial dictionary RTCConfiguration {
         <tr>
           <th scope=row><dfn data-dfn-for="RTCIceController" data-dfn-type=event>candidatepairadded</dfn></th>
           <td>{{RTCIceCandidatePairEvent}}</td>
-          <td>The [= ICE agent =] has gathered a candidate pair and is making it available to the script.</td>
+          <td>
+            The [= ICE agent =] has gathered a candidate pair and is making it available to the script.
+          </td>
         </tr>
         <tr>
           <th scope=row><dfn data-dfn-for="RTCIceController" data-dfn-type=event>candidatepairupdated</dfn></th>
           <td>{{RTCIceCandidatePairUpdateEvent}}</td>
-          <td>The [= ICE agent =] has updated the information it knows about a candidate pair (eg. the round trip time
-            estimate).</td>
+          <td>
+            The [= ICE agent =] has updated the information it knows about a candidate pair (eg. the round trip time
+            estimate).
+          </td>
         </tr>
         <tr>
           <th scope=row><dfn data-dfn-for="RTCIceController" data-dfn-type=event>candidatepairswitched</dfn></th>
           <td>{{RTCIceCandidatePairEvent}}</td>
-          <td>The [= ICE agent =] has switched the transport to a different candidate pair.</td>
+          <td>
+            The [= ICE agent =] has switched the transport to a different candidate pair.
+          </td>
         </tr>
         <tr>
           <th scope=row><dfn data-dfn-for="RTCIceController" data-dfn-type=event>candidatepairdestroyed</dfn></th>
           <td>{{RTCIceCandidatePairEvent}}</td>
-          <td>The [= ICE agent =] has destroyed a candidate pair.</td>
+          <td>
+            The [= ICE agent =] has destroyed a candidate pair.
+          </td>
         </tr>
         <tr>
           <th scope=row><dfn data-dfn-for="RTCIceController" data-dfn-type=event>icepingproposed</dfn></th>
           <td>{{RTCIcePingProposalEvent}}</td>
-          <td>The [= ICE agent =] has selected a candidate pair to ping for a connectivity check, but the ping has not
+          <td>
+            The [= ICE agent =] has selected a candidate pair to ping for a connectivity check, but the ping has not
             yet been sent.
           </td>
         </tr>
         <tr>
           <th scope=row><dfn data-dfn-for="RTCIceController" data-dfn-type=event>iceswitchproposed</dfn></th>
           <td>{{RTCIceSwitchProposalEvent}}</td>
-          <td>The [= ICE agent =] has selected a candidate pair to switch the transport to, but the switch has not yet
+          <td>
+            The [= ICE agent =] has selected a candidate pair to switch the transport to, but the switch has not yet
             occurred.
           </td>
         </tr>
         <tr>
           <th scope=row><dfn data-dfn-for="RTCIceController" data-dfn-type=event>icepruneproposed</dfn></th>
           <td>{{RTCIcePruneProposalEvent}}</td>
-          <td>The [= ICE agent =] has selected one or more candidate pairs to prune, but the pruning has not yet
+          <td>
+            The [= ICE agent =] has selected one or more candidate pairs to prune, but the pruning has not yet
             occurred.
           </td>
         </tr>
       </tbody>
     </table>
+  </section>
+
+  <section class="informative">
+    <h2>Privacy and Security Considerations</h2>
+    <p>
+      This section is non-normative; it specifies no new behaviour, but instead summarizes information already present
+      in other parts of the specification. The overall security considerations of the general set of APIs and protocols
+      used in WebRTC are described in [[?RFC8827]].
+    </p>
+    <p>
+      The data exposed by RTCIceController comprises mostly of data also exposed by [[WEBRTC]] and [[WEBRTC-STATS]] - as
+      such, all the privacy and security considerations of these specifications related to data exposure apply as well
+      to this specifciation.
+    </p>
+    <p>
+      In addition, {{RTCIceCandidatePairReport/getRoundTripTimeSamples()}} exposes round-trip times over a period of
+      time, which can give some coarse indication of the distance between peers.
+    </p>
+    <p>
+      The {{RTCIceController/sendIcePing()}} operation allows the application to send STUN connectivity checks to an
+      arbitrary recipient. The risk of using STUN checks to flood the local network is mitigated by the user agent's use
+      of rate limiting.
+    </p>
   </section>
 
   <section class="appendix">
