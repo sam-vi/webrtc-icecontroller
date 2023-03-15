@@ -1003,8 +1003,7 @@ dictionary RTCRoundTripTimeSample {
         <p>
           The {{RTCIceCandidatePairWriteState}} represents the write state of the ICE candidate pair as determined by
           the [= ICE agent =]. The exact criteria for determining the write state, i.e. the number of failures or the
-          timeout period, is left up to the browser
-          implementation.
+          timeout period, is left up to the browser implementation.
         </p>
         <div>
           <pre class="idl">
@@ -1903,6 +1902,167 @@ partial dictionary RTCConfiguration {
         </p>
       </li>
     </ol>
+  </section>
+
+  <section class="informative">
+    <h2>
+      Examples
+    </h2>
+    <section>
+      <h3>
+        Simple example
+      </h3>
+      <div>
+        <p>
+          A simple application can delegate most ICE operations to the default implementation of the user agent, and
+          only interject when needed. In the following example, the application keeps additional candidate pairs around
+          by preventing the user agent from pruning them. One of the alternate candidate pairs can then be used without
+          needing an ICE restart if the active candidate pair is lost.
+        </p>
+        <pre class="example highlight">
+const iceController = new RTCIceController();
+
+// Observe proposals to prune candidate pairs and prevent pruning of
+// relay candidates and those using a different transport protocol than
+// the active candidate pair.
+iceController.addEventListener('icepruneproposed', event => {
+  const activeProtocol = iceController.getSelectedCandidatePair()?.local.protocol;
+
+  // Relay and candidate pairs dissimilar to the active pair should not be pruned.
+  const allowedToPrune = event.getCandidatePairs().filter(
+    pair => pair.local.type !== 'relay' && pair.local.protocol === activeProtocol);
+
+  // If any candidate pair proposed for pruning is disallowed, reject the proposal.
+  if (allowedToPrune.length &lt; event.getCandidatePairs().length) {
+    event.preventDefault();
+
+    // Request pruning of the allowed candidate pairs after the handling of this
+    // proposal is finished.
+    setTimeout(() => iceController.pruneCandidatePairs(allowedToPrune));
+  }
+});
+
+// Set the ICE controller in RTCConfiguration.
+const pc = new RTCPeerConnection({ iceController: iceController });</pre>
+      </div>
+    </section>
+    <section>
+      <h3>
+        Advanced example with substantial ICE takeover
+      </h3>
+      <div>
+        <p>
+          An advanced application can decide to take over ICE to any extent necessary by rejecting the user agent's
+          proposals and injecting its own logic for candidate pair checking and selection. The application in the
+          following example adjusts how frequently it sends connectivity checks and selects a candidate pair to use for
+          the transport based on the quality of the currently active pair.
+        </p>
+        <pre class="example highlight">
+const iceController = new RTCIceController();
+
+// Application implements these methods for candidate pair selection.
+function selectBestPairToPing() { /* TODO... */ }
+function selectBestPairToUse() { /* TODO... */ }
+function selectPairsToPrune() { /* TODO... */ }
+
+// Application implements these methods to determine if a candidate pair
+// ping or switch should be allowed to happen.
+function shouldPingPair(pair) { /* TODO... */ }
+function shouldSwitchToPair(pair) { /* TODO... */ }
+
+// Initial intervals for sending periodic connectivity checks and picking
+// the most suitable candidate pair for transport.
+let pingRecheckIntervalMs = 2.5 * 1000;
+let switchRecheckIntervalMs = 5 * 1000;
+
+// Observe events that indicate when the browser is about to perform an ICE
+// action. Cancel the action by calling preventDefault if the application has
+// other plans.
+iceController.addEventListener('icepingproposed', event => {
+  if (!shouldPingPair(event.candidatePair)) {
+    event.preventDefault();
+  }
+});
+iceController.addEventListener('iceswitchproposed', event => {
+  if (event.cancelable &&
+      !shouldSwitchToPair(event.reason, event.candidatePair)) {
+    event.preventDefault();
+  }
+});
+
+// If the listener will not call preventDefault, it can be marked passive to
+// allow optimizations.
+iceController.addEventListener('icepruneproposed', event => {
+  console.log(JSON.stringify(event.getCandidatePairs()));
+}, {passive: true});
+
+// Check connectivity of various candidate pairs.
+function doPing() {
+  iceController.sendIcePing(selectBestPairToPing());
+  setTimeout(() => doPing(), pingRecheckIntervalMs);
+}
+iceController.addEventListener('candidatepairadded', () => {
+  doPing();
+}, {once: true});
+
+// Select the most suitable candidate pair and use that for transport. Prune
+// any unneeded candidate pairs.
+function doSelectAndPrune() {
+  iceController.switchToCandidatePair(selectBestPairToUse());
+  iceController.pruneCandidatePairs(selectPairsToPrune());
+  setTimeout(() => doSelectAndPrune(), switchRecheckIntervalMs);
+}
+iceController.addEventListener('candidatepairupdated', () => {
+  doSelectAndPrune();
+}, {once: true});
+
+// Clamp a number between lower and upper bounds.
+function clamp(num, min, max) {
+  return Math.min(Math.max(num, min), max);
+}
+
+// Adjust the recheck intervals based on RTT measurements.
+function adjustRecheckIntervals(report) {
+  const rtts = report.getRoundTripTimeSamples().map(s => s.value);
+  const rtt_p75 = quantile(rtts, 0.75);
+
+  const MIN_PING_RECHECK_INTERVAL_MS = 500;
+  const MAX_PING_RECHECK_INTERVAL_MS = 10 * 1000;
+  const MIN_SWITCH_RECHECK_INTERVAL_MS = 1000;
+  const MAX_SWITCH_RECHECK_INTERVAL_MS = 30 * 1000;
+
+  const LOW_RTT_THRESHOLD_MS = 250;
+  const HIGH_RTT_THRESHOLD_MS = 500;
+
+  if (rtt_p75 &lt; LOW_RTT_THRESHOLD_MS) {
+    // Selected candidate pair has good RTT, recheck less frequently.
+    pingRecheckIntervalMs *= 2;
+    switchRecheckIntervalMs *= 2;
+  }
+  else if (rtt_p75 &gt; HIGH_RTT_THRESHOLD_MS) {
+    // Selected candidate pair has poor RTT, recheck more frequently.
+    pingRecheckIntervalMs = Math.floor(pingRecheckIntervalMs / 2);
+    switchRecheckIntervalMs = Math.floor(switchRecheckIntervalMs / 2);
+  }
+
+  pingRecheckIntervalMs = clamp(pingRecheckIntervalMs,
+    MIN_PING_RECHECK_INTERVAL_MS, MAX_PING_RECHECK_INTERVAL_MS);
+  switchRecheckIntervalMs = clamp(switchRecheckIntervalMs,
+    MIN_SWITCH_RECHECK_INTERVAL_MS, MAX_SWITCH_RECHECK_INTERVAL_MS);
+}
+
+// If the selected candidate pair is worsening, increase ping and select
+// intervals more frequently. Otherwise decrease the recheck frequency.
+iceController.addEventListener('candidatepairupdated', event => {
+  if (event.candidatePair == iceController.getSelectedCandidatePair()) {
+    adjustRecheckIntervals(event.report);
+  }
+});
+
+// Set the ICE controller in RTCConfiguration.
+const pc = new RTCPeerConnection({ iceController: iceController });</pre>
+      </div>
+    </section>
   </section>
 
   <section class="informative">
