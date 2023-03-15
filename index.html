@@ -1,7 +1,16 @@
 <!DOCTYPE html><html lang="en" dir="ltr"><head>
 <meta charset="utf-8">
-<meta name="generator" content="ReSpec 32.6.1">
+<meta name="generator" content="ReSpec 32.7.1">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<style>
+span.example-title{text-transform:none}
+:is(aside,div).example,div.illegal-example{padding:.5em;margin:1em 0;position:relative;clear:both}
+div.illegal-example{color:red}
+div.illegal-example p{color:#000}
+:is(aside,div).example{border-left-width:.5em;border-left-style:solid;border-color:#e0cb52;background:#fcfaee}
+aside.example div.example{border-left-width:.1em;border-color:#999;background:#fff}
+.example pre{background-color:rgba(0,0,0,.03)}
+</style>
 <style>
 .issue-label{text-transform:initial}
 .warning>p:first-child{margin-top:0}
@@ -132,6 +141,20 @@ dd{margin-left:0}
 <meta name="description" content="This document defines a set of ECMAScript APIs in WebIDL to allow creation of an RTCIceController object to
       manage the ICE connection used by an RTCPeerConnection.">
 <style>
+.hljs{display:block;overflow-x:auto;padding:.5em;color:#383a42;background:#fafafa}
+.hljs-comment,.hljs-quote{color:#717277;font-style:italic}
+.hljs-doctag,.hljs-formula,.hljs-keyword{color:#a626a4}
+.hljs-deletion,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-subst{color:#ca4706;font-weight:700}
+.hljs-literal{color:#0b76c5}
+.hljs-addition,.hljs-attribute,.hljs-meta-string,.hljs-regexp,.hljs-string{color:#42803c}
+.hljs-built_in,.hljs-class .hljs-title{color:#9a6a01}
+.hljs-attr,.hljs-number,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-pseudo,.hljs-template-variable,.hljs-type,.hljs-variable{color:#986801}
+.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-symbol,.hljs-title{color:#336ae3}
+.hljs-emphasis{font-style:italic}
+.hljs-strong{font-weight:700}
+.hljs-link{text-decoration:underline}
+</style>
+<style>
 var{position:relative;cursor:pointer}
 var[data-type]::after,var[data-type]::before{position:absolute;left:50%;top:-6px;opacity:0;transition:opacity .4s;pointer-events:none}
 var[data-type]::before{content:"";transform:translateX(-50%);border-width:4px 6px 0 6px;border-style:solid;border-color:transparent;border-top-color:#000}
@@ -182,20 +205,20 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
   "lint": {
     "no-unused-vars": true
   },
-  "publishISODate": "2023-01-11T00:00:00.000Z",
-  "generatedSubtitle": "Unofficial Draft 11 January 2023"
+  "publishISODate": "2023-03-15T00:00:00.000Z",
+  "generatedSubtitle": "Unofficial Draft 15 March 2023"
 }</script>
 <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD"></head>
 
 <body class="h-entry" data-cite="WEBIDL webrtc webrtc-stats html webidl dom hr-time"><div class="head">
     
     <h1 id="title" class="title">IceController Extensions for WebRTC</h1> 
-    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2023-01-11">11 January 2023</time></p>
+    <p id="w3c-state">Unofficial Draft <time class="dt-published" datetime="2023-03-15">15 March 2023</time></p>
     <details open="">
       <summary>More details about this document</summary>
       <dl>
         <dt>This version:</dt><dd>
-                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230111/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230111/</a>
+                <a class="u-url" href="https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230315/">https://www.w3.org/TR/unofficial-webrtc-icecontroller-20230315/</a>
               </dd>
         <dt>Latest published version:</dt><dd>
                 <a href="https://sam-vi.github.io/webrtc-icecontroller/">https://sam-vi.github.io/webrtc-icecontroller/</a>
@@ -264,12 +287,18 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
       This document is a draft of a potential specification. It has no official
       standing of any kind and does not represent the support or consensus of
       any standards organization.
-    </p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#sotd">Status of This Document</a></li><li class="tocline"><a class="tocxref" href="#intro"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">2. </bdi>Conformance</a></li><li class="tocline"><a class="tocxref" href="#terminology"><bdi class="secno">3. </bdi>Terminology</a></li><li class="tocline"><a class="tocxref" href="#rtcicecontroller"><bdi class="secno">4. </bdi><span class="export" data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceController" data-dfn-for=""><code>RTCIceController</code></span> Interface</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecontroller-interface-definition"><bdi class="secno">4.1 </bdi>Interface Definition</a></li><li class="tocline"><a class="tocxref" href="#constructor"><bdi class="secno">4.2 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#attributes"><bdi class="secno">4.3 </bdi>Attributes</a></li><li class="tocline"><a class="tocxref" href="#methods"><bdi class="secno">4.4 </bdi>Methods</a></li></ol></li><li class="tocline"><a class="tocxref" href="#informational-events"><bdi class="secno">5. </bdi>Informational events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairevent"><bdi class="secno">5.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairEvent" data-dfn-for=""><code>RTCIceCandidatePairEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairupdateevent"><bdi class="secno">5.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairUpdateEvent" data-dfn-for=""><code>RTCIceCandidatePairUpdateEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairreport"><bdi class="secno">5.2.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairReport" data-dfn-for=""><code>RTCIceCandidatePairReport</code></span> Interface</a></li><li class="tocline"><a class="tocxref" href="#rtcroundtriptimesample"><bdi class="secno">5.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCRoundTripTimeSample" data-dfn-for=""><code>RTCRoundTripTimeSample</code></span> Dictionary</a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairwritestate"><bdi class="secno">5.2.3 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceCandidatePairWriteState" data-dfn-for=""><code>RTCIceCandidatePairWriteState</code></span> Enum</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#proposal-events"><bdi class="secno">6. </bdi>Proposal events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicepingproposalevent"><bdi class="secno">6.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIcePingProposalEvent" data-dfn-for=""><code>RTCIcePingProposalEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtciceswitchproposalevent"><bdi class="secno">6.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceSwitchProposalEvent" data-dfn-for=""><code>RTCIceSwitchProposalEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtciceswitchreason"><bdi class="secno">6.2.1 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceSwitchReason" data-dfn-for=""><code>RTCIceSwitchReason</code></span> Enum</a></li><li class="tocline"><a class="tocxref" href="#rtcicerecheck"><bdi class="secno">6.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCIceRecheck" data-dfn-for=""><code>RTCIceRecheck</code></span> Dictionary</a></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcicepruneproposalevent"><bdi class="secno">6.3 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIcePruneProposalEvent" data-dfn-for=""><code>RTCIcePruneProposalEvent</code></span></a></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcpeerconnection"><bdi class="secno">7. </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCPeerConnection" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcpeerconnection" data-type="interface" class="formerLink"><code>RTCPeerConnection</code></span> Extensions</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcconfiguration"><bdi class="secno">7.1 </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCConfiguration" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcconfiguration" data-type="dictionary" class="formerLink"><code>RTCConfiguration</code></span> Extensions</a></li><li class="tocline"><a class="tocxref" href="#operation"><bdi class="secno">7.2 </bdi>Operation</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#constructor-0"><bdi class="secno">7.2.1 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#set-the-configuration"><bdi class="secno">7.2.2 </bdi>Set the configuration</a></li><li class="tocline"><a class="tocxref" href="#set-the-session-description"><bdi class="secno">7.2.3 </bdi>Set the session description</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcicetransport"><bdi class="secno">8. </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCIceTransport" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcicetransport" data-type="interface" class="formerLink"><code>RTCIceTransport</code></span> Extensions</a></li><li class="tocline"><a class="tocxref" href="#event-summary"><bdi class="secno">9. </bdi>Event summary</a></li><li class="tocline"><a class="tocxref" href="#privacy-and-security-considerations"><bdi class="secno">10. </bdi>Privacy and Security Considerations</a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><bdi class="secno">A. </bdi>Acknowledgements</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">B. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">B.1 </bdi>Normative references</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><bdi class="secno">B.2 </bdi>Informative references</a></li></ol></li></ol></nav>
+    </p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#sotd">Status of This Document</a></li><li class="tocline"><a class="tocxref" href="#intro"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">2. </bdi>Conformance</a></li><li class="tocline"><a class="tocxref" href="#terminology"><bdi class="secno">3. </bdi>Terminology</a></li><li class="tocline"><a class="tocxref" href="#rtcicecontroller"><bdi class="secno">4. </bdi><span class="export" data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceController" data-dfn-for=""><code>RTCIceController</code></span> Interface</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecontroller-interface-definition"><bdi class="secno">4.1 </bdi>Interface Definition</a></li><li class="tocline"><a class="tocxref" href="#constructor"><bdi class="secno">4.2 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#attributes"><bdi class="secno">4.3 </bdi>Attributes</a></li><li class="tocline"><a class="tocxref" href="#methods"><bdi class="secno">4.4 </bdi>Methods</a></li></ol></li><li class="tocline"><a class="tocxref" href="#informational-events"><bdi class="secno">5. </bdi>Informational events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairevent"><bdi class="secno">5.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairEvent" data-dfn-for=""><code>RTCIceCandidatePairEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairupdateevent"><bdi class="secno">5.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairUpdateEvent" data-dfn-for=""><code>RTCIceCandidatePairUpdateEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairreport"><bdi class="secno">5.2.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceCandidatePairReport" data-dfn-for=""><code>RTCIceCandidatePairReport</code></span> Interface</a></li><li class="tocline"><a class="tocxref" href="#rtcroundtriptimesample"><bdi class="secno">5.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCRoundTripTimeSample" data-dfn-for=""><code>RTCRoundTripTimeSample</code></span> Dictionary</a></li><li class="tocline"><a class="tocxref" href="#rtcicecandidatepairwritestate"><bdi class="secno">5.2.3 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceCandidatePairWriteState" data-dfn-for=""><code>RTCIceCandidatePairWriteState</code></span> Enum</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#proposal-events"><bdi class="secno">6. </bdi>Proposal events</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcicepingproposalevent"><bdi class="secno">6.1 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIcePingProposalEvent" data-dfn-for=""><code>RTCIcePingProposalEvent</code></span></a></li><li class="tocline"><a class="tocxref" href="#rtciceswitchproposalevent"><bdi class="secno">6.2 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIceSwitchProposalEvent" data-dfn-for=""><code>RTCIceSwitchProposalEvent</code></span></a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtciceswitchreason"><bdi class="secno">6.2.1 </bdi><span data-export="" data-dfn-type="enum" data-idl="enum" data-title="RTCIceSwitchReason" data-dfn-for=""><code>RTCIceSwitchReason</code></span> Enum</a></li><li class="tocline"><a class="tocxref" href="#rtcicerecheck"><bdi class="secno">6.2.2 </bdi><span data-export="" data-dfn-type="dictionary" data-idl="dictionary" data-title="RTCIceRecheck" data-dfn-for=""><code>RTCIceRecheck</code></span> Dictionary</a></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcicepruneproposalevent"><bdi class="secno">6.3 </bdi><span data-export="" data-dfn-type="interface" data-idl="interface" data-title="RTCIcePruneProposalEvent" data-dfn-for=""><code>RTCIcePruneProposalEvent</code></span></a></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcpeerconnection"><bdi class="secno">7. </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCPeerConnection" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcpeerconnection" data-type="interface" class="formerLink"><code>RTCPeerConnection</code></span> Extensions</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#rtcconfiguration"><bdi class="secno">7.1 </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCConfiguration" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcconfiguration" data-type="dictionary" class="formerLink"><code>RTCConfiguration</code></span> Extensions</a></li><li class="tocline"><a class="tocxref" href="#operation"><bdi class="secno">7.2 </bdi>Operation</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#constructor-0"><bdi class="secno">7.2.1 </bdi>Constructor</a></li><li class="tocline"><a class="tocxref" href="#set-the-configuration"><bdi class="secno">7.2.2 </bdi>Set the configuration</a></li><li class="tocline"><a class="tocxref" href="#set-the-session-description"><bdi class="secno">7.2.3 </bdi>Set the session description</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#rtcicetransport"><bdi class="secno">8. </bdi><span data-xref-type="_IDL_" data-link-type="idl" data-lt="RTCIceTransport" data-cite="webrtc" data-cite-path="/" data-cite-frag="dom-rtcicetransport" data-type="interface" class="formerLink"><code>RTCIceTransport</code></span> Extensions</a></li><li class="tocline"><a class="tocxref" href="#examples"><bdi class="secno">9. </bdi>
+      Examples
+    </a><ol class="toc"><li class="tocline"><a class="tocxref" href="#simple-example"><bdi class="secno">9.1 </bdi>
+        Simple example
+      </a></li><li class="tocline"><a class="tocxref" href="#advanced-example-with-substantial-ice-takeover"><bdi class="secno">9.2 </bdi>
+        Advanced example with substantial ICE takeover
+      </a></li></ol></li><li class="tocline"><a class="tocxref" href="#event-summary"><bdi class="secno">10. </bdi>Event summary</a></li><li class="tocline"><a class="tocxref" href="#privacy-and-security-considerations"><bdi class="secno">11. </bdi>Privacy and Security Considerations</a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><bdi class="secno">A. </bdi>Acknowledgements</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">B. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">B.1 </bdi>Normative references</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><bdi class="secno">B.2 </bdi>Informative references</a></li></ol></li></ol></nav>
 
   <section class="informative" id="intro"><div class="header-wrapper"><h2 id="x1-introduction"><bdi class="secno">1. </bdi>Introduction</h2><a class="self-link" href="#intro" aria-label="Permalink for Section 1."></a></div><p><em>This section is non-normative.</em></p>
     
     <p>
-      This specification extends the WebRTC specification [<cite><a class="bibref" data-link-type="biblio" href="#bib-webrtc" title="WebRTC 1.0: Real-Time Communication Between Browsers">WEBRTC</a></cite>] to allow construction of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-2"><code>RTCIceController</code></a>
+      This specification extends the WebRTC specification [<cite><a class="bibref" data-link-type="biblio" href="#bib-webrtc" title="WebRTC: Real-Time Communication in Browsers">WEBRTC</a></cite>] to allow construction of an <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-2"><code>RTCIceController</code></a>
       object to manage the ICE connection used by an <a data-link-type="idl" data-lt="RTCPeerConnection" data-type="interface" href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection"><code>RTCPeerConnection</code></a>.
     </p>
   </section>
@@ -857,7 +886,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <section id="rtcicecandidatepairevent"><div class="header-wrapper"><h3 id="x5-1-rtcicecandidatepairevent"><bdi class="secno">5.1 </bdi><dfn data-export="" data-dfn-type="interface" id="dom-rtcicecandidatepairevent" data-idl="interface" data-title="RTCIceCandidatePairEvent" data-dfn-for="" tabindex="0" aria-haspopup="dialog"><code>RTCIceCandidatePairEvent</code></dfn></h3><a class="self-link" href="#rtcicecandidatepairevent" aria-label="Permalink for Section 5.1"></a></div>
       
       <p>
-        The <a data-link-type="idl" href="#dfn-candidatepairadded" class="internalDFN" id="ref-for-dfn-candidatepairadded-3"><code>candidatepairadded</code></a> event uses the <a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-3"><code>RTCIceCandidatePairEvent</code></a> interface.
+        The <a data-link-type="idl" href="#dfn-candidatepairadded" class="internalDFN" id="ref-for-dfn-candidatepairadded-3"><code>candidatepairadded</code></a>, <a data-link-type="idl" href="#dfn-candidatepairswitched" class="internalDFN" id="ref-for-dfn-candidatepairswitched-3"><code>candidatepairswitched</code></a>, and
+        <a data-link-type="idl" href="#dfn-candidatepairdestroyed" class="internalDFN" id="ref-for-dfn-candidatepairdestroyed-3"><code>candidatepairdestroyed</code></a> events use the <a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-3"><code>RTCIceCandidatePairEvent</code></a> interface.
       </p>
       <div>
         <pre class="idl def" id="webidl-719498905"><span class="idlHeader"><a class="self-link" href="#webidl-719498905">WebIDL</a></span><code><span data-idl="" class="idlInterface" id="idl-def-rtcicecandidatepairevent" data-title="RTCIceCandidatePairEvent">[<span class="extAttr"><a data-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed">Exposed</a>=Window</span>]
@@ -1229,8 +1259,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
         <p>
           The <a data-link-type="idl" data-lt="RTCIceCandidatePairWriteState" href="#dom-rtcicecandidatepairwritestate" class="internalDFN" id="ref-for-dom-rtcicecandidatepairwritestate-3"><code>RTCIceCandidatePairWriteState</code></a> represents the write state of the ICE candidate pair as determined by
           the <a data-link-type="dfn" href="#dfn-ice-agent" class="internalDFN" id="ref-for-dfn-ice-agent-18">ICE agent</a>. The exact criteria for determining the write state, i.e. the number of failures or the
-          timeout period, is left up to the browser
-          implementation.
+          timeout period, is left up to the browser implementation.
         </p>
         <div>
           <pre class="idl def" id="webidl-318865592"><span class="idlHeader"><a class="self-link" href="#webidl-318865592">WebIDL</a></span><code><span data-idl="" class="idlEnum" id="idl-def-rtcicecandidatepairwritestate" data-title="RTCIceCandidatePairWriteState">enum <a class="internalDFN idlID" data-link-type="enum" href="#dom-rtcicecandidatepairwritestate" id="ref-for-dom-rtcicecandidatepairwritestate-4"><code>RTCIceCandidatePairWriteState</code></a> {
@@ -2102,7 +2131,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       </li>
       <li>
         <p>
-          <a data-link-type="dfn" data-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire">Fire an event</a> named <a data-link-type="idl" href="#dfn-candidatepairswitched" class="internalDFN" id="ref-for-dfn-candidatepairswitched-3"><code>candidatepairswitched</code></a> using the <a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-6"><code>RTCIceCandidatePairEvent</code></a>
+          <a data-link-type="dfn" data-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire">Fire an event</a> named <a data-link-type="idl" href="#dfn-candidatepairswitched" class="internalDFN" id="ref-for-dfn-candidatepairswitched-4"><code>candidatepairswitched</code></a> using the <a data-link-type="idl" data-lt="RTCIceCandidatePairEvent" href="#dom-rtcicecandidatepairevent" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-6"><code>RTCIceCandidatePairEvent</code></a>
           interface with the <a data-link-type="idl" href="#dom-rtcicecandidatepairevent-candidatepair" class="internalDFN" id="ref-for-dom-rtcicecandidatepairevent-candidatepair-6"><code>candidatePair</code></a> attribute set to <var data-type="RTCIceCandidatePair">newCandidatePair</var> at
           <var data-type="RTCIceController">controller</var>.
         </p>
@@ -2110,7 +2139,174 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     </ol>
   </section>
 
-  <section class="informative" id="event-summary"><div class="header-wrapper"><h2 id="x9-event-summary"><bdi class="secno">9. </bdi>Event summary</h2><a class="self-link" href="#event-summary" aria-label="Permalink for Section 9."></a></div><p><em>This section is non-normative.</em></p>
+  <section class="informative" id="examples"><div class="header-wrapper"><h2 id="x9-examples"><bdi class="secno">9. </bdi>
+      Examples
+    </h2><a class="self-link" href="#examples" aria-label="Permalink for Section 9."></a></div><p><em>This section is non-normative.</em></p>
+    
+    <section id="simple-example"><div class="header-wrapper"><h3 id="x9-1-simple-example"><bdi class="secno">9.1 </bdi>
+        Simple example
+      </h3><a class="self-link" href="#simple-example" aria-label="Permalink for Section 9.1"></a></div>
+      
+      <div>
+        <p>
+          A simple application can delegate most ICE operations to the default implementation of the user agent, and
+          only interject when needed. In the following example, the application keeps additional candidate pairs around
+          by preventing the user agent from pruning them. One of the alternate candidate pairs can then be used without
+          needing an ICE restart if the active candidate pair is lost.
+        </p>
+        <div class="example" id="example-1">
+        <div class="marker">
+    <a class="self-link" href="#example-1">Example<bdi> 1</bdi></a>
+  </div> <pre class="highlight" aria-busy="false"><code class="hljs javascript"><span class="hljs-keyword">const</span> iceController = <span class="hljs-keyword">new</span> RTCIceController();
+
+<span class="hljs-comment">// Observe proposals to prune candidate pairs and prevent pruning of</span>
+<span class="hljs-comment">// relay candidates and those using a different transport protocol than</span>
+<span class="hljs-comment">// the active candidate pair.</span>
+iceController.addEventListener(<span class="hljs-string">'icepruneproposed'</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> activeProtocol = iceController.getSelectedCandidatePair()?.local.protocol;
+
+  <span class="hljs-comment">// Relay and candidate pairs dissimilar to the active pair should not be pruned.</span>
+  <span class="hljs-keyword">const</span> allowedToPrune = event.getCandidatePairs().filter(
+    <span class="hljs-function"><span class="hljs-params">pair</span> =&gt;</span> pair.local.type !== <span class="hljs-string">'relay'</span> &amp;&amp; pair.local.protocol === activeProtocol);
+
+  <span class="hljs-comment">// If any candidate pair proposed for pruning is disallowed, reject the proposal.</span>
+  <span class="hljs-keyword">if</span> (allowedToPrune.length &lt; event.getCandidatePairs().length) {
+    event.preventDefault();
+
+    <span class="hljs-comment">// Request pruning of the allowed candidate pairs after the handling of this</span>
+    <span class="hljs-comment">// proposal is finished.</span>
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> iceController.pruneCandidatePairs(allowedToPrune));
+  }
+});
+
+<span class="hljs-comment">// Set the ICE controller in RTCConfiguration.</span>
+<span class="hljs-keyword">const</span> pc = <span class="hljs-keyword">new</span> RTCPeerConnection({ <span class="hljs-attr">iceController</span>: iceController });</code></pre>
+      </div>
+      </div>
+    </section>
+    <section id="advanced-example-with-substantial-ice-takeover"><div class="header-wrapper"><h3 id="x9-2-advanced-example-with-substantial-ice-takeover"><bdi class="secno">9.2 </bdi>
+        Advanced example with substantial ICE takeover
+      </h3><a class="self-link" href="#advanced-example-with-substantial-ice-takeover" aria-label="Permalink for Section 9.2"></a></div>
+      
+      <div>
+        <p>
+          An advanced application can decide to take over ICE to any extent necessary by rejecting the user agent's
+          proposals and injecting its own logic for candidate pair checking and selection. The application in the
+          following example adjusts how frequently it sends connectivity checks and selects a candidate pair to use for
+          the transport based on the quality of the currently active pair.
+        </p>
+        <div class="example" id="example-2">
+        <div class="marker">
+    <a class="self-link" href="#example-2">Example<bdi> 2</bdi></a>
+  </div> <pre class="highlight" aria-busy="false"><code class="hljs javascript"><span class="hljs-keyword">const</span> iceController = <span class="hljs-keyword">new</span> RTCIceController();
+
+<span class="hljs-comment">// Application implements these methods for candidate pair selection.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">selectBestPairToPing</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">/* TODO... */</span> }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">selectBestPairToUse</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">/* TODO... */</span> }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">selectPairsToPrune</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">/* TODO... */</span> }
+
+<span class="hljs-comment">// Application implements these methods to determine if a candidate pair</span>
+<span class="hljs-comment">// ping or switch should be allowed to happen.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shouldPingPair</span>(<span class="hljs-params">pair</span>) </span>{ <span class="hljs-comment">/* TODO... */</span> }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shouldSwitchToPair</span>(<span class="hljs-params">pair</span>) </span>{ <span class="hljs-comment">/* TODO... */</span> }
+
+<span class="hljs-comment">// Initial intervals for sending periodic connectivity checks and picking</span>
+<span class="hljs-comment">// the most suitable candidate pair for transport.</span>
+<span class="hljs-keyword">let</span> pingRecheckIntervalMs = <span class="hljs-number">2.5</span> * <span class="hljs-number">1000</span>;
+<span class="hljs-keyword">let</span> switchRecheckIntervalMs = <span class="hljs-number">5</span> * <span class="hljs-number">1000</span>;
+
+<span class="hljs-comment">// Observe events that indicate when the browser is about to perform an ICE</span>
+<span class="hljs-comment">// action. Cancel the action by calling preventDefault if the application has</span>
+<span class="hljs-comment">// other plans.</span>
+iceController.addEventListener(<span class="hljs-string">'icepingproposed'</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+  <span class="hljs-keyword">if</span> (!shouldPingPair(event.candidatePair)) {
+    event.preventDefault();
+  }
+});
+iceController.addEventListener(<span class="hljs-string">'iceswitchproposed'</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+  <span class="hljs-keyword">if</span> (event.cancelable &amp;&amp;
+      !shouldSwitchToPair(event.reason, event.candidatePair)) {
+    event.preventDefault();
+  }
+});
+
+<span class="hljs-comment">// If the listener will not call preventDefault, it can be marked passive to</span>
+<span class="hljs-comment">// allow optimizations.</span>
+iceController.addEventListener(<span class="hljs-string">'icepruneproposed'</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(event.getCandidatePairs()));
+}, {<span class="hljs-attr">passive</span>: <span class="hljs-literal">true</span>});
+
+<span class="hljs-comment">// Check connectivity of various candidate pairs.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doPing</span>(<span class="hljs-params"></span>) </span>{
+  iceController.sendIcePing(selectBestPairToPing());
+  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> doPing(), pingRecheckIntervalMs);
+}
+iceController.addEventListener(<span class="hljs-string">'candidatepairadded'</span>, <span class="hljs-function">() =&gt;</span> {
+  doPing();
+}, {<span class="hljs-attr">once</span>: <span class="hljs-literal">true</span>});
+
+<span class="hljs-comment">// Select the most suitable candidate pair and use that for transport. Prune</span>
+<span class="hljs-comment">// any unneeded candidate pairs.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doSelectAndPrune</span>(<span class="hljs-params"></span>) </span>{
+  iceController.switchToCandidatePair(selectBestPairToUse());
+  iceController.pruneCandidatePairs(selectPairsToPrune());
+  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> doSelectAndPrune(), switchRecheckIntervalMs);
+}
+iceController.addEventListener(<span class="hljs-string">'candidatepairupdated'</span>, <span class="hljs-function">() =&gt;</span> {
+  doSelectAndPrune();
+}, {<span class="hljs-attr">once</span>: <span class="hljs-literal">true</span>});
+
+<span class="hljs-comment">// Clamp a number between lower and upper bounds.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">clamp</span>(<span class="hljs-params">num, min, max</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.min(<span class="hljs-built_in">Math</span>.max(num, min), max);
+}
+
+<span class="hljs-comment">// Adjust the recheck intervals based on RTT measurements.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">adjustRecheckIntervals</span>(<span class="hljs-params">report</span>) </span>{
+  <span class="hljs-keyword">const</span> rtts = report.getRoundTripTimeSamples().map(<span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> s.value);
+  <span class="hljs-keyword">const</span> rtt_p75 = quantile(rtts, <span class="hljs-number">0.75</span>);
+
+  <span class="hljs-keyword">const</span> MIN_PING_RECHECK_INTERVAL_MS = <span class="hljs-number">500</span>;
+  <span class="hljs-keyword">const</span> MAX_PING_RECHECK_INTERVAL_MS = <span class="hljs-number">10</span> * <span class="hljs-number">1000</span>;
+  <span class="hljs-keyword">const</span> MIN_SWITCH_RECHECK_INTERVAL_MS = <span class="hljs-number">1000</span>;
+  <span class="hljs-keyword">const</span> MAX_SWITCH_RECHECK_INTERVAL_MS = <span class="hljs-number">30</span> * <span class="hljs-number">1000</span>;
+
+  <span class="hljs-keyword">const</span> LOW_RTT_THRESHOLD_MS = <span class="hljs-number">250</span>;
+  <span class="hljs-keyword">const</span> HIGH_RTT_THRESHOLD_MS = <span class="hljs-number">500</span>;
+
+  <span class="hljs-keyword">if</span> (rtt_p75 &lt; LOW_RTT_THRESHOLD_MS) {
+    <span class="hljs-comment">// Selected candidate pair has good RTT, recheck less frequently.</span>
+    pingRecheckIntervalMs *= <span class="hljs-number">2</span>;
+    switchRecheckIntervalMs *= <span class="hljs-number">2</span>;
+  }
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rtt_p75 &gt; HIGH_RTT_THRESHOLD_MS) {
+    <span class="hljs-comment">// Selected candidate pair has poor RTT, recheck more frequently.</span>
+    pingRecheckIntervalMs = <span class="hljs-built_in">Math</span>.floor(pingRecheckIntervalMs / <span class="hljs-number">2</span>);
+    switchRecheckIntervalMs = <span class="hljs-built_in">Math</span>.floor(switchRecheckIntervalMs / <span class="hljs-number">2</span>);
+  }
+
+  pingRecheckIntervalMs = clamp(pingRecheckIntervalMs,
+    MIN_PING_RECHECK_INTERVAL_MS, MAX_PING_RECHECK_INTERVAL_MS);
+  switchRecheckIntervalMs = clamp(switchRecheckIntervalMs,
+    MIN_SWITCH_RECHECK_INTERVAL_MS, MAX_SWITCH_RECHECK_INTERVAL_MS);
+}
+
+<span class="hljs-comment">// If the selected candidate pair is worsening, increase ping and select</span>
+<span class="hljs-comment">// intervals more frequently. Otherwise decrease the recheck frequency.</span>
+iceController.addEventListener(<span class="hljs-string">'candidatepairupdated'</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+  <span class="hljs-keyword">if</span> (event.candidatePair == iceController.getSelectedCandidatePair()) {
+    adjustRecheckIntervals(event.report);
+  }
+});
+
+<span class="hljs-comment">// Set the ICE controller in RTCConfiguration.</span>
+<span class="hljs-keyword">const</span> pc = <span class="hljs-keyword">new</span> RTCPeerConnection({ <span class="hljs-attr">iceController</span>: iceController });</code></pre>
+      </div>
+      </div>
+    </section>
+  </section>
+
+  <section class="informative" id="event-summary"><div class="header-wrapper"><h2 id="x10-event-summary"><bdi class="secno">10. </bdi>Event summary</h2><a class="self-link" href="#event-summary" aria-label="Permalink for Section 10."></a></div><p><em>This section is non-normative.</em></p>
     
     <p>
       The following events fire on <a data-link-type="idl" data-lt="RTCIceController" href="#dom-rtcicecontroller" class="internalDFN" id="ref-for-dom-rtcicecontroller-27"><code>RTCIceController</code></a> objects:</p>
@@ -2180,7 +2376,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     </table>
   </section>
 
-  <section class="informative" id="privacy-and-security-considerations"><div class="header-wrapper"><h2 id="x10-privacy-and-security-considerations"><bdi class="secno">10. </bdi>Privacy and Security Considerations</h2><a class="self-link" href="#privacy-and-security-considerations" aria-label="Permalink for Section 10."></a></div><p><em>This section is non-normative.</em></p>
+  <section class="informative" id="privacy-and-security-considerations"><div class="header-wrapper"><h2 id="x11-privacy-and-security-considerations"><bdi class="secno">11. </bdi>Privacy and Security Considerations</h2><a class="self-link" href="#privacy-and-security-considerations" aria-label="Permalink for Section 11."></a></div><p><em>This section is non-normative.</em></p>
     
     <p>
       This section is non-normative; it specifies no new behaviour, but instead summarizes information already present
@@ -2188,7 +2384,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       used in WebRTC are described in [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8827" title="WebRTC Security Architecture">RFC8827</a></cite>].
     </p>
     <p>
-      The data exposed by RTCIceController comprises mostly of data also exposed by [<cite><a class="bibref" data-link-type="biblio" href="#bib-webrtc" title="WebRTC 1.0: Real-Time Communication Between Browsers">WEBRTC</a></cite>] and [<cite><a class="bibref" data-link-type="biblio" href="#bib-webrtc-stats" title="Identifiers for WebRTC's Statistics API">WEBRTC-STATS</a></cite>] - as
+      The data exposed by RTCIceController comprises mostly of data also exposed by [<cite><a class="bibref" data-link-type="biblio" href="#bib-webrtc" title="WebRTC: Real-Time Communication in Browsers">WEBRTC</a></cite>] and [<cite><a class="bibref" data-link-type="biblio" href="#bib-webrtc-stats" title="Identifiers for WebRTC's Statistics API">WEBRTC-STATS</a></cite>] - as
       such, all the privacy and security considerations of these specifications related to data exposure apply as well
       to this specifciation.
     </p>
@@ -2221,7 +2417,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     </dd><dt id="bib-ecmascript-6.0">[ECMASCRIPT-6.0]</dt><dd>
       <a href="http://www.ecma-international.org/ecma-262/6.0/index.html"><cite>ECMA-262 6th Edition, The ECMAScript 2015 Language Specification</cite></a>. Allen Wirfs-Brock.  Ecma International. June 2015. Standard. URL: <a href="http://www.ecma-international.org/ecma-262/6.0/index.html">http://www.ecma-international.org/ecma-262/6.0/index.html</a>
     </dd><dt id="bib-highres-time">[HIGHRES-TIME]</dt><dd>
-      <a href="https://www.w3.org/TR/hr-time-3/"><cite>High Resolution Time</cite></a>. Yoav Weiss.  W3C. 20 September 2022. W3C Working Draft. URL: <a href="https://www.w3.org/TR/hr-time-3/">https://www.w3.org/TR/hr-time-3/</a>
+      <a href="https://www.w3.org/TR/hr-time-3/"><cite>High Resolution Time</cite></a>. Yoav Weiss.  W3C. 16 February 2023. W3C Working Draft. URL: <a href="https://www.w3.org/TR/hr-time-3/">https://www.w3.org/TR/hr-time-3/</a>
     </dd><dt id="bib-html">[HTML]</dt><dd>
       <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Anne van Kesteren; Domenic Denicola; Ian Hickson; Philip Jägenstedt; Simon Pieters.  WHATWG. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
     </dd><dt id="bib-infra">[INFRA]</dt><dd>
@@ -2239,9 +2435,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     </dd><dt id="bib-webidl">[WEBIDL]</dt><dd>
       <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Edgar Chen; Timothy Gu.  WHATWG. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
     </dd><dt id="bib-webrtc">[WEBRTC]</dt><dd>
-      <a href="https://www.w3.org/TR/webrtc/"><cite>WebRTC 1.0: Real-Time Communication Between Browsers</cite></a>. Cullen Jennings; Henrik Boström; Jan-Ivar Bruaroey.  W3C. 26 January 2021. W3C Recommendation. URL: <a href="https://www.w3.org/TR/webrtc/">https://www.w3.org/TR/webrtc/</a>
+      <a href="https://www.w3.org/TR/webrtc/"><cite>WebRTC: Real-Time Communication in Browsers</cite></a>. Cullen Jennings; Florent Castelli; Henrik Boström; Jan-Ivar Bruaroey.  W3C. 6 March 2023. W3C Recommendation. URL: <a href="https://www.w3.org/TR/webrtc/">https://www.w3.org/TR/webrtc/</a>
     </dd><dt id="bib-webrtc-stats">[WEBRTC-STATS]</dt><dd>
-      <a href="https://www.w3.org/TR/webrtc-stats/"><cite>Identifiers for WebRTC's Statistics API</cite></a>. Harald Alvestrand; Varun Singh; Henrik Boström.  W3C. 25 December 2022. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/webrtc-stats/">https://www.w3.org/TR/webrtc-stats/</a>
+      <a href="https://www.w3.org/TR/webrtc-stats/"><cite>Identifiers for WebRTC's Statistics API</cite></a>. Harald Alvestrand; Varun Singh; Henrik Boström.  W3C. 9 March 2023. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/webrtc-stats/">https://www.w3.org/TR/webrtc-stats/</a>
     </dd></dl>
   </section><section id="informative-references"><div class="header-wrapper"><h3 id="b-2-informative-references"><bdi class="secno">B.2 </bdi>Informative references</h3><a class="self-link" href="#informative-references" aria-label="Permalink for Appendix B.2"></a></div>
     
@@ -2373,7 +2569,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecontroller-25" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dom-rtcicecontroller-26" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-27" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtcicecontroller-27" title="§ 10. Event summary">§ 10. Event summary</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-ice-agent" aria-label="Links in this document to definition: ICE agent">
@@ -2413,7 +2609,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dfn-ice-agent-42" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> <a href="#ref-for-dfn-ice-agent-43" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-44" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-45" title="Reference 4">(4)</a> 
   </li><li>
-    <a href="#ref-for-dfn-ice-agent-46" title="§ 9. Event summary">§ 9. Event summary</a> <a href="#ref-for-dfn-ice-agent-47" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-48" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-49" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-50" title="Reference 5">(5)</a> <a href="#ref-for-dfn-ice-agent-51" title="Reference 6">(6)</a> <a href="#ref-for-dfn-ice-agent-52" title="Reference 7">(7)</a> 
+    <a href="#ref-for-dfn-ice-agent-46" title="§ 10. Event summary">§ 10. Event summary</a> <a href="#ref-for-dfn-ice-agent-47" title="Reference 2">(2)</a> <a href="#ref-for-dfn-ice-agent-48" title="Reference 3">(3)</a> <a href="#ref-for-dfn-ice-agent-49" title="Reference 4">(4)</a> <a href="#ref-for-dfn-ice-agent-50" title="Reference 5">(5)</a> <a href="#ref-for-dfn-ice-agent-51" title="Reference 6">(6)</a> <a href="#ref-for-dfn-ice-agent-52" title="Reference 7">(7)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecontroller-constructor" aria-label="Links in this document to definition: constructor()">
@@ -2619,7 +2815,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecontroller-sendiceping-4" title="§ 4.4 Methods">§ 4.4 Methods</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecontroller-sendiceping-6" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecontroller-sendiceping-7" title="§ 10. Privacy and Security Considerations">§ 10. Privacy and Security Considerations</a> 
+    <a href="#ref-for-dom-rtcicecontroller-sendiceping-7" title="§ 11. Privacy and Security Considerations">§ 11. Privacy and Security Considerations</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-administratively-prohibited" aria-label="Links in this document to definition: administratively prohibited">
@@ -2697,7 +2893,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecandidatepairevent-6" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecandidatepairevent-7" title="§ 9. Event summary">§ 9. Event summary</a> <a href="#ref-for-dom-rtcicecandidatepairevent-8" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecandidatepairevent-9" title="Reference 3">(3)</a> 
+    <a href="#ref-for-dom-rtcicecandidatepairevent-7" title="§ 10. Event summary">§ 10. Event summary</a> <a href="#ref-for-dom-rtcicecandidatepairevent-8" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicecandidatepairevent-9" title="Reference 3">(3)</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairevent-constructor" aria-label="Links in this document to definition: RTCIceCandidatePairEvent.constructor()">
@@ -2771,7 +2967,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecandidatepairupdateevent-4" title="§ Dictionary RTCIceCandidatePairUpdateEventInit Members">§ Dictionary RTCIceCandidatePairUpdateEventInit Members</a> <a href="#ref-for-dom-rtcicecandidatepairupdateevent-5" title="Reference 2">(2)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-6" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtcicecandidatepairupdateevent-6" title="§ 10. Event summary">§ 10. Event summary</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairupdateevent-constructor" aria-label="Links in this document to definition: RTCIceCandidatePairUpdateEvent.constructor()">
@@ -3011,7 +3207,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicecandidatepairreport-getroundtriptimesamples-2" title="§ Methods">§ Methods</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicecandidatepairreport-getroundtriptimesamples-3" title="§ 10. Privacy and Security Considerations">§ 10. Privacy and Security Considerations</a> 
+    <a href="#ref-for-dom-rtcicecandidatepairreport-getroundtriptimesamples-3" title="§ 11. Privacy and Security Considerations">§ 11. Privacy and Security Considerations</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dom-rtcicecandidatepairreportinit" aria-label="Links in this document to definition: RTCIceCandidatePairReportInit">
@@ -3273,7 +3469,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtcicepingproposalevent-4" title="§ Dictionary RTCIcePingProposalEventInit Members">§ Dictionary RTCIcePingProposalEventInit Members</a> <a href="#ref-for-dom-rtcicepingproposalevent-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicepingproposalevent-6" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicepingproposalevent-7" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtcicepingproposalevent-7" title="§ 10. Event summary">§ 10. Event summary</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-propose-ping" aria-label="Links in this document to definition: propose an ICE ping">
@@ -3409,7 +3605,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dom-rtciceswitchproposalevent-4" title="§ Dictionary RTCIceSwitchProposalEventInit Members">§ Dictionary RTCIceSwitchProposalEventInit Members</a> <a href="#ref-for-dom-rtciceswitchproposalevent-5" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtciceswitchproposalevent-6" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtciceswitchproposalevent-7" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtciceswitchproposalevent-7" title="§ 10. Event summary">§ 10. Event summary</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-propose-switch" aria-label="Links in this document to definition: propose an ICE switch">
@@ -3737,7 +3933,7 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
     <li>
     <a href="#ref-for-dom-rtcicepruneproposalevent-1" title="§ 6.3 RTCIcePruneProposalEvent">§ 6.3 RTCIcePruneProposalEvent</a> <a href="#ref-for-dom-rtcicepruneproposalevent-2" title="Reference 2">(2)</a> <a href="#ref-for-dom-rtcicepruneproposalevent-3" title="Reference 3">(3)</a> 
   </li><li>
-    <a href="#ref-for-dom-rtcicepruneproposalevent-4" title="§ 9. Event summary">§ 9. Event summary</a> 
+    <a href="#ref-for-dom-rtcicepruneproposalevent-4" title="§ 10. Event summary">§ 10. Event summary</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-rtcicecontroller-propose-prune" aria-label="Links in this document to definition: propose an ICE pruning">
@@ -3907,7 +4103,9 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
   </li><li>
     <a href="#ref-for-dfn-candidatepairswitched-2" title="§ 4.4 Methods">§ 4.4 Methods</a> 
   </li><li>
-    <a href="#ref-for-dfn-candidatepairswitched-3" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> 
+    <a href="#ref-for-dfn-candidatepairswitched-3" title="§ 5.1 RTCIceCandidatePairEvent">§ 5.1 RTCIceCandidatePairEvent</a> 
+  </li><li>
+    <a href="#ref-for-dfn-candidatepairswitched-4" title="§ 8. RTCIceTransport Extensions">§ 8. RTCIceTransport Extensions</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-candidatepairdestroyed" aria-label="Links in this document to definition: candidatepairdestroyed">
@@ -3920,6 +4118,8 @@ interface <a class="internalDFN idlID" data-link-type="interface" href="#dom-rtc
       <ul>
     <li>
     <a href="#ref-for-dfn-candidatepairdestroyed-1" title="§ 4.3 Attributes">§ 4.3 Attributes</a> <a href="#ref-for-dfn-candidatepairdestroyed-2" title="Reference 2">(2)</a> 
+  </li><li>
+    <a href="#ref-for-dfn-candidatepairdestroyed-3" title="§ 5.1 RTCIceCandidatePairEvent">§ 5.1 RTCIceCandidatePairEvent</a> 
   </li>
   </ul>
     </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-icepingproposed" aria-label="Links in this document to definition: icepingproposed">
