@@ -6,10 +6,10 @@ RTCPeerConnection.
 
 ### Published Versions
 
-TBD
+https://sam-vi.github.io/webrtc-icecontroller/
 
 ### Useful Links
 
-TBD
+[Explainer](explainer.md)
 
 [Contribution Guidelines](CONTRIBUTING.md)
